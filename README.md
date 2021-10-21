@@ -4,7 +4,7 @@
 *Team Members*
 - Keith Joyce
 - Stephen Harding 
-- Oisin Mc Peake
+- Oisín McPeake
 
 # **Game level Concept**
 ![ezgif-2-e01ebf71797a](https://user-images.githubusercontent.com/61129328/137211122-99e42608-d814-4485-8068-25e7bec57741.gif)
