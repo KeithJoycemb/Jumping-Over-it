@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6efba8a9-a407-4029-bdd0-651d22a87386</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>GDLibrary</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Content\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Camera\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Base\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ViewportExtensions.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Collections\GameObjectList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Behaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Controller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FOVOnScrollController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\TweenManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Curve\Curve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Renderers\ForwardRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Renderers\IRenderScene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\_Editor\Controllers\CurveRecorderController.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Utilities\Serialization\SerializationUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\_Demo\DemoSaveLoad.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Components\Behaviours\CurveBehaviour.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Components\Controllers\OLD_FirstPersonCameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FirstPersonController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Renderers\ModelRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Scene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Renderers\MeshRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Renderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Globals\Application.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Globals\Input.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\RenderManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\_Demo\MathTest.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Graphics\Materials\BasicMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Materials\Material.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Shaders\BasicShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Shaders\Shader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Inputs\GamepadComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\SceneManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Screen\Screen.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Inputs\KeyboardComponent.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Inputs\MouseComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Objects\GameObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Transform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\QuaternionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Vector3Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Primitives\CubeMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Primitives\Mesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Primitives\QuadMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\States\GraphicsDeviceState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Time\Time.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Types\Enums.cs" />
+  </ItemGroup>
+</Project>
