@@ -19,7 +19,10 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FPController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ViewportExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Materials\CustomMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Shaders\CustomShader.cs" />
     <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Collections\GameObjectList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Behaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Controller.cs" />

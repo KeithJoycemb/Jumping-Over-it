@@ -1,5 +1,6 @@
 ﻿using GDLibrary.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GDLibrary.Graphics
@@ -16,23 +17,25 @@ namespace GDLibrary.Graphics
         #region Fields
 
         protected Effect effect;
+        protected EffectPass effectPass;
 
         #endregion Fields
 
         #region Properties
 
         public Effect Effect { get; }
+        public EffectPass EffectPass { get; }
 
         #endregion Properties
 
-        public Shader()
+        public Shader(ContentManager content)
         {
-            LoadEffect();
+            LoadEffect(content);
         }
 
         #region Actions
 
-        public abstract void LoadEffect();
+        public abstract void LoadEffect(ContentManager content);
 
         /// <summary>
         /// Called in RenderManager::Render to set View and Projection

@@ -60,7 +60,7 @@ namespace GDApp
         protected override void Initialize()
         {
             //data, input, scene manager
-            InitializeEngine("My Game Title Goes Here", 1024, 768);
+            InitializeEngine("Any Leapers?", 1920, 1080);
 
             //load structures that store assets (e.g. textures, sounds) or archetypes (e.g. Quad game object)
             InitializeDictionaries();
@@ -116,9 +116,9 @@ namespace GDApp
         private void InitializeLevel()
         {
             activeScene = new Scene("level 1");
+            InitializeCameras(activeScene);
 
             InitializeSkybox(activeScene, 500);
-            InitializeCameras(activeScene);
             InitializeCubes(activeScene);
             InitializeModels(activeScene);
 
@@ -137,7 +137,7 @@ namespace GDApp
 
             var material = new BasicMaterial("simple diffuse");
             material.Texture = textureDictionary["checkerboard"];
-            material.Shader = new BasicShader();
+            material.Shader = new BasicShader(Application.Content);
 
             var archetypalQuad = new GameObject("quad", GameObjectType.Skybox);
             archetypalQuad.IsStatic = false;
@@ -211,7 +211,7 @@ namespace GDApp
 
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
-            camera.AddComponent(new FirstPersonController(0.05f, 0.025f, 0.00009f));
+            camera.AddComponent(new FPController(0.05f, 0.025f, 0.00009f));
 
             //set initial position
             camera.Transform.SetTranslation(0, 0, 15);
@@ -221,40 +221,40 @@ namespace GDApp
 
             #endregion First Person Camera
 
-            #region Curve Camera
+            //#region Curve Camera
 
-            //add curve for camera translation
-            var translationCurve = new Curve3D(CurveLoopType.Cycle);
-            translationCurve.Add(new Vector3(0, 0, 10), 0);
-            translationCurve.Add(new Vector3(0, 5, 15), 1000);
-            translationCurve.Add(new Vector3(0, 0, 20), 2000);
-            translationCurve.Add(new Vector3(0, -5, 25), 3000);
-            translationCurve.Add(new Vector3(0, 0, 30), 4000);
-            translationCurve.Add(new Vector3(0, 0, 10), 6000);
+            ////add curve for camera translation
+            //var translationCurve = new Curve3D(CurveLoopType.Cycle);
+            //translationCurve.Add(new Vector3(0, 0, 10), 0);
+            //translationCurve.Add(new Vector3(0, 5, 15), 1000);
+            //translationCurve.Add(new Vector3(0, 0, 20), 2000);
+            //translationCurve.Add(new Vector3(0, -5, 25), 3000);
+            //translationCurve.Add(new Vector3(0, 0, 30), 4000);
+            //translationCurve.Add(new Vector3(0, 0, 10), 6000);
 
-            //add camera game object
-            var curveCamera = new GameObject("curve camera", GameObjectType.Camera);
+            ////add camera game object
+            //var curveCamera = new GameObject("curve camera", GameObjectType.Camera);
 
-            //set viewport
-            //var viewportRight = new Viewport(_graphics.PreferredBackBufferWidth / 2, 0,
-            //    _graphics.PreferredBackBufferWidth / 2,
-            //    _graphics.PreferredBackBufferHeight);
+            ////set viewport
+            ////var viewportRight = new Viewport(_graphics.PreferredBackBufferWidth / 2, 0,
+            ////    _graphics.PreferredBackBufferWidth / 2,
+            ////    _graphics.PreferredBackBufferHeight);
 
-            //add components
-            curveCamera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
-            curveCamera.AddComponent(new CurveBehaviour(translationCurve));
-            curveCamera.AddComponent(new FOVOnScrollController(MathHelper.ToRadians(2)));
+            ////add components
+            //curveCamera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
+            //curveCamera.AddComponent(new CurveBehaviour(translationCurve));
+            //curveCamera.AddComponent(new FOVOnScrollController(MathHelper.ToRadians(2)));
 
-            //add to level
-            level.Add(curveCamera);
+            ////add to level
+            //level.Add(curveCamera);
 
-            #endregion Curve Camera
+            //#endregion Curve Camera
 
-            //set theMain camera, if we dont call this then the first camera added will be the Main
-            level.SetMainCamera("main camera");
+            ////set theMain camera, if we dont call this then the first camera added will be the Main
+            //level.SetMainCamera("main camera");
 
-            //allows us to scale time on all game objects that based movement on Time
-            // Time.Instance.TimeScale = 0.1f;
+            ////allows us to scale time on all game objects that based movement on Time
+            //// Time.Instance.TimeScale = 0.1f;
         }
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace GDApp
             #region Archetype
 
             var material = new BasicMaterial("model material");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard");
-            material.Shader = new BasicShader();
+            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/peepo");
+            material.Shader = new BasicShader(Application.Content);
 
             var archetypalSphere = new GameObject("sphere", GameObjectType.Consumable);
             archetypalSphere.IsStatic = false;
@@ -301,8 +301,8 @@ namespace GDApp
             #region Archetype
 
             var material = new BasicMaterial("simple diffuse");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa");
-            material.Shader = new BasicShader();
+            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/peepo");
+            material.Shader = new BasicShader(Application.Content);
 
             var archetypalCube = new GameObject("cube", GameObjectType.Architecture);
             var renderer = new MeshRenderer();
@@ -317,8 +317,8 @@ namespace GDApp
             {
                 var clone = archetypalCube.Clone() as GameObject;
                 clone.Name = $"{clone.Name} - {count++}";
-                clone.Transform.SetTranslation(i, 0, 0);
-                clone.Transform.SetScale(1, i, 1);
+                clone.Transform.SetTranslation(i*2, 0, 0);
+                clone.Transform.SetScale(3, i*2, 3);
                 level.Add(clone);
             }
         }
@@ -342,7 +342,7 @@ namespace GDApp
             Application.SceneManager = sceneManager;
 
             //instanciate render manager to render all drawn game objects using preferred renderer (e.g. forward, backward)
-            renderManager = new RenderManager(this, new ForwardRenderer(), false);
+            renderManager = new RenderManager(this, new ForwardRenderer(), true);
 
             //instanciate screen (singleton) and set resolution etc
             Screen.GetInstance().Set(width, height, true, false);

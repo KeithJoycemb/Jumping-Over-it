@@ -8,14 +8,14 @@ namespace GDLibrary.Graphics
         #region Fields
 
         protected Vector3 diffuseColor;
-        protected Texture2D texture;
+        protected Texture2D diffuseTexture;
 
         #endregion Fields
 
         #region Properties
 
         public Vector3 DiffuseColor { get => diffuseColor; set => diffuseColor = value; }
-        public Texture2D Texture { get => texture; set => texture = value; }
+        public Texture2D Texture { get => diffuseTexture; set => diffuseTexture = value; }
 
         #endregion Properties
 
@@ -32,7 +32,7 @@ namespace GDLibrary.Graphics
         {
             var clone = new BasicMaterial($"Clone - {name}");
             clone.diffuseColor = diffuseColor; //deep
-            clone.texture = texture;  //shallow
+            clone.diffuseTexture = diffuseTexture;  //shallow
             clone.shader = shader; //shallow
             return clone;
         }

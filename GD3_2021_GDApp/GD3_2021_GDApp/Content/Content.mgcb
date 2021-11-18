@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Demo/Textures/mona lisa.jpg
 
+#begin Assets/Demo/Textures/peepo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Demo/Textures/peepo.png
+
 #begin Assets/Fonts/menu.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
