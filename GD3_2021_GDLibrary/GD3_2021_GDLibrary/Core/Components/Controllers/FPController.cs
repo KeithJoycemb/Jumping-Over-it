@@ -12,7 +12,7 @@ namespace GDLibrary.Components
         protected Vector3 rotation = Vector3.Zero;
         private float lastX;
         private float lastY;
-        private float moveSpeed = 0.05f;
+        private float moveSpeed = 0.03f;
         private float strafeSpeed = 0.025f;
         private float rotationSpeed = 0.00009f;
         private float sensitivity = 100;
@@ -42,15 +42,19 @@ namespace GDLibrary.Components
 
             if (Input.Keys.IsPressed(Keys.W))
                 translation += transform.Forward * moveSpeed * Time.Instance.DeltaTimeMs;
-            else if (Input.Keys.IsPressed(Keys.S))
+            if (Input.Keys.IsPressed(Keys.S))
                 translation -= transform.Forward * moveSpeed * Time.Instance.DeltaTimeMs;
 
             if (Input.Keys.IsPressed(Keys.A))
                 translation += transform.Left * strafeSpeed * Time.Instance.DeltaTimeMs;
-            else if (Input.Keys.IsPressed(Keys.D))
+            if (Input.Keys.IsPressed(Keys.D))
                 translation += transform.Right * strafeSpeed * Time.Instance.DeltaTimeMs;
 
+            if (Input.Keys.IsPressed(Keys.Space))
+                translation += transform.Up * moveSpeed/2 * Time.Instance.DeltaTimeMs;
+
             transform.Translate(ref translation);
+
         }
 
         protected override void HandleMouseInput()
@@ -70,11 +74,12 @@ namespace GDLibrary.Components
                 lastX = Input.Mouse.Delta.X;
                 lastY = Input.Mouse.Delta.Y;
             }
-                if (Input.Mouse.X > 1917 || Input.Mouse.X < 3)
-                {
-                    Input.Mouse.Position = new Vector2(960, 540);
-                    autoMove = true;
-                }
+
+            if (Input.Mouse.X > 1917 || Input.Mouse.X < 3)
+            {
+                Input.Mouse.Position = new Vector2(960, 540);
+                 autoMove = true;
+            }
                 
         }
 

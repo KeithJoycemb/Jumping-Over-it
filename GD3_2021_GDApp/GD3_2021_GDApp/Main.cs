@@ -60,7 +60,7 @@ namespace GDApp
         protected override void Initialize()
         {
             //data, input, scene manager
-            InitializeEngine("Any Leapers?", 1920, 1080);
+            InitializeEngine("Jumping Over It", 1920, 1080);
 
             //load structures that store assets (e.g. textures, sounds) or archetypes (e.g. Quad game object)
             InitializeDictionaries();
@@ -74,6 +74,8 @@ namespace GDApp
             //TODO - remove hardcoded mouse values - update Screen class
             //centre the mouse with hardcoded value - remove later
             Input.Mouse.Position = new Vector2(512, 384);
+            IsMouseVisible = false;
+
 
             base.Initialize();
         }
@@ -311,7 +313,7 @@ namespace GDApp
             renderer.Mesh = new CubeMesh();
 
             #endregion Archetype
-
+            
             var count = 0;
             for (var i = 1; i <= 8; i += 2)
             {
