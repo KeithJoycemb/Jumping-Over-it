@@ -34,7 +34,6 @@ namespace GDLibrary.Graphics
             effect = new BasicEffect(Application.GraphicsDevice);
             (effect as BasicEffect).LightingEnabled = true;
             (effect as BasicEffect).EnableDefaultLighting();
-            //  effectPass = effect.CurrentTechnique.Passes[0];
         }
 
         #endregion Initialization

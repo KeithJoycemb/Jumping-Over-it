@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Runtime.Serialization;
 
-namespace GDLibrary
+namespace GDLibrary.Core.Demo
 {
     [DataContract]
     public class DemoSaveLoad

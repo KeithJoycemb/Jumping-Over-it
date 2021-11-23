@@ -10,23 +10,45 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Content\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Behaviours\Curve\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Camera\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Base\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Objects\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\UI\" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
     <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FPController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\UIBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Transform2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\UIComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Behaviours\Curve\CurveBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Behaviours\UI\UIExpandFadeBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\Camera\FPController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\UI\UIProgressBarController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\Camera\FirstPersonCameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\Camera\OLD_FirstPersonCameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\UIScene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\UIController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Enums\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Events\EventDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\PausableComponents\PausableDrawableGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\PausableComponents\PausableGameComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\SoundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\UIMenuManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Physics\PhysicsDebugDrawer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\_Demo\EventSender.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Utilities\GDDebug\PerfUtility.cs" />
+    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Components\Behaviours\UI\UITimeColorFlipBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Materials\CustomMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Shaders\CustomShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\UISceneManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Objects\UIObject.cs" />
     <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Collections\GameObjectList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Behaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Controller.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FOVOnScrollController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\Camera\FOVOnScrollController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\TweenManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Curve\Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Renderers\ForwardRenderer.cs" />
@@ -34,9 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\_Editor\Controllers\CurveRecorderController.cs" />
     <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Utilities\Serialization\SerializationUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\_Demo\DemoSaveLoad.cs" />
-    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Components\Behaviours\CurveBehaviour.cs" />
-    <Compile Include="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\Core\Components\Controllers\OLD_FirstPersonCameraController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\FirstPersonController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Controllers\Camera\FirstPersonController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Renderers\ModelRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\Scene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Renderers\MeshRenderer.cs" />

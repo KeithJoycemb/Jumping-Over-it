@@ -22,5 +22,8 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Assets\Textures\UI\Progress\" />
+  </ItemGroup>
   <Import Project="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\GD3_2021_GDLibrary.projitems" Label="Shared" />
 </Project>

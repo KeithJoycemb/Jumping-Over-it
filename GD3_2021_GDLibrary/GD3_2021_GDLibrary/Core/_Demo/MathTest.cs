@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GDLibrary.Core.Scratch
+namespace GDLibrary.Core.Demo
 {
     public class MathTest
     {

@@ -16,12 +16,23 @@ namespace GDLibrary.Core
         #region Fields
 
         private Rectangle screenRectangle;
+        private Vector2 screenCentre;
 
         #endregion Fields
 
         #region Properties
 
-        public Rectangle ScreenRectangle { get => screenRectangle; set => screenRectangle = value; }
+        public Rectangle ScreenRectangle
+        {
+            get => screenRectangle;
+            set
+            {
+                screenRectangle = value;
+                screenCentre = new Vector2(screenRectangle.Width / 2, screenRectangle.Height / 2);
+            }
+        }
+
+        public Vector2 ScreenCentre { get => screenCentre; }
 
         //TODO - add code to show/hide mouse based on cursor lock
         public bool IsCursorLocked { get; set; }
@@ -31,6 +42,8 @@ namespace GDLibrary.Core
             get { return Application.Main.IsMouseVisible; }
             set { Application.Main.IsMouseVisible = value; }
         }
+
+        public static Screen Instance { get => instance; }
 
         #endregion Properties
 

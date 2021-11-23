@@ -1,4 +1,5 @@
 ﻿using GDLibrary.Components;
+using GDLibrary.Core;
 using GDLibrary.Renderers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ namespace GDLibrary.Managers
     /// <summary>
     /// Renders the game objects in the currently active scene using the IRenderScene and single, or multi cameras, available
     /// </summary>
-    public class RenderManager : DrawableGameComponent
+    public class RenderManager : PausableDrawableGameComponent
     {
         #region Fields
 
@@ -65,21 +66,25 @@ namespace GDLibrary.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            if (isMultiCamera)
+            //is this component paused because of the menu?
+            if (IsDrawn)
             {
-                //get a reference to the list of all cameras for the current scene
-                activeSceneCameras = Application.SceneManager.ActiveScene.GetAllActiveSceneCameras();
-
-                //draw scene with each camera
-                foreach (var camera in activeSceneCameras)
+                if (isMultiCamera)
                 {
-                    sceneRenderer.Render(graphicsDevice, camera);
+                    //get a reference to the list of all cameras for the current scene
+                    activeSceneCameras = Application.SceneManager.ActiveScene.GetAllActiveSceneCameras();
+
+                    //draw scene with each camera
+                    foreach (var camera in activeSceneCameras)
+                    {
+                        sceneRenderer.Render(graphicsDevice, camera);
+                    }
                 }
-            }
-            else
-            {
-                //draw scene with main camera
-                sceneRenderer.Render(graphicsDevice, Camera.Main);
+                else
+                {
+                    //draw scene with main camera
+                    sceneRenderer.Render(graphicsDevice, Camera.Main);
+                }
             }
         }
 

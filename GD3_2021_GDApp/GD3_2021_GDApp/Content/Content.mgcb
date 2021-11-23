@@ -37,18 +37,6 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Demo/Textures/mona lisa.jpg
 
-#begin Assets/Demo/Textures/peepo.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Assets/Demo/Textures/peepo.png
-
 #begin Assets/Fonts/menu.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -100,6 +88,18 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:Assets/Models/sphere.FBX
+
+#begin Assets/Sounds/Effects/explode1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/explode1.mp3
+
+#begin Assets/Sounds/Effects/smokealarm1.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/smokealarm1.ogg
 
 #begin Assets/Textures/Architecture/Walls/backwall.jpg
 /importer:TextureImporter
@@ -436,4 +436,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/UI/Controls/reticuleOpen.png
+
+#begin Assets/Textures/UI/Progress/ui_progress_32_8.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/UI/Progress/ui_progress_32_8.png
 

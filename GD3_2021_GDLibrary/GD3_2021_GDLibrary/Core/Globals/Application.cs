@@ -37,6 +37,11 @@ namespace GDLibrary
         public static SceneManager SceneManager { get; internal set; }
 
         /// <summary>
+        /// Gets the physics manager.
+        /// </summary>
+        //public static PhysicsManager PhysicsManager { get; internal set; }
+
+        /// <summary>
         /// Called when we exit the application.
         /// </summary>
         public void Dispose()

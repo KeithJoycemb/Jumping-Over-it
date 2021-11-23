@@ -1,4 +1,5 @@
 ﻿using GDLibrary.Components;
+using GDLibrary.Core;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace GDLibrary.Managers
     /// <summary>
     /// SceneManager stores all scenes and calls update on currently active scene
     /// </summary>
-    public class SceneManager : GameComponent
+    public class SceneManager : PausableGameComponent
     {
         #region Statics
 
@@ -75,34 +76,38 @@ namespace GDLibrary.Managers
 
         public override void Update(GameTime gameTime)
         {
-            //if no active scene and no scene to load then exit
-            if (activeSceneIndex == -1 && sceneToLoad == -1)
-                return;
-
-            //if scene to load and its not the current scene
-            if (sceneToLoad > -1)
+            //is this component paused because of the menu?
+            if (IsUpdated)
             {
-                //unload current scene, if running
-                if (activeSceneIndex > -1)
-                    scenes[activeSceneIndex].Unload();
+                //if no active scene and no scene to load then exit
+                if (activeSceneIndex == -1 && sceneToLoad == -1)
+                    return;
 
-                //set scene to load as new scene
-                activeSceneIndex = sceneToLoad;
+                //if scene to load and its not the current scene
+                if (sceneToLoad > -1)
+                {
+                    //unload current scene, if running
+                    if (activeSceneIndex > -1)
+                        scenes[activeSceneIndex].Unload();
 
-                //TODO - nullify camera and disable UI
+                    //set scene to load as new scene
+                    activeSceneIndex = sceneToLoad;
 
-                //set scene as current in globally accessible static in Scene
-                Scene.Current = scenes[activeSceneIndex];
+                    //TODO - nullify camera and disable UI
 
-                //reset to -1 to show no scene is waiting to load
-                sceneToLoad = -1;
+                    //set scene as current in globally accessible static in Scene
+                    Scene.Current = scenes[activeSceneIndex];
 
-                //initialize the new scene
-                scenes[activeSceneIndex].Initialize();
+                    //reset to -1 to show no scene is waiting to load
+                    sceneToLoad = -1;
+
+                    //initialize the new scene
+                    scenes[activeSceneIndex].Initialize();
+                }
+
+                //update the scene (either new, or the same scene from last update)
+                scenes[activeSceneIndex].Update();
             }
-
-            //update the scene (either new, or the same scene from last update)
-            scenes[activeSceneIndex].Update();
         }
 
         #endregion Actions - Update
