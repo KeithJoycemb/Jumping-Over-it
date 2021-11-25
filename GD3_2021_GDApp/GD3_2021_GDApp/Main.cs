@@ -110,6 +110,8 @@ namespace GDApp
             //TODO - remove hardcoded mouse values - update Screen class to centre the mouse with hardcoded value - remove later
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
+            
+
             //turn on/off debug info
             InitializeDebugUI(true);
 
@@ -230,7 +232,7 @@ namespace GDApp
             nameTextObj = new UITextObject(str, UIObjectType.Text,
                 new Transform2D(new Vector2(512, 386),
                 Vector2.One, 0),
-                0, font, "Brutus Maximus");
+                0, font, "help");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
 
@@ -352,7 +354,7 @@ namespace GDApp
             InitializeCameras(activeScene);
 
             InitializeSkybox(activeScene, 1000);
-            InitializeCubes(activeScene);
+            //InitializeCubes(activeScene);
             InitializeModels(activeScene);
 
             sceneManager.Add(activeScene);
@@ -507,30 +509,32 @@ namespace GDApp
             #region Archetype
 
             var material = new BasicMaterial("model material");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard");
+            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/peepo");
             material.Shader = new BasicShader(Application.Content);
 
-            var archetypalSphere = new GameObject("sphere", GameObjectType.Consumable);
-            archetypalSphere.IsStatic = false;
+           
 
             var renderer = new ModelRenderer();
             renderer.Material = material;
-            archetypalSphere.AddComponent(renderer);
-            renderer.Model = Content.Load<Model>("Assets/Models/sphere");
+            
+
+
+            var archetypalMountain = new GameObject("mountain", GameObjectType.Architecture);
+            archetypalMountain.IsStatic = false;
+
+
+            renderer.Material = material;
+            archetypalMountain.AddComponent(renderer);
+            renderer.Model = Content.Load<Model>("Assets/Models/game1");
 
             //downsize the model a little because the sphere is quite large
-            archetypalSphere.Transform.SetScale(0.125f, 0.125f, 0.125f);
+            archetypalMountain.Transform.SetScale(100, 10, 100);
+            //archetypalMountain.Transform.SetTranslation(-10,0,-60);
+            level.Add(archetypalMountain);
 
             #endregion Archetype
 
-            var count = 0;
-            for (var i = -8; i <= 8; i += 2)
-            {
-                var clone = archetypalSphere.Clone() as GameObject;
-                clone.Name = $"{clone.Name} - {count++}";
-                clone.Transform.SetTranslation(-5, i, 0);
-                level.Add(clone);
-            }
+
         }
 
         /// <summary>
@@ -564,7 +568,7 @@ namespace GDApp
             }
         }
 
-        #endregion Initialization - Engine, Cameras, Content
+        #endregion
 
         #region Update & Draw
 
