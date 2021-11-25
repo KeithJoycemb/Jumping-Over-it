@@ -167,7 +167,7 @@ namespace GDApp
             textureDictionary.Add("skybox_right", Content.Load<Texture2D>("Assets/Textures/Skybox/right"));
             textureDictionary.Add("skybox_back", Content.Load<Texture2D>("Assets/Textures/Skybox/back"));
             textureDictionary.Add("skybox_sky", Content.Load<Texture2D>("Assets/Textures/Skybox/sky"));
-            textureDictionary.Add("skybox_bottom", Content.Load<Texture2D>("Assets/Textures/Skybox/bottom"));
+            textureDictionary.Add("skybox_bottom", Content.Load<Texture2D>("Assets/Textures/Skybox/grass"));
         }
 
         protected override void LoadContent()
@@ -532,7 +532,7 @@ namespace GDApp
             archetypalMountain.AddComponent(renderer);
             renderer.Model = Content.Load<Model>("Assets/Models/mountain2");
  
-            archetypalMountain.Transform.SetTranslation(350, 1, -320);
+            archetypalMountain.Transform.SetTranslation(100, 4, 0);
             //archetypalMountain.Transform.SetRotation(0, -65, 0);
             archetypalMountain.Transform.SetScale(7, 7, 7);
             
