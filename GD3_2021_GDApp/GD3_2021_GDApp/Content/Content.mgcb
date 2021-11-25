@@ -89,6 +89,25 @@
 /processorParam:TextureFormat=Compressed
 /build:Assets/Models/sphere.FBX
 
+#begin Assets/Models/Tree.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Assets/Models/Tree.fbx
+
 #begin Assets/Sounds/Effects/explode1.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -245,7 +264,7 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Props/Crates/crate5.jpg
 
-#begin Assets/Textures/Skybox/back.bmp
+#begin Assets/Textures/Skybox/back.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -255,9 +274,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Skybox/back.bmp
+/build:Assets/Textures/Skybox/back.png
 
-#begin Assets/Textures/Skybox/front.bmp
+#begin Assets/Textures/Skybox/bottom.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -267,9 +286,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Skybox/front.bmp
+/build:Assets/Textures/Skybox/bottom.png
 
-#begin Assets/Textures/Skybox/left.bmp
+#begin Assets/Textures/Skybox/front.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -279,9 +298,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Skybox/left.bmp
+/build:Assets/Textures/Skybox/front.png
 
-#begin Assets/Textures/Skybox/right.bmp
+#begin Assets/Textures/Skybox/left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -291,9 +310,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Skybox/right.bmp
+/build:Assets/Textures/Skybox/left.png
 
-#begin Assets/Textures/Skybox/sky.bmp
+#begin Assets/Textures/Skybox/right.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -303,7 +322,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Skybox/sky.bmp
+/build:Assets/Textures/Skybox/right.png
+
+#begin Assets/Textures/Skybox/sky.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Skybox/sky.png
 
 #begin Assets/Textures/UI/Backgrounds/audiomenu.png
 /importer:TextureImporter

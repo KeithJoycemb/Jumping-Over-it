@@ -157,7 +157,7 @@ namespace GDApp
         private void LoadTextures()
         {
             //debug
-            textureDictionary.Add("checkerboard", Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard"));
+            //textureDictionary.Add("checkerboard", Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard"));
 
             //skybox
             textureDictionary.Add("skybox_front", Content.Load<Texture2D>("Assets/Textures/Skybox/front"));
@@ -165,6 +165,7 @@ namespace GDApp
             textureDictionary.Add("skybox_right", Content.Load<Texture2D>("Assets/Textures/Skybox/right"));
             textureDictionary.Add("skybox_back", Content.Load<Texture2D>("Assets/Textures/Skybox/back"));
             textureDictionary.Add("skybox_sky", Content.Load<Texture2D>("Assets/Textures/Skybox/sky"));
+            textureDictionary.Add("skybox_bottom", Content.Load<Texture2D>("Assets/Textures/Skybox/bottom"));
         }
 
         protected override void LoadContent()
@@ -223,21 +224,21 @@ namespace GDApp
 
             #region Add Text
 
-            var font = Content.Load<SpriteFont>("Assets/Fonts/ui");
-            var str = "player name";
+            //var font = Content.Load<SpriteFont>("Assets/Fonts/ui");
+            //var str = "player name";
 
-            //create the UI element
-            nameTextObj = new UITextObject(str, UIObjectType.Text,
-                new Transform2D(new Vector2(512, 386),
-                Vector2.One, 0),
-                0, font, "Brutus Maximus");
+            ////create the UI element
+            //nameTextObj = new UITextObject(str, UIObjectType.Text,
+            //    new Transform2D(new Vector2(512, 386),
+            //    Vector2.One, 0),
+            //    0, font, "Brutus Maximus");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
 
             //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
 
             //add the ui element to the scene
-            mainGameUIScene.Add(nameTextObj);
+            //mainGameUIScene.Add(nameTextObj);
 
             #endregion Add Text
 
@@ -351,7 +352,7 @@ namespace GDApp
             activeScene = new Scene("level 1");
             InitializeCameras(activeScene);
 
-            InitializeSkybox(activeScene, 1000);
+            InitializeSkybox(activeScene, 500);
             InitializeCubes(activeScene);
             InitializeModels(activeScene);
 
@@ -376,7 +377,7 @@ namespace GDApp
             #region Archetype
 
             var material = new BasicMaterial("simple diffuse");
-            material.Texture = textureDictionary["checkerboard"];
+            //material.Texture = textureDictionary["checkerboard"];
             material.Shader = new BasicShader(Application.Content);
 
             var archetypalQuad = new GameObject("quad", GameObjectType.Skybox);
@@ -431,6 +432,15 @@ namespace GDApp
             top.Transform.Scale(worldScale, worldScale, null);
             top.Transform.Rotate(90, 0, 0);
             level.Add(top);
+
+            //bottom
+            GameObject bottom = archetypalQuad.Clone() as GameObject;
+            bottom.Name = "skybox_bottom";
+            material.Texture = textureDictionary["skybox_bottom"];
+            bottom.Transform.Translate(0, worldScale / -2.0f, 0);
+            bottom.Transform.Scale(worldScale, worldScale, null);
+            bottom.Transform.Rotate(90, 0, 0);
+            level.Add(bottom);
         }
 
         /// <summary>
@@ -504,31 +514,31 @@ namespace GDApp
         /// <param name="level"></param>
         private void InitializeModels(Scene level)
         {
-            #region Archetype
+            #region Game Level Model
 
             var material = new BasicMaterial("model material");
             material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard");
             material.Shader = new BasicShader(Application.Content);
 
-            var archetypalSphere = new GameObject("sphere", GameObjectType.Consumable);
-            archetypalSphere.IsStatic = false;
+            var GameLevelModel = new GameObject("Tree", GameObjectType.Architecture);
+            GameLevelModel.IsStatic = false;
 
             var renderer = new ModelRenderer();
             renderer.Material = material;
-            archetypalSphere.AddComponent(renderer);
-            renderer.Model = Content.Load<Model>("Assets/Models/sphere");
+            GameLevelModel.AddComponent(renderer);
+            renderer.Model = Content.Load<Model>("Assets/Models/Tree");
 
             //downsize the model a little because the sphere is quite large
-            archetypalSphere.Transform.SetScale(0.125f, 0.125f, 0.125f);
+            GameLevelModel.Transform.SetScale(0.4f, 0.4f, 0.4f);
 
-            #endregion Archetype
+            #endregion Game Level Model
 
             var count = 0;
-            for (var i = -8; i <= 8; i += 2)
+            for (var i = 1; i <= 1; i += 1)
             {
-                var clone = archetypalSphere.Clone() as GameObject;
+                var clone = GameLevelModel.Clone() as GameObject;
                 clone.Name = $"{clone.Name} - {count++}";
-                clone.Transform.SetTranslation(-5, i, 0);
+                clone.Transform.SetTranslation(1, i, 0);
                 level.Add(clone);
             }
         }
@@ -541,27 +551,27 @@ namespace GDApp
         {
             #region Archetype
 
-            var material = new BasicMaterial("simple diffuse");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa");
-            material.Shader = new BasicShader(Application.Content);
+            //var material = new BasicMaterial("simple diffuse");
+            //material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa");
+            //material.Shader = new BasicShader(Application.Content);
 
-            var archetypalCube = new GameObject("cube", GameObjectType.Architecture);
-            var renderer = new MeshRenderer();
-            renderer.Material = material;
-            archetypalCube.AddComponent(renderer);
-            renderer.Mesh = new CubeMesh();
+            //var archetypalCube = new GameObject("cube", GameObjectType.Architecture);
+            //var renderer = new MeshRenderer();
+            //renderer.Material = material;
+            //archetypalCube.AddComponent(renderer);
+            //renderer.Mesh = new CubeMesh();
 
             #endregion Archetype
 
-            var count = 0;
-            for (var i = 1; i <= 8; i += 2)
-            {
-                var clone = archetypalCube.Clone() as GameObject;
-                clone.Name = $"{clone.Name} - {count++}";
-                clone.Transform.SetTranslation(i, 0, 0);
-                clone.Transform.SetScale(1, i, 1);
-                level.Add(clone);
-            }
+            //var count = 0;
+            //for (var i = 1; i <= 8; i += 2)
+            //{
+            //    var clone = archetypalCube.Clone() as GameObject;
+            //    clone.Name = $"{clone.Name} - {count++}";
+            //    clone.Transform.SetTranslation(i, 0, 0);
+            //    clone.Transform.SetScale(1, i, 1);
+            //    level.Add(clone);
+            //}
         }
 
         #endregion Initialization - Engine, Cameras, Content
@@ -604,7 +614,7 @@ namespace GDApp
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.HotPink);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
         }
 
