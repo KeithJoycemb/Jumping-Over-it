@@ -74,6 +74,8 @@
         OnObjectPicked,
         OnNoObjectPicked,
 
+        OnJump,
+
         //add more here...
     }
 
@@ -85,6 +87,7 @@
         WinLose,
         Explosion,
         BackgroundMusic,
-        Alarm
+        Alarm,
+        Jump
     }
 }

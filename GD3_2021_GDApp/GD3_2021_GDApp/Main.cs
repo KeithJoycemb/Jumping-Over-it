@@ -143,14 +143,14 @@ namespace GDApp
         private void LoadSounds()
         {
             //for example...
-            //soundManager.Add(new GDLibrary.Managers.Cue("smokealarm",
-            //    Content.Load<SoundEffect>("Assets/Sounds/Effects/smokealarm1"),
-            //    SoundCategoryType.Alarm, new Vector3(1, 0, 0), false));
+            soundManager.Add(new GDLibrary.Managers.Cue("jump1",
+                Content.Load<SoundEffect>("Assets/Sounds/Effects/jumping1"),
+                SoundCategoryType.Jump, new Vector3(1, 0, 0), false));
 
-            //object[] parameters = { "smokealarm"};
+            object[] parameters = { "jump" };
 
-            //EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
-            //    EventActionType.OnPlay, parameters));
+            EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                EventActionType.OnJump, parameters));
         }
 
         /// <summary>
@@ -230,10 +230,10 @@ namespace GDApp
             //var str = "player name";
 
             //create the UI element
-            nameTextObj = new UITextObject(str, UIObjectType.Text,
-                new Transform2D(new Vector2(512, 386),
-                Vector2.One, 0),
-                0, font, "help");
+            //nameTextObj = new UITextObject(str, UIObjectType.Text,
+            //    new Transform2D(new Vector2(512, 386),
+            //    Vector2.One, 0),
+            //    0, font, "help");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
 
@@ -439,9 +439,9 @@ namespace GDApp
             GameObject bottom = archetypalQuad.Clone() as GameObject;
             bottom.Name = "skybox_bottom";
             material.Texture = textureDictionary["skybox_bottom"];
-            bottom.Transform.Translate(0, worldScale / -2.0f, 0);
+            bottom.Transform.Translate(0, -35, 0);
             bottom.Transform.Scale(worldScale, worldScale, null);
-            bottom.Transform.Rotate(90, 0, 0);
+            bottom.Transform.Rotate(-90, 0, 0);
             level.Add(bottom);
         }
 
@@ -463,11 +463,11 @@ namespace GDApp
 
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
-            camera.AddComponent(new FPController(0.05f, 0.025f, 0.00009f));
+            camera.AddComponent(new FPController(0.08f, 0.08f, 0.00009f));
             //IsMouseVisible = false;
 
             //set initial position
-            camera.Transform.SetTranslation(0, 0, 15);
+            camera.Transform.SetTranslation(0, 0, -25);
 
             //add to level
             level.Add(camera);
@@ -519,32 +519,26 @@ namespace GDApp
             #region Game Level Model
 
             var material = new BasicMaterial("model material");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/peepo");
-            material.Shader = new BasicShader(Application.Content);
-
-           
-
+            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa");
+           material.Shader = new BasicShader(Application.Content);
+  
             var renderer = new ModelRenderer();
             renderer.Material = material;
-            
-
 
             var archetypalMountain = new GameObject("mountain", GameObjectType.Architecture);
             archetypalMountain.IsStatic = false;
 
-
             renderer.Material = material;
             archetypalMountain.AddComponent(renderer);
-            renderer.Model = Content.Load<Model>("Assets/Models/game1");
-
-            //downsize the model a little because the sphere is quite large
-            archetypalMountain.Transform.SetScale(100, 10, 100);
-            //archetypalMountain.Transform.SetTranslation(-10,0,-60);
+            renderer.Model = Content.Load<Model>("Assets/Models/mountain2");
+ 
+            archetypalMountain.Transform.SetTranslation(-50, -50, -100);
+            //archetypalMountain.Transform.SetRotation(0, -65, 0);
+            archetypalMountain.Transform.SetScale(7, 7, 7);
+            
             level.Add(archetypalMountain);
 
             #endregion Game Level Model
-
-
         }
 
         /// <summary>
@@ -611,6 +605,13 @@ namespace GDApp
                 //  EventActionType.OnPlay));
             }
 
+            else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                //DEMO - raise event
+                //play audio on jump
+                
+                
+            }
 
 
             base.Update(gameTime);

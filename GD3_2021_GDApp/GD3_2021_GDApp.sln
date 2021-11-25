@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GD3_2021_GDApp", "GD3_2021_
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GD3_2021_GDLibrary", "..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\GD3_2021_GDLibrary.shproj", "{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests_GD3_2021_GDLibrary", "Tests_GD3_2021_GDLibrary\Tests_GD3_2021_GDLibrary.csproj", "{6E0883C4-80FA-4472-848E-4ADD97F4791C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests_GD3_2021_GDLibrary", "Tests_GD3_2021_GDLibrary\Tests_GD3_2021_GDLibrary.csproj", "{6E0883C4-80FA-4472-848E-4ADD97F4791C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{ABA3C674-E64C-4FB1-AF6B-5EE5BA9D833D} = {ABA3C674-E64C-4FB1-AF6B-5EE5BA9D833D}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{449678A0-3BA4-4B6D-82BD-EB84F301E027}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Global
