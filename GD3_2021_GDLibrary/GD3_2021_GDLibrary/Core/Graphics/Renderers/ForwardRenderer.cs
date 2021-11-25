@@ -21,6 +21,7 @@ namespace GDLibrary.Renderers
             //until first update this will be null - then in SceneManager the activeScene will be set
             if (scene == null)
                 scene = Application.SceneManager.ActiveScene;
+            graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             //set depth and blend state
 
