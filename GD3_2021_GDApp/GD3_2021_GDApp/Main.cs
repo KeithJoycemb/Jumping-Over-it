@@ -532,7 +532,7 @@ namespace GDApp
             archetypalMountain.AddComponent(renderer);
             renderer.Model = Content.Load<Model>("Assets/Models/mountain2");
  
-            archetypalMountain.Transform.SetTranslation(-50, -50, -100);
+            archetypalMountain.Transform.SetTranslation(350, 1, -320);
             //archetypalMountain.Transform.SetRotation(0, -65, 0);
             archetypalMountain.Transform.SetScale(7, 7, 7);
             
