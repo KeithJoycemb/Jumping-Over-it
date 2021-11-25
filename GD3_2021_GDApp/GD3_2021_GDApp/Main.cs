@@ -516,7 +516,7 @@ namespace GDApp
         /// <param name="level"></param>
         private void InitializeModels(Scene level)
         {
-            #region Game Level Model
+            #region Game Level Models
 
             var material = new BasicMaterial("model material");
             material.Texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
@@ -528,17 +528,31 @@ namespace GDApp
             var archetypalMountain = new GameObject("mountain", GameObjectType.Architecture);
             archetypalMountain.IsStatic = false;
 
+            //var tree = new GameObject("TreeEverGreen", GameObjectType.Architecture);
+            //tree.IsStatic = false;
+
+
             renderer.Material = material;
+
             archetypalMountain.AddComponent(renderer);
+            //tree.AddComponent(renderer);
+
             renderer.Model = Content.Load<Model>("Assets/Models/mountain2");
- 
+            //renderer.Model = Content.Load<Model>("Assets/Models/TreeEverGreen");
+
             archetypalMountain.Transform.SetTranslation(100, 4, 0);
             //archetypalMountain.Transform.SetRotation(0, -65, 0);
             archetypalMountain.Transform.SetScale(7, 7, 7);
-            
-            level.Add(archetypalMountain);
 
-            #endregion Game Level Model
+            //tree.Transform.SetTranslation(300, 4, 0);
+            //tree.Transform.SetScale(1, 1, 1);
+
+            level.Add(archetypalMountain);
+            //level.Add(tree);
+
+            #endregion Game Level Models
+
+
         }
 
         /// <summary>
