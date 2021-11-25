@@ -519,8 +519,8 @@ namespace GDApp
             #region Game Level Model
 
             var material = new BasicMaterial("model material");
-            material.Texture = Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa");
-           material.Shader = new BasicShader(Application.Content);
+            material.Texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            material.Shader = new BasicShader(Application.Content);
   
             var renderer = new ModelRenderer();
             renderer.Material = material;
