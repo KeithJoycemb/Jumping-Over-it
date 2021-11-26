@@ -224,7 +224,7 @@ namespace GDApp
             //create the UI element
             var healthTextureObj = new UITextureObject("health",
                 UIObjectType.Texture,
-                new Transform2D(new Vector2(800, 580),
+                new Transform2D(new Vector2(1700, 880),
                 Vector2.One, 0),
                 0, textureDictionary["map"]);
 
@@ -248,7 +248,7 @@ namespace GDApp
             nameTextObj = new UITextObject(str, UIObjectType.Text,
                 new Transform2D(new Vector2(5, 5),
                 Vector2.One, 0),
-                0, font, "OdinMir");
+                0, font, "Jumping over it");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
             //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
