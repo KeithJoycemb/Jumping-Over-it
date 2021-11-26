@@ -377,6 +377,7 @@ namespace GDApp
             InitializeSkybox(activeScene, 1000);
             //InitializeCubes(activeScene);
             InitializeModels(activeScene);
+            InitializeCharacter(activeScene);
 
             sceneManager.Add(activeScene);
             sceneManager.LoadScene("level 1");
@@ -569,6 +570,41 @@ namespace GDApp
 
             level.Add(archetypalMountain);
             //level.Add(tree);
+
+            #endregion Game Level Models
+
+
+        }
+        private void InitializeCharacter(Scene level)
+        {
+            #region Game Level Models
+
+            var material = new BasicMaterial("model material");
+            material.Texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            material.Shader = new BasicShader(Application.Content);
+
+            var renderer = new ModelRenderer();
+            renderer.Material = material;
+
+            var archetypalMountain = new GameObject("Frog", GameObjectType.Architecture);
+            archetypalMountain.IsStatic = false;
+
+            
+
+
+            renderer.Material = material;
+
+            archetypalMountain.AddComponent(renderer);
+           
+
+            renderer.Model = Content.Load<Model>("Assets/Models/Frog");
+           
+
+            archetypalMountain.Transform.SetTranslation(-200, 19, 170);
+            
+            archetypalMountain.Transform.SetScale(7, 7, 7);
+
+            level.Add(archetypalMountain);
 
             #endregion Game Level Models
 
