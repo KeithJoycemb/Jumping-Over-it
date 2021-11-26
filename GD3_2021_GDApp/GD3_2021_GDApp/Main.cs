@@ -93,7 +93,7 @@ namespace GDApp
             _spriteBatch = new SpriteBatch(GraphicsDevice); //19.11.21
 
             //data, input, scene manager
-            InitializeEngine("Jumping Over it", 1024, 768);
+            InitializeEngine("Jumping Over it", 1920, 1080);
 
             //load structures that store assets (e.g. textures, sounds) or archetypes (e.g. Quad game object)
             InitializeDictionaries();
@@ -464,7 +464,7 @@ namespace GDApp
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
             camera.AddComponent(new FPController(0.08f, 0.08f, 0.00009f));
-            //IsMouseVisible = false;
+            IsMouseVisible = false;
 
             //set initial position
             camera.Transform.SetTranslation(0, 0, -25);
