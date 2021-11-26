@@ -378,7 +378,7 @@ namespace GDApp
             //InitializeCubes(activeScene);
             InitializeModels(activeScene);
             InitializeCharacter(activeScene);
-
+            InitializeTreeModel(activeScene);
             sceneManager.Add(activeScene);
             sceneManager.LoadScene("level 1");
         }
@@ -395,7 +395,7 @@ namespace GDApp
         /// </summary>
         /// <param name="level">Scene Stores all game objects for current...</param>
         /// <param name="worldScale">float Value used to scale skybox normally 250 - 1000</param>
-        private void InitializeSkybox(Scene level, float worldScale = 500)
+        private void InitializeSkybox(Scene level, float worldScale = 700)
         {
             #region Archetype
 
@@ -549,15 +549,9 @@ namespace GDApp
             var archetypalMountain = new GameObject("levelForImport", GameObjectType.Architecture);
             archetypalMountain.IsStatic = false;
 
-            //var tree = new GameObject("TreeEverGreen", GameObjectType.Architecture);
-            //tree.IsStatic = false;
-
-
             renderer.Material = material;
-
             archetypalMountain.AddComponent(renderer);
-            //tree.AddComponent(renderer);
-
+            
             renderer.Model = Content.Load<Model>("Assets/Models/levelForImport");
             //renderer.Model = Content.Load<Model>("Assets/Models/TreeEverGreen");
 
@@ -565,19 +559,15 @@ namespace GDApp
             //archetypalMountain.Transform.SetRotation(0, -65, 0);
             archetypalMountain.Transform.SetScale(7, 7, 7);
 
-            //tree.Transform.SetTranslation(300, 4, 0);
-            //tree.Transform.SetScale(1, 1, 1);
-
             level.Add(archetypalMountain);
-            //level.Add(tree);
-
+            
             #endregion Game Level Models
 
 
         }
         private void InitializeCharacter(Scene level)
         {
-            #region Game Level Models
+            #region Character Model
 
             var material = new BasicMaterial("model material");
             material.Texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
@@ -586,28 +576,47 @@ namespace GDApp
             var renderer = new ModelRenderer();
             renderer.Material = material;
 
-            var archetypalMountain = new GameObject("Frog", GameObjectType.Architecture);
-            archetypalMountain.IsStatic = false;
-
-            
-
+            var characterModel = new GameObject("Frog", GameObjectType.Architecture);
+            characterModel.IsStatic = false;
 
             renderer.Material = material;
-
-            archetypalMountain.AddComponent(renderer);
-           
-
+            characterModel.AddComponent(renderer);
             renderer.Model = Content.Load<Model>("Assets/Models/Frog");
-           
 
-            archetypalMountain.Transform.SetTranslation(-200, 19, 170);
-            
-            archetypalMountain.Transform.SetScale(7, 7, 7);
+            characterModel.Transform.SetTranslation(-200, 19, 170);
+            characterModel.Transform.SetScale(7, 7, 7);
 
-            level.Add(archetypalMountain);
+            level.Add(characterModel);
 
-            #endregion Game Level Models
+            #endregion Character Model
 
+
+        }
+
+        private void InitializeTreeModel(Scene level)
+        {
+            #region Tree Model
+
+            var material = new BasicMaterial("model material");
+            material.Texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            material.Shader = new BasicShader(Application.Content);
+
+            var renderer = new ModelRenderer();
+            renderer.Material = material;
+
+            var treeModel = new GameObject("Tree", GameObjectType.Architecture);
+            treeModel.IsStatic = false;
+
+            renderer.Material = material;
+            treeModel.AddComponent(renderer);
+            renderer.Model = Content.Load<Model>("Assets/Models/Tree");
+
+            treeModel.Transform.SetTranslation(-360, -30, 385);
+            treeModel.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            level.Add(treeModel);
+
+            #endregion Tree Model
 
         }
 
