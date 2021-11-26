@@ -35,6 +35,11 @@ namespace GDApp
         private RenderManager renderManager;
 
         /// <summary>
+        /// Quick lookup for all fonts used within the game
+        /// </summary>
+        private Dictionary<string, SpriteFont> fontDictionary;
+
+        /// <summary>
         /// Updates and Draws all ui objects
         /// </summary>
         private UISceneManager uiSceneManager;
@@ -93,7 +98,7 @@ namespace GDApp
             _spriteBatch = new SpriteBatch(GraphicsDevice); //19.11.21
 
             //data, input, scene manager
-            InitializeEngine("Jumping Over it", 1024, 768);
+            InitializeEngine("Jumping Over it", 1920, 1080);
 
             //load structures that store assets (e.g. textures, sounds) or archetypes (e.g. Quad game object)
             InitializeDictionaries();
@@ -126,6 +131,7 @@ namespace GDApp
         private void InitializeDictionaries()
         {
             textureDictionary = new Dictionary<string, Texture2D>();
+            fontDictionary = new Dictionary<string, SpriteFont>();
         }
 
         /// <summary>
@@ -135,6 +141,13 @@ namespace GDApp
         {
             LoadTextures();
             LoadSounds();
+            LoadFonts();
+        }
+        private void LoadFonts()
+        {
+            fontDictionary.Add("ui", Content.Load<SpriteFont>("Assets/Fonts/ui"));
+            fontDictionary.Add("menu", Content.Load<SpriteFont>("Assets/Fonts/menu"));
+            fontDictionary.Add("debug", Content.Load<SpriteFont>("Assets/GDDebug/Fonts/ui_debug"));
         }
 
         /// <summary>
@@ -174,7 +187,10 @@ namespace GDApp
             textureDictionary.Add("skybox_sky", Content.Load<Texture2D>("Assets/Textures/Skybox/grass"));
 
             textureDictionary.Add("skybox_bottom", Content.Load<Texture2D>("Assets/Textures/Skybox/grass"));
+            //ui
+            textureDictionary.Add("map", Content.Load<Texture2D>("Assets/Textures/UI/Progress/map"));
         }
+
 
         protected override void LoadContent()
         {
@@ -214,16 +230,15 @@ namespace GDApp
             //create the UI element
             var healthTextureObj = new UITextureObject("health",
                 UIObjectType.Texture,
-                new Transform2D(new Vector2(50, 600),
-                new Vector2(8, 2),
-                MathHelper.ToRadians(-90)),
-                0, Content.Load<Texture2D>("Assets/Textures/UI/Progress/ui_progress_32_8"));
+                new Transform2D(new Vector2(1700, 880),
+                Vector2.One, 0),
+                0, textureDictionary["map"]);
 
             //add a demo time based behaviour - because we can!
-            healthTextureObj.AddComponent(new UITimeColorFlipBehaviour(Color.White, Color.Red, 1000));
+            healthTextureObj.AddComponent(new UITimeColorFlipBehaviour(Color.White, Color.Green, 1000));
 
-            healthTextureObj.AddComponent(
-                            new UIProgressBarController(0, 8, 0));
+            //add a progress controller
+            //healthTextureObj.AddComponent(new UIProgressBarController(4, 8));
 
             //add the ui element to the scene
             mainGameUIScene.Add(healthTextureObj);
@@ -232,21 +247,20 @@ namespace GDApp
 
             #region Add Text
 
-            //var font = Content.Load<SpriteFont>("Assets/Fonts/ui");
-            //var str = "player name";
+            var font = fontDictionary["ui"];
+            var str = "player name";
 
             //create the UI element
-            //nameTextObj = new UITextObject(str, UIObjectType.Text,
-            //    new Transform2D(new Vector2(512, 386),
-            //    Vector2.One, 0),
-            //    0, font, "help");
+            nameTextObj = new UITextObject(str, UIObjectType.Text,
+                new Transform2D(new Vector2(5, 5),
+                Vector2.One, 0),
+                0, font, "Jumping over it");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
-
             //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
 
             //add the ui element to the scene
-            //mainGameUIScene.Add(nameTextObj);
+            mainGameUIScene.Add(nameTextObj);
 
             #endregion Add Text
 
@@ -470,7 +484,7 @@ namespace GDApp
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
             camera.AddComponent(new FPController(0.08f, 0.08f, 0.00009f));
-            //IsMouseVisible = false;
+            IsMouseVisible = false;
 
             //set initial position
             camera.Transform.SetTranslation(0, 0, -25);
@@ -531,7 +545,7 @@ namespace GDApp
             var renderer = new ModelRenderer();
             renderer.Material = material;
 
-            var archetypalMountain = new GameObject("mountain", GameObjectType.Architecture);
+            var archetypalMountain = new GameObject("levelForImport", GameObjectType.Architecture);
             archetypalMountain.IsStatic = false;
 
             //var tree = new GameObject("TreeEverGreen", GameObjectType.Architecture);
@@ -543,7 +557,7 @@ namespace GDApp
             archetypalMountain.AddComponent(renderer);
             //tree.AddComponent(renderer);
 
-            renderer.Model = Content.Load<Model>("Assets/Models/mountain2");
+            renderer.Model = Content.Load<Model>("Assets/Models/levelForImport");
             //renderer.Model = Content.Load<Model>("Assets/Models/TreeEverGreen");
 
             archetypalMountain.Transform.SetTranslation(100, 4, 0);
