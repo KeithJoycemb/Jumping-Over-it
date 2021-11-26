@@ -162,11 +162,17 @@ namespace GDApp
             //textureDictionary.Add("checkerboard", Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard"));
 
             //skybox
-            textureDictionary.Add("skybox_front", Content.Load<Texture2D>("Assets/Textures/Skybox/front"));
+
+            //front is top
+            textureDictionary.Add("skybox_front", Content.Load<Texture2D>("Assets/Textures/Skybox/sky"));
+
             textureDictionary.Add("skybox_left", Content.Load<Texture2D>("Assets/Textures/Skybox/left"));
             textureDictionary.Add("skybox_right", Content.Load<Texture2D>("Assets/Textures/Skybox/right"));
             textureDictionary.Add("skybox_back", Content.Load<Texture2D>("Assets/Textures/Skybox/back"));
+
+            //sky is bottom
             textureDictionary.Add("skybox_sky", Content.Load<Texture2D>("Assets/Textures/Skybox/grass"));
+
             textureDictionary.Add("skybox_bottom", Content.Load<Texture2D>("Assets/Textures/Skybox/grass"));
         }
 
