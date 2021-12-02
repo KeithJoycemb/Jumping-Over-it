@@ -12,6 +12,17 @@
     <RootNamespace>GDApp</RootNamespace>
     <AssemblyName>GDApp</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Content\Assets\Textures\UI\Progress\**" />
+    <EmbeddedResource Remove="Content\Assets\Textures\UI\Progress\**" />
+    <None Remove="Content\Assets\Textures\UI\Progress\**" />
+  </ItemGroup>
   <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
@@ -22,9 +33,6 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Assets\Textures\Models\" />
-    <Folder Include="Content\Assets\Textures\UI\Progress\" />
-  </ItemGroup>
   <Import Project="..\..\GD3_2021_GDLibrary\GD3_2021_GDLibrary\GD3_2021_GDLibrary.projitems" Label="Shared" />
+  <Import Project="..\..\JigLibX\JigLibX.projitems" Label="Shared" />
 </Project>

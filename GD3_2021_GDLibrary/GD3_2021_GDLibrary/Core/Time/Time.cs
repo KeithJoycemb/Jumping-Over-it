@@ -42,7 +42,7 @@ namespace GDLibrary
         /// <summary>
         /// Total frames since game start
         /// </summary>
-        private long frameCount = 0;
+        private long totalFrames = 0;
 
         #endregion Fields
 
@@ -76,7 +76,7 @@ namespace GDLibrary
         /// <summary>
         /// Count of frames since the game started
         /// </summary>
-        public long FrameCount => frameCount;
+        public long TotalFrames => totalFrames;
 
         public static Time Instance
         {
@@ -116,7 +116,7 @@ namespace GDLibrary
 
         public override void Update(GameTime gameTime)
         {
-            frameCount++;
+            totalFrames++;
             deltaTimeMs = gameTime.ElapsedGameTime.Milliseconds;
             totalGameTimeMs = (float)gameTime.TotalGameTime.TotalMilliseconds;
         }

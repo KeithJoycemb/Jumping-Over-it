@@ -22,7 +22,13 @@ namespace GDLibrary.Graphics
 
         #region Constructors
 
-        public CustomMaterial(string name) : base(name)
+        public CustomMaterial(string name, Shader shader, Texture2D texture)
+           : this(name, shader, new Color(255, 255, 255, 255), 1, texture)
+        {
+        }
+
+        public CustomMaterial(string name, Shader shader, Color color, float alpha, Texture2D texture)
+            : base(name, shader, color, alpha, texture)
         {
         }
 
@@ -30,10 +36,7 @@ namespace GDLibrary.Graphics
 
         public override object Clone()
         {
-            var clone = new CustomMaterial($"Clone - {name}");
-            clone.DiffuseColor = diffuseColor;
-            clone.Texture = diffuseTexture;
-            clone.tiling = tiling;
+            var clone = new CustomMaterial($"Clone - {name}", shader, new Color(diffuseColor), alpha, texture);
             clone.normalTexture = normalTexture;
             clone.shader = shader;
             return clone;

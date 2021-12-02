@@ -39,7 +39,7 @@ namespace GDLibrary
         /// <summary>
         /// Gets the physics manager.
         /// </summary>
-        //public static PhysicsManager PhysicsManager { get; internal set; }
+        public static PhysicsManager PhysicsManager { get; internal set; }
 
         /// <summary>
         /// Called when we exit the application.

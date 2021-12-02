@@ -20,9 +20,9 @@ namespace GDLibrary.Managers
         private Vector3 volumePitchPan;
         private bool isLooped;
 
-        private int maxPlayCount; //-1, 10, 1
-        private int timeToLiveInMs;  //Kashmir - 45000
-        private int minTimeSinceLastPlayedInMs; //1000, 60000
+        //private int maxPlayCount; //-1, 10, 1
+        //private int timeToLiveInMs;  //Kashmir - 45000
+        //private int minTimeSinceLastPlayedInMs; //1000, 60000
 
         #endregion Fields
 
@@ -176,8 +176,18 @@ namespace GDLibrary.Managers
         {
             EventDispatcher.Subscribe(EventCategoryType.Sound, HandleEvent);
 
+            EventDispatcher.Subscribe(EventCategoryType.Player,
+                HandlePlayerEvents);
+
             //if we always want the SoundManager to be available then comment this line out
             // base.SubscribeToEvents();
+        }
+
+        private void HandlePlayerEvents(EventData eventData)
+        {
+            if (eventData.EventActionType == EventActionType.OnPickup)
+            {
+            }
         }
 
         protected override void HandleEvent(EventData eventData)
@@ -192,6 +202,12 @@ namespace GDLibrary.Managers
                     eventData.Parameters[1] as AudioListener,
                         eventData.Parameters[2] as AudioEmitter);
             }
+            else if (eventData.EventActionType
+                == EventActionType.OnVolumeDelta)
+            {
+                SetMasterVolume((int)eventData.Parameters[0]);
+            }
+
             //add more if statements for each method that we want to support with events
 
             //if we always want the SoundManager to be available then comment this line out

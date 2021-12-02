@@ -12,18 +12,75 @@ namespace GDLibrary.Renderers
     {
         //temps used in Render
         private Renderer renderer;
+
         private Material material;
         private Shader shader;
         private Scene scene;
+
+        private RasterizerState rasterizerStateOpaque;
+        private RasterizerState rasterizerStateTransparent;
+
+        public ForwardRenderer()
+        {
+            Initialize();
+        }
+
+        public virtual void Initialize()
+        {
+            //set the graphics card to repeat the end pixel value for any UV value outside 0-1
+            //See http://what-when-how.com/xna-game-studio-4-0-programmingdeveloping-for-windows-phone-7-and-xbox-360/samplerstates-xna-game-studio-4-0-programming/
+            SamplerState samplerState = new SamplerState();
+            samplerState.AddressU = TextureAddressMode.Mirror;
+            samplerState.AddressV = TextureAddressMode.Mirror;
+            Application.GraphicsDevice.SamplerStates[0] = samplerState;
+
+            //opaque objects
+            rasterizerStateOpaque = new RasterizerState();
+            rasterizerStateOpaque.CullMode = CullMode.CullCounterClockwiseFace;
+
+            //transparent objects
+            rasterizerStateTransparent = new RasterizerState();
+            rasterizerStateTransparent.CullMode = CullMode.None;
+
+            //set depth and blend state
+            SetGraphicsStates(false);
+        }
+
+        public virtual void SetGraphicsStates(bool isOpaque)
+        {
+            //Remember this code from our initial aliasing problems with the Sky box?
+            //enable anti-aliasing along the edges of the quad i.e. to remove jagged edges to the primitive
+            Application.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+
+            if (isOpaque)
+            {
+                //set the appropriate state for opaque objects
+                Application.GraphicsDevice.RasterizerState = rasterizerStateOpaque;
+
+                //disable to see what happens when we disable depth buffering - look at the boxes
+                Application.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            }
+            else
+            {
+                //set the appropriate state for transparent objects
+                Application.GraphicsDevice.RasterizerState = rasterizerStateTransparent;
+
+                //enable alpha blending for transparent objects i.e. trees
+                Application.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
+                //disable to see what happens when we disable depth buffering - look at the boxes
+                Application.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
+            }
+        }
 
         public virtual void Render(GraphicsDevice graphicsDevice, Camera camera)
         {
             //until first update this will be null - then in SceneManager the activeScene will be set
             if (scene == null)
                 scene = Application.SceneManager.ActiveScene;
-            graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             //set depth and blend state
+            graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             //set viewport
             graphicsDevice.Viewport = camera.Viewport;
@@ -36,8 +93,8 @@ namespace GDLibrary.Renderers
                 renderer = scene.Renderers[i];
                 material = renderer.Material;
 
-                if (material == null)
-                    throw new NullReferenceException("This game object has no material set for its renderer!");
+                if (material == null || renderer == null)
+                    throw new NullReferenceException("This game object has no material and/or renderer!");
 
                 //access the shader (e.g. BasicEffect) for this rendered game object
                 shader = material.Shader;

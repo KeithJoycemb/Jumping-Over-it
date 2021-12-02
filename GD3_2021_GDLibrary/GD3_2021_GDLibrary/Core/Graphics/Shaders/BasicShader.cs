@@ -15,14 +15,18 @@ namespace GDLibrary.Graphics
 
         //temp
         private BasicEffect basicEffect;
+        private bool isLightingEnabled;
+        private bool isTextureEnabled;
 
         #endregion Fields
 
         #region Constructors
 
-        public BasicShader(ContentManager content)
+        public BasicShader(ContentManager content, bool isLightingEnabled = true, bool isTextureEnabled = true)
             : base(content)
         {
+            this.isLightingEnabled = isLightingEnabled;
+            this.isTextureEnabled = isTextureEnabled;
         }
 
         #endregion Constructors
@@ -32,8 +36,12 @@ namespace GDLibrary.Graphics
         public override void LoadEffect(ContentManager content)
         {
             effect = new BasicEffect(Application.GraphicsDevice);
-            (effect as BasicEffect).LightingEnabled = true;
-            (effect as BasicEffect).EnableDefaultLighting();
+
+            if (isLightingEnabled)
+            {
+                (effect as BasicEffect).LightingEnabled = true;
+                (effect as BasicEffect).EnableDefaultLighting();
+            }
         }
 
         #endregion Initialization
@@ -59,10 +67,11 @@ namespace GDLibrary.Graphics
             basicEffect.Alpha = material.Alpha;
 
             //TODO - add bool to material to disable/enable texture
-            basicEffect.TextureEnabled = true;
+            basicEffect.TextureEnabled = isTextureEnabled;
 
             //set texture
-            basicEffect.Texture = material.Texture;
+            if (isTextureEnabled)
+                basicEffect.Texture = material.Texture;
 
             //set ambient
             basicEffect.AmbientLightColor = ambientLightColor;
