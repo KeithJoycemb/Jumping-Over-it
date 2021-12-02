@@ -832,6 +832,8 @@ namespace GDApp
 
             InitializeCollidableModels(level);
             InitializeCollidableTriangleMeshes(level);
+
+            InitializeMountain(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -969,6 +971,48 @@ namespace GDApp
                 //add To Scene Manager
                 level.Add(clone);
             }
+        }
+
+        private void InitializeMountain(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+
+            //create the sphere
+            var mountainArchetype = new GameObject("levelForImport",
+                GameObjectType.Interactable, true);
+
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+
+
+
+            //clone the archetypal cube
+            mountainArchetype.Name = "Mountain";
+            mountainArchetype.Transform.Translate(1, 1, 1);
+            mountainArchetype.AddComponent(new ModelRenderer(modelDictionary["levelForImport"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["checkerboard"])));
+
+
+
+            /*//add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(new Box(
+                cube.Transform.LocalTranslation,
+                cube.Transform.LocalRotation,
+                cube.Transform.LocalScale),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(false, 10);*/
+
+            //add To Scene Manager
+            level.Add(mountainArchetype);
+            
         }
 
         #endregion Student/Group Specific Code
