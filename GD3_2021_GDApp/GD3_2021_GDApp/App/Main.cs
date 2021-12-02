@@ -454,6 +454,9 @@ namespace GDApp
             textureDictionary.Add("controlsmenu", Content.Load<Texture2D>("Assets/Textures/UI/Backgrounds/controlsmenu"));
             textureDictionary.Add("exitmenuwithtrans", Content.Load<Texture2D>("Assets/Textures/UI/Backgrounds/exitmenuwithtrans"));
             textureDictionary.Add("genericbtn", Content.Load<Texture2D>("Assets/Textures/UI/Controls/genericbtn"));
+
+            //models
+            textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
         }
 
         /// <summary>
@@ -627,7 +630,7 @@ namespace GDApp
             #region Add Health Bar
 
             //add a health bar in the centre of the game window
-            var texture = textureDictionary["progress_white"];
+            var texture = textureDictionary["map"];
             var position = new Vector2(_graphics.PreferredBackBufferWidth / 2, 50);
             var origin = new Vector2(texture.Width / 2, texture.Height / 2);
 
@@ -651,7 +654,7 @@ namespace GDApp
 
             #endregion Add Health Bar
 
-            #region Add Text
+/*            #region Add Text
 
             var font = fontDictionary["ui"];
             var str = "player name";
@@ -669,7 +672,7 @@ namespace GDApp
             mainGameUIScene.Add(nameTextObj);
 
             #endregion Add Text
-
+*/
             #region Add Scene To Manager & Set Active Scene
 
             //add the ui scene to the manager
@@ -994,9 +997,10 @@ namespace GDApp
             //clone the archetypal cube
             mountainArchetype.Name = "Mountain";
             mountainArchetype.Transform.Translate(1, 1, 1);
+            mountainArchetype.Transform.SetScale(2, 2, 2);
             mountainArchetype.AddComponent(new ModelRenderer(modelDictionary["levelForImport"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["checkerboard"])));
+                shader, Color.White, 1, textureDictionary["gray"])));
 
 
 
