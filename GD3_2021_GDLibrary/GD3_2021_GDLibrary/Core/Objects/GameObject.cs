@@ -16,7 +16,8 @@ namespace GDLibrary
         Environment,
         Skybox,
         Editor,
-        Prop
+        Prop,
+        Ground
         //STU - add more for your game here...
     }
 

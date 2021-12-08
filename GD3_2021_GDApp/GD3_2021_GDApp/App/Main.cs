@@ -129,14 +129,14 @@ namespace GDApp
             //this predicate lets us say ignore all the other collidable objects except interactables and consumables
             Predicate<GameObject> collisionPredicate =
                 (collidableObject) =>
-            {
-                if (collidableObject != null)
-                    return collidableObject.GameObjectType
-                    == GameObjectType.Interactable
-                    || collidableObject.GameObjectType == GameObjectType.Consumable;
+                {
+                    if (collidableObject != null)
+                        return collidableObject.GameObjectType
+                        == GameObjectType.Interactable
+                        || collidableObject.GameObjectType == GameObjectType.Consumable;
 
-                return false;
-            };
+                    return false;
+                };
             pickingManager = new PickingManager(this, 2, 100, collisionPredicate);
 
             //initialize global application data
@@ -654,25 +654,25 @@ namespace GDApp
 
             #endregion Add Health Bar
 
-/*            #region Add Text
+            /*            #region Add Text
 
-            var font = fontDictionary["ui"];
-            var str = "player name";
+                        var font = fontDictionary["ui"];
+                        var str = "player name";
 
-            //create the UI element
-            nameTextObj = new UITextObject(str, UIObjectType.Text,
-                new Transform2D(new Vector2(50, 50),
-                Vector2.One, 0),
-                0, font, "Brutus Maximus");
+                        //create the UI element
+                        nameTextObj = new UITextObject(str, UIObjectType.Text,
+                            new Transform2D(new Vector2(50, 50),
+                            Vector2.One, 0),
+                            0, font, "Brutus Maximus");
 
-            //  nameTextObj.Origin = font.MeasureString(str) / 2;
-            //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
+                        //  nameTextObj.Origin = font.MeasureString(str) / 2;
+                        //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
 
-            //add the ui element to the scene
-            mainGameUIScene.Add(nameTextObj);
+                        //add the ui element to the scene
+                        mainGameUIScene.Add(nameTextObj);
 
-            #endregion Add Text
-*/
+                        #endregion Add Text
+            */
             #region Add Scene To Manager & Set Active Scene
 
             //add the ui scene to the manager
@@ -815,6 +815,40 @@ namespace GDApp
             level.Add(curveCamera);
 
             #endregion Curve Camera
+
+
+            #region First Person Camera - Collidable
+
+            //add camera game object
+            camera = new GameObject(AppData.CAMERA_FIRSTPERSON_COLLIDABLE_NAME, GameObjectType.Camera);
+
+            //set initial position - important to set before the collider as collider capsule feeds off this position
+            camera.Transform.SetTranslation(0, 10, 40);
+
+            //add components
+            camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
+
+            //adding a collidable surface that enables acceleration, jumping
+            //var collider = new CharacterCollider(2, 2, true, false);
+
+            var collider = new MyHeroCollider(2, 2, true, false);
+            camera.AddComponent(collider);
+            collider.AddPrimitive(new Capsule(camera.Transform.LocalTranslation,
+                Matrix.CreateRotationX(MathHelper.PiOver2), 1, 3.6f),
+                new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collider.Enable(false, 2);
+
+            //add controller to actually move the collidable camera
+            camera.AddComponent(new MyCollidableFirstPersonController(12,
+                        0.5f, 0.3f, new Vector2(0.006f, 0.004f)));
+
+            //add to level
+            level.Add(camera);
+
+            #endregion First Person Camera - Collidable
+
+            //set the main camera, if we dont call this then the first camera added will be the Main
+            level.SetMainCamera(AppData.CAMERA_FIRSTPERSON_COLLIDABLE_NAME);
 
             //set theMain camera, if we dont call this then the first camera added will be the Main
             level.SetMainCamera("main camera");
@@ -1016,7 +1050,7 @@ namespace GDApp
 
             //add To Scene Manager
             level.Add(mountainArchetype);
-            
+
         }
 
         #endregion Student/Group Specific Code

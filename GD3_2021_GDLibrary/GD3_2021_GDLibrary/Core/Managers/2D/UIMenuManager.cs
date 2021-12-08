@@ -19,9 +19,15 @@ namespace GDLibrary.Managers
             if (eventData.EventCategoryType == EventCategoryType.Menu)
             {
                 if (eventData.EventActionType == EventActionType.OnPause)
+                {
                     statusType = StatusType.Drawn | StatusType.Updated;
+                    Input.Mouse.SetMouseVisible(true);
+                }
                 else if (eventData.EventActionType == EventActionType.OnPlay)
+                {
                     statusType = StatusType.Off;
+                    Input.Mouse.SetMouseVisible(false);
+                }
             }
         }
 

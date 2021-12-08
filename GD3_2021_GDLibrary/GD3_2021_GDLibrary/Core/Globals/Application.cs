@@ -1,4 +1,5 @@
-﻿using GDLibrary.Managers;
+﻿using GDApp;
+using GDLibrary.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,6 +36,11 @@ namespace GDLibrary
         /// Gets or sets the scene manager.
         /// </summary>
         public static SceneManager SceneManager { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the state manager.
+        /// </summary>
+        public static MyStateManager StateManager { get; internal set; }
 
         /// <summary>
         /// Gets the physics manager.

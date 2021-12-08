@@ -1,4 +1,5 @@
-﻿using GDLibrary.Core;
+﻿using GDLibrary.Components;
+using GDLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -66,8 +67,17 @@ namespace GDLibrary.Utilities.GDDebug
         {
             if (IsDrawn)
             {
+                var translation = Camera.Main.Transform.LocalTranslation;
+                translation.Round(1);
+
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null);
-                spriteBatch.DrawString(spriteFont, $"FPS:{fpsCountToShow}", fpsTextPosition, fpsTextColor);
+                spriteBatch.DrawString(spriteFont, $"FPS [{fpsCountToShow}]", fpsTextPosition, fpsTextColor);
+                spriteBatch.DrawString(spriteFont, $"Camera [{Camera.Main.GameObject.Name}, {translation}]", fpsTextPosition + new Vector2(0, 20), fpsTextColor);
+                spriteBatch.DrawString(spriteFont, $"Draw Calls [{Application.SceneManager.ActiveScene.Renderers.Count}]", fpsTextPosition + new Vector2(0, 40), fpsTextColor);
+                //
+                //
+                //
+
                 spriteBatch.End();
             }
         }

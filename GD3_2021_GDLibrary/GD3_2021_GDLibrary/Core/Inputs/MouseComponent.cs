@@ -4,6 +4,7 @@ using JigLibX.Collision;
 using JigLibX.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace GDLibrary.Inputs
 {
@@ -231,7 +232,7 @@ namespace GDLibrary.Inputs
                 new Segment(camera.Transform.LocalTranslation + startDistance * Vector3.Normalize(ray), ray * endDistance), pred);
 
             if (skin != null && skin.Owner != null)
-                return skin.Owner.ExternalData as GameObject;
+                return skin.Owner.Parent as GameObject;
 
             return null;
         }
@@ -315,6 +316,11 @@ namespace GDLibrary.Inputs
 
             //generate a ray to use for intersection tests
             return Vector3.Normalize(far - near);
+        }
+
+        public void SetMouseVisible(bool isMouseVisible)
+        {
+            Game.IsMouseVisible = isMouseVisible;
         }
 
         #endregion Actions - Ray Picking

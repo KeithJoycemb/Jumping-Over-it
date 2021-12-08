@@ -14,12 +14,14 @@ namespace GDLibrary.Managers
         #region Statics
 
         private static readonly int DEFAULT_SCENE_COUNT_AT_START = 4;
+        private static readonly int DEFAULT_REMOVE_LIST_SIZE_AT_START = 20;
 
         #endregion Statics
 
         #region Fields
 
         private List<Scene> scenes;
+        private List<GameObject> removeList;
         private int sceneToLoad;
         private int activeSceneIndex;
         private bool initialUpdate;
@@ -67,8 +69,38 @@ namespace GDLibrary.Managers
         public SceneManager(Game game) : base(game)
         {
             scenes = new List<Scene>(DEFAULT_SCENE_COUNT_AT_START);
+            removeList = new List<GameObject>(DEFAULT_REMOVE_LIST_SIZE_AT_START);
             sceneToLoad = -1;
             activeSceneIndex = -1;
+        }
+
+        protected override void SubscribeToEvents()
+        {
+            //handle add/remove events
+            EventDispatcher.Subscribe(EventCategoryType.GameObject, HandleGameObjectEvents);
+
+            base.SubscribeToEvents();
+        }
+
+        protected void HandleGameObjectEvents(EventData eventData)
+        {
+            switch (eventData.EventActionType)
+            {
+                case EventActionType.OnRemoveObject:
+                    Remove(eventData.Parameters[0] as GameObject);
+                    break;
+
+                case EventActionType.OnAddObject:
+                    Add(eventData.Parameters[0] as GameObject);
+                    break;
+
+                default:
+                    break;
+                    //add more cases for each method that we want to support with events
+            }
+
+            //call base method because we want to participate in the pause/play events
+            base.HandleEvent(eventData);
         }
 
         #endregion Constructors
@@ -80,7 +112,8 @@ namespace GDLibrary.Managers
             //is this component paused because of the menu?
             if (IsUpdated || !initialUpdate)
             {
-                //TODO - apply batch remove
+                //apply batch remove
+                PerformBatchRemove();
 
                 initialUpdate = true;
 
@@ -131,6 +164,24 @@ namespace GDLibrary.Managers
                 if (isActive)
                     sceneToLoad = scenes.Count - 1;
             }
+        }
+
+        public void Add(GameObject gameObject)
+        {
+            scenes[activeSceneIndex]?.Add(gameObject);
+        }
+
+        public void Remove(GameObject gameObject)
+        {
+            removeList.Add(gameObject);
+        }
+
+        private void PerformBatchRemove()
+        {
+            foreach (GameObject gameObject in removeList)
+                scenes[activeSceneIndex]?.Remove(gameObject);
+
+            removeList.Clear();
         }
 
         /// <summary>

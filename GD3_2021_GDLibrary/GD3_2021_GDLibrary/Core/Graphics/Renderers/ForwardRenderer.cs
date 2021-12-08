@@ -82,6 +82,8 @@ namespace GDLibrary.Renderers
             //set depth and blend state
             graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
+            // graphicsDevice.RasterizerState = rasterizerStateTransparent;
+
             //set viewport
             graphicsDevice.Viewport = camera.Viewport;
 

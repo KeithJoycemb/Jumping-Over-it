@@ -13,7 +13,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Core\Components\2D\Base\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Components\3D\Camera\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Components\3D\Controllers\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\3D\Controllers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Managers\2D\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Managers\3D\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Utilities\String\" />
@@ -29,7 +28,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Base\UIComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Behaviours\UIColorMouseOverBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Behaviours\UIPickupBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Behaviours\UIReticuleBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\CharacterCollider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\Collider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\CollisionResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Behaviours\CurveBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Behaviours\UIExpandFadeBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\2D\Controllers\UIProgressBarController.cs" />

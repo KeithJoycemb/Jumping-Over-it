@@ -115,7 +115,7 @@ namespace GDLibrary.Utilities.GDDebug
 
         public void AddCollisionSkinVertexData(Collider collider)
         {
-            if (!collider.Body.CollisionSkin.GetType().Equals(typeof(JigLibX.Geometry.Plane)))
+            if (collider.GameObject.GameObjectType != GameObjectType.Ground)
             {
                 wf = collider.Collision.GetLocalSkinWireframe();
 

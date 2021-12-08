@@ -176,8 +176,7 @@ namespace GDLibrary.Managers
         {
             EventDispatcher.Subscribe(EventCategoryType.Sound, HandleEvent);
 
-            EventDispatcher.Subscribe(EventCategoryType.Player,
-                HandlePlayerEvents);
+            EventDispatcher.Subscribe(EventCategoryType.Player, HandlePlayerEvents);
 
             //if we always want the SoundManager to be available then comment this line out
             // base.SubscribeToEvents();
@@ -187,28 +186,69 @@ namespace GDLibrary.Managers
         {
             if (eventData.EventActionType == EventActionType.OnPickup)
             {
+                //strip out the parameters (e.g. from PickupBehaviour) and play a sound
             }
         }
 
         protected override void HandleEvent(EventData eventData)
         {
-            if (eventData.EventActionType == EventActionType.OnPlay2D)
+            switch (eventData.EventActionType)
             {
-                Play2D(eventData.Parameters[0] as string);
-            }
-            else if (eventData.EventActionType == EventActionType.OnPlay3D)
-            {
-                Play3D(eventData.Parameters[0] as string,
+                case EventActionType.OnPlay2D:
+                    Play2D(eventData.Parameters[0] as string);
+                    break;
+
+                case EventActionType.OnPlay3D:
+                    Play3D(eventData.Parameters[0] as string,
                     eventData.Parameters[1] as AudioListener,
                         eventData.Parameters[2] as AudioEmitter);
-            }
-            else if (eventData.EventActionType
-                == EventActionType.OnVolumeDelta)
-            {
-                SetMasterVolume((int)eventData.Parameters[0]);
+                    break;
+
+                case EventActionType.OnPause:
+                    Pause(eventData.Parameters[0] as string);
+                    break;
+
+                case EventActionType.OnResume:
+                    Resume(eventData.Parameters[0] as string);
+                    break;
+
+                case EventActionType.OnStop:
+                    Stop(eventData.Parameters[0] as string);
+                    break;
+
+                case EventActionType.OnVolumeSet:
+                    SetVolume(eventData.Parameters[0] as string,
+                        (int)eventData.Parameters[1]);
+                    break;
+
+                case EventActionType.OnVolumeChange:
+                    ChangeVolume(eventData.Parameters[0] as string,
+                        (int)eventData.Parameters[1]);
+                    break;
+
+                case EventActionType.OnVolumeSetMaster:
+                    SetMasterVolume((int)eventData.Parameters[0]);
+                    break;
+
+                default:
+                    break;
+                    //add more cases for each method that we want to support with events
             }
 
-            //add more if statements for each method that we want to support with events
+            //if (eventData.EventActionType == EventActionType.OnPlay2D)
+            //{
+            //    Play2D(eventData.Parameters[0] as string);
+            //}
+            //else if (eventData.EventActionType == EventActionType.OnPlay3D)
+            //{
+            //    Play3D(eventData.Parameters[0] as string,
+            //        eventData.Parameters[1] as AudioListener,
+            //            eventData.Parameters[2] as AudioEmitter);
+            //}
+            //else if (eventData.EventActionType == EventActionType.OnVolumeMaster)
+            //{
+            //    SetMasterVolume((int)eventData.Parameters[0]);
+            //}
 
             //if we always want the SoundManager to be available then comment this line out
             //base.HandleEvent(eventData);
@@ -234,18 +274,24 @@ namespace GDLibrary.Managers
         /// Sets the volume of all played sounds
         /// </summary>
         /// <param name="value"></param>
-        public void SetMasterVolume(float value)
+        public void SetMasterVolume(float? volume)
         {
-            SoundEffect.MasterVolume = MathHelper.Clamp(value, 0, 1);
+            if (volume == null)
+                return;
+
+            SoundEffect.MasterVolume = MathHelper.Clamp(volume.Value, 0, 1);
         }
 
         /// <summary>
         /// Changes (i.e. apply a delta) the volume of all played sounds
         /// </summary>
         /// <param name="delta"></param>
-        public void ChangeMasterVolume(float delta)
+        public void ChangeMasterVolume(float? delta)
         {
-            SoundEffect.MasterVolume = MathHelper.Clamp(SoundEffect.MasterVolume + delta, 0, 1);
+            if (delta == null)
+                return;
+
+            SoundEffect.MasterVolume = MathHelper.Clamp(SoundEffect.MasterVolume + delta.Value, 0, 1);
         }
 
         /// <summary>
@@ -254,6 +300,9 @@ namespace GDLibrary.Managers
         /// <param name="id"></param>
         public void Play2D(string id)
         {
+            if (id == null)
+                return;
+
             id = id.Trim();
 
             if (dictionary.ContainsKey(id))
@@ -278,6 +327,9 @@ namespace GDLibrary.Managers
         /// <param name="id"></param>
         public void Play3D(string id, AudioListener listener, AudioEmitter emitter)
         {
+            if (id == null)
+                return;
+
             id = id.Trim();
 
             if (dictionary.ContainsKey(id))
@@ -304,6 +356,9 @@ namespace GDLibrary.Managers
         /// <returns></returns>
         public bool Pause(string id)
         {
+            if (id == null)
+                return false;
+
             id = id.Trim();
             foreach (KeyValuePair<string, SoundEffectInstance> pair in listInstances2D)
             {
@@ -328,6 +383,9 @@ namespace GDLibrary.Managers
         /// <returns></returns>
         public bool Resume(string id)
         {
+            if (id == null)
+                return false;
+
             id = id.Trim();
             foreach (KeyValuePair<string, SoundEffectInstance> pair in listInstances2D)
             {
@@ -351,6 +409,9 @@ namespace GDLibrary.Managers
         /// <returns></returns>
         public bool Stop(string id)
         {
+            if (id == null)
+                return false;
+
             id = id.Trim();
             bool bFound = false;
 

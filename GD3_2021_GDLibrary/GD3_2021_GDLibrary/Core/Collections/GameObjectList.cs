@@ -155,10 +155,14 @@ namespace GDLibrary.Collections
 
         public void Remove(GameObject obj)
         {
+            //remove the game object
             if (obj.IsPersistent)
-                presistentList.Add(obj);
+                presistentList.Remove(obj);
             else
-                dynamicList.Add(obj);
+                dynamicList.Remove(obj);
+
+            //remove the objects components e.g. Renderer etc
+            CheckComponents(obj, ComponentChangeType.Remove);
         }
 
         public GameObject Find(Predicate<GameObject> predicate)

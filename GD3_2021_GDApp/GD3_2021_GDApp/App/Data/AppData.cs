@@ -1,15 +1,28 @@
-﻿using Microsoft.Xna.Framework;
+﻿#define HI_RES
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GDApp
 {
     public static class AppData
     {
+        public static readonly string CAMERA_FIRSTPERSON_NONCOLLIDABLE_NAME = "main noncollidable";
+        public static readonly string CAMERA_FIRSTPERSON_COLLIDABLE_NAME = "main collidable";
+        public static readonly string CAMERA_CURVE_NONCOLLIDABLE_NAME = "curve noncollidable";
+
         #region Game Level Constants
 
-        public const string GAME_TITLE_NAME = "Jumping Over It";
+        public const string GAME_TITLE_NAME = "My Game Title Goes Here";
+
+#if HI_RES
         public const int GAME_RESOLUTION_WIDTH = 1920;
         public const int GAME_RESOLUTION_HEIGHT = 1080;
+
+#else
+        public const int GAME_RESOLUTION_WIDTH = 640;
+        public const int GAME_RESOLUTION_HEIGHT = 480;
+#endif
 
         #endregion Game Level Constants
 

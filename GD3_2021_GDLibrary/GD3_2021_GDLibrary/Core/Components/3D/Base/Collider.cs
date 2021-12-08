@@ -15,12 +15,15 @@ namespace GDLibrary.Components
         /// <summary>
         /// Holds the mass, position, angular momentum, velocity of the collidable object
         /// </summary>
-        private Body body;
+        protected Body body;
 
         /// <summary>
         /// Holds the primitive (e.g. sphere, capsule, box) which tests for collisions
         /// </summary>
-        private CollisionSkin collision;
+        protected CollisionSkin collision;
+
+        protected bool isHandlingCollision;
+        protected bool isTrigger;
 
         #endregion Fields
 
@@ -28,13 +31,24 @@ namespace GDLibrary.Components
 
         public Body Body { get => body; protected set => body = value; }
         public CollisionSkin Collision { get => collision; protected set => collision = value; }
+        public bool IsTrigger { get => isTrigger; }
+        public bool IsHandlingCollision { get => isHandlingCollision; }
 
         #endregion Properties
 
         #region Constructors
 
-        public Collider()
+        /// <summary>
+        /// Create a collider with response handling.
+        /// A collider that is a trigger will generate a response but you will
+        /// be able to walk through it, as in Unity
+        /// </summary>
+        /// <param name="isHandlingCollision"></param>
+        /// <param name="isTrigger"></param>
+        public Collider(bool isHandlingCollision = false, bool isTrigger = false)
         {
+            this.isHandlingCollision = isHandlingCollision;
+            this.isTrigger = isTrigger;
         }
 
         #endregion Constructors
@@ -45,12 +59,37 @@ namespace GDLibrary.Components
             transform = gameObject.Transform;
             //instanciate a new body
             Body = new Body();
-            //set the parent gam object to be the attached drawn object (used when collisions occur)
-            Body.ExternalData = gameObject;
+            //set the parent game object to be the attached drawn object (used when collisions occur)
+            Body.Parent = gameObject;
             //instanciate a collision skin (which will have a primitive added e.g. sphere, capsule, trianglemesh)
-            Collision = new CollisionSkin(Body);
+            Collision = new CollisionSkin(Body, isTrigger);
             //set the skin as belonging to the body
             Body.CollisionSkin = Collision;
+
+            //add collision reponse handling
+            if (isHandlingCollision)
+                Body.CollisionSkin.callbackFn += HandleCollision;
+        }
+
+        /// <summary>
+        /// Called whenever this collider collides with another collidable (i.e. the collidee)
+        /// </summary>
+        /// <param name="collider"></param>
+        /// <param name="collidee"></param>
+        /// <returns>True if collidee is not a trigger, otherwise false</returns>
+        protected virtual bool HandleCollision(CollisionSkin collider,
+            CollisionSkin collidee)
+        {
+            //get the game object that we just collided with
+            HandleResponse(collidee.Owner.Parent as GameObject);
+
+            //this return determines if we can pass through (false) or be stopped by (true) a collider
+            return !collidee.IsTrigger;
+        }
+
+        protected virtual void HandleResponse(GameObject parentGameObject)
+        {
+            //see classes that inherit from this collider e.g. MyPlayerCollider
         }
 
         #region Actions - Physics setup related

@@ -73,7 +73,8 @@
         /// <summary>
         /// Used when we pick something with the physics system e.g. a ray pick
         /// </summary>
-        Picking
+        Picking,
+        Inventory
 
         //add more here...
     }
@@ -117,6 +118,10 @@
         OnObjectPicked,
         OnNoObjectPicked,
         OnHealthDelta,
+        OnVolumeSetMaster,
+        OnVolumeChange,
+        OnRemoveInventory,
+        OnAddInventory,
 
         //add more here...
     }

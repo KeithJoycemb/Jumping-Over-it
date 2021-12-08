@@ -1,4 +1,5 @@
 #region Using Statements
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,11 +7,11 @@ using JigLibX.Physics;
 using JigLibX.Geometry;
 using JigLibX.Math;
 using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// Some skins may be owned by a physical body too.
     /// </summary>
@@ -18,6 +19,9 @@ namespace JigLibX.Collision
     {
         private CollisionSystem collSystem;
         private Body owner;
+        private bool isTrigger;
+
+        public bool IsTrigger { get => isTrigger; }
 
         /// <summary>
         /// Bounding box in world reference frame - includes all children too
@@ -31,7 +35,8 @@ namespace JigLibX.Collision
         private List<Primitive> primitivesNewWorld = new List<Primitive>();                     // our primitives in world space
         private List<Primitive> primitivesLocal = new List<Primitive>();                        // Our primitives in local space
         private List<int> materialIDs = new List<int>();                                        // material for each primitive
-        private List<MaterialProperties> materialProperties 
+
+        private List<MaterialProperties> materialProperties
             = new List<MaterialProperties>();                                        // values used when mat ID is USER_DEFINED
 
         private Transform transformOld = Transform.Identity;
@@ -41,6 +46,7 @@ namespace JigLibX.Collision
 
         internal object ExternalData;
         internal int ID;
+
         /// <summary>
         /// callbackFn
         /// </summary>
@@ -49,23 +55,31 @@ namespace JigLibX.Collision
         /// <summary>
         /// Constructor
         /// </summary>
-        public CollisionSkin()
+        public CollisionSkin() : this(null, false)
         {
-            this.ID = idCounter++;
-            this.owner = null;
-
-            collSystem = null;
+            //this.ID = idCounter++;
+            //this.owner = null;
+            //collSystem = null;
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="owner"></param>
-        public CollisionSkin(Body owner)
+        public CollisionSkin(Body owner) : this(owner, false)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="isTrigger"></param>
+        public CollisionSkin(Body owner, bool isTrigger)
         {
             this.ID = idCounter++;
             this.owner = owner;
-
+            this.isTrigger = isTrigger;
             collSystem = null;
         }
 
@@ -111,7 +125,7 @@ namespace JigLibX.Collision
         {
             Primitive newPrim = prim.Clone();
 
-            if (newPrim == null) 
+            if (newPrim == null)
                 throw new ArgumentException("Not able to clone primitive!");
 
             materialIDs.Add(matID);
@@ -182,7 +196,7 @@ namespace JigLibX.Collision
         }
 
         /// <summary>
-        /// Gets the old value of primitive in world space 
+        /// Gets the old value of primitive in world space
         /// </summary>
         /// <param name="prim"></param>
         /// <returns>Primitive</returns>
@@ -202,7 +216,7 @@ namespace JigLibX.Collision
         }
 
         /// <summary>
-        /// Gets the material ID for a primitive 
+        /// Gets the material ID for a primitive
         /// </summary>
         /// <param name="prim"></param>
         /// <returns>int</returns>
@@ -240,7 +254,7 @@ namespace JigLibX.Collision
         public float GetVolume()
         {
             float result = 0.0f;
-            for (int prim = primitivesLocal.Count; prim-- != 0; )
+            for (int prim = primitivesLocal.Count; prim-- != 0;)
                 result += primitivesLocal[prim].GetVolume();
             return result;
         }
@@ -252,7 +266,7 @@ namespace JigLibX.Collision
         public float GetSurfaceArea()
         {
             float result = 0.0f;
-            for (int prim = primitivesLocal.Count; prim-- != 0; )
+            for (int prim = primitivesLocal.Count; prim-- != 0;)
                 result += primitivesLocal[prim].GetSurfaceArea();
             return result;
         }
@@ -266,7 +280,7 @@ namespace JigLibX.Collision
             transformNew = transform;
             Transform t;
 
-            for(int prim = primitivesNewWorld.Count; prim-- != 0;)
+            for (int prim = primitivesNewWorld.Count; prim-- != 0;)
             {
                 t = primitivesLocal[prim].Transform;
                 primitivesNewWorld[prim].Transform = transform * t;
@@ -276,7 +290,6 @@ namespace JigLibX.Collision
 
             if (collSystem != null)
                 collSystem.CollisionSkinMoved(this);
-
         }
 
         /// <summary>
@@ -288,7 +301,7 @@ namespace JigLibX.Collision
             transformOld = transform;
             Transform t;
 
-            for (int prim = primitivesNewWorld.Count; prim-- != 0; )
+            for (int prim = primitivesNewWorld.Count; prim-- != 0;)
             {
                 t = primitivesLocal[prim].Transform;
                 primitivesOldWorld[prim].Transform = transform * t;
@@ -298,7 +311,6 @@ namespace JigLibX.Collision
 
             if (collSystem != null)
                 collSystem.CollisionSkinMoved(this);
-
         }
 
         /// <summary>
@@ -311,7 +323,7 @@ namespace JigLibX.Collision
             this.transformOld = transformOld;
             this.transformNew = transformNew;
 
-            for (int prim = primitivesNewWorld.Count; prim-- != 0; )
+            for (int prim = primitivesNewWorld.Count; prim-- != 0;)
             {
                 primitivesOldWorld[prim].Transform = transformOld * primitivesLocal[prim].Transform;
                 primitivesNewWorld[prim].Transform = transformNew * primitivesLocal[prim].Transform;
@@ -331,7 +343,7 @@ namespace JigLibX.Collision
         public void ApplyLocalTransform(Transform transform)
         {
             Transform t;
-            for (int prim = primitivesNewWorld.Count; prim-- != 0; )
+            for (int prim = primitivesNewWorld.Count; prim-- != 0;)
             {
                 t = primitivesLocal[prim].Transform;
                 primitivesLocal[prim].Transform = transform * t;
@@ -389,20 +401,20 @@ namespace JigLibX.Collision
         }
 
         /// <summary>
-        /// Updates bounding volume of this skin 
+        /// Updates bounding volume of this skin
         /// </summary>
         public void UpdateWorldBoundingBox()
         {
             BoundingBox temp = BoundingBoxHelper.InitialBox;
 
-            for (int iold = primitivesOldWorld.Count; iold-- != 0; )
+            for (int iold = primitivesOldWorld.Count; iold-- != 0;)
             {
                 BoundingBoxHelper.AddPrimitive(primitivesOldWorld[iold], ref temp);
             }
 
             if (collSystem != null && collSystem.UseSweepTests)
             {
-                for (int inew = primitivesNewWorld.Count; inew-- != 0; )
+                for (int inew = primitivesNewWorld.Count; inew-- != 0;)
                 {
                     BoundingBoxHelper.AddPrimitive(primitivesNewWorld[inew], ref temp);
                 }
@@ -458,7 +470,7 @@ namespace JigLibX.Collision
 
             pos = normal = Vector3.Zero;
 
-            for (int prim = primitivesNewWorld.Count; prim-- != 0; )
+            for (int prim = primitivesNewWorld.Count; prim-- != 0;)
             {
                 float thisFrac;
                 Vector3 newPosition = pos;
@@ -499,7 +511,7 @@ namespace JigLibX.Collision
 
             if (primitiveProperties.MassType == PrimitiveProperties.MassTypeEnum.Mass)
             {
-                for (int prim = primitivesLocal.Count; prim-- != 0; )
+                for (int prim = primitivesLocal.Count; prim-- != 0;)
                 {
                     if (primitiveProperties.MassDistribution == PrimitiveProperties.MassDistributionEnum.Solid)
                         totalWeighting += primitivesLocal[prim].GetVolume();
@@ -508,7 +520,7 @@ namespace JigLibX.Collision
                 }
             }
 
-            for (int prim = primitivesLocal.Count; prim-- != 0; )
+            for (int prim = primitivesLocal.Count; prim-- != 0;)
             {
                 float m; Vector3 com; Matrix it;
 
@@ -550,8 +562,6 @@ namespace JigLibX.Collision
 
             if (primitiveProperties.MassType == PrimitiveProperties.MassTypeEnum.Mass)
                 mass = primitiveProperties.MassOrDensity;
-
-
         }
 
         /// <summary>
@@ -573,7 +583,7 @@ namespace JigLibX.Collision
             inertiaTensor = Matrix.Identity;
             inertiaTensorCoM = Matrix.Identity;
 
-            for (int prim = primitivesLocal.Count; prim-- != 0; )
+            for (int prim = primitivesLocal.Count; prim-- != 0;)
             {
                 float m;
                 Vector3 com;
@@ -598,9 +608,7 @@ namespace JigLibX.Collision
                 inertiaTensorCoM.M12 = inertiaTensorCoM.M21 = inertiaTensor.M12 + mass * centerOfMass.X * centerOfMass.Y;
                 inertiaTensorCoM.M23 = inertiaTensorCoM.M32 = inertiaTensor.M23 + mass * centerOfMass.Y * centerOfMass.Z;
                 inertiaTensorCoM.M31 = inertiaTensorCoM.M13 = inertiaTensor.M31 + mass * centerOfMass.Z * centerOfMass.X;
-
             }
         }
-
     }
 }

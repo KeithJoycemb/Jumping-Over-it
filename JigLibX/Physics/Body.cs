@@ -1,4 +1,5 @@
 #region Using Statements
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,11 +7,11 @@ using Microsoft.Xna.Framework;
 using JigLibX.Collision;
 using JigLibX.Math;
 using JigLibX.Utils;
+
 #endregion
 
 namespace JigLibX.Physics
 {
-
     /// <summary>
     /// Basic rigid body - can be used as is, or a derived class can
     /// over-ride certain behaviours.
@@ -18,7 +19,6 @@ namespace JigLibX.Physics
     /// </summary>
     public partial class Body
     {
-
         private enum Activity
         {
             Active, Inactive
@@ -36,6 +36,7 @@ namespace JigLibX.Physics
 
         // the "working" state
         internal Transform transform = new Transform();
+
         internal TransformRate transformRate = new TransformRate();
         internal TransformRate transformRateAux = new TransformRate();
 
@@ -45,10 +46,12 @@ namespace JigLibX.Physics
         // Flag that gets set whenever our velocity/angular velocity might have been changed.
         // Used by physics to speed up checking for activation
         private bool velChanged;
+
         private float invMass;
 
         // the previous state - copied explicitly using CopyCurrentStateToOld.
         private Transform storedTransform;
+
         private TransformRate storedTransformRate;
 
         private Matrix invOrientation;
@@ -58,6 +61,7 @@ namespace JigLibX.Physics
 
         // internal, so we can call them by reference
         internal Matrix bodyInertia;     // Inertia in body Space (not necessarily diagonal)
+
         internal Matrix worldInertia;    // inertia tensor in world space
         internal Matrix bodyInvInertia;  // inverse inertia in body frame
         internal Matrix worldInvInertia; // Inverse inertia in world frame
@@ -98,17 +102,18 @@ namespace JigLibX.Physics
 
         // Helper to stop the velocities getting silly.
         private const float VelMax = 100.0f;
+
         private const float AngVelMax = 50.0f;
 
         // wether gravity should be applied
         private bool applyGravity = true;
 
         /// <summary>
-        /// ExternalData
+        /// Parent object for this body i.e. a GameObject
         /// </summary>
-        public object ExternalData;
+        public object Parent;
 
-        static int idCounter;
+        private static int idCounter;
         internal int ID;
 
         /// <summary>
@@ -152,82 +157,98 @@ namespace JigLibX.Physics
         /// <summary>
         /// Gets or Sets transform
         /// </summary>
-        public Transform Transform { get { return this.transform; } set { this.transform = value; } }
+        public Transform Transform
+        { get { return this.transform; } set { this.transform = value; } }
 
         /// <summary>
         /// Gets or Sets transformRate
         /// </summary>
-        public TransformRate TransformRate { get { return this.transformRate; } set { this.transformRate = value; } }
+        public TransformRate TransformRate
+        { get { return this.transformRate; } set { this.transformRate = value; } }
 
         /// <summary>
         /// Gets oldTransform
         /// </summary>
-        public Transform OldTransform { get { return oldTransform; } }
+        public Transform OldTransform
+        { get { return oldTransform; } }
 
         /// <summary>
         /// Gets oldTransformRate
         /// </summary>
-        public TransformRate OldTransformRate { get { return oldTransformRate; } }
+        public TransformRate OldTransformRate
+        { get { return oldTransformRate; } }
 
         /// <summary>
         /// Gets or Sets transform.Position
         /// </summary>
-        public Vector3 Position { get { return this.transform.Position; } set { this.transform.Position = value; } }
+        public Vector3 Position
+        { get { return this.transform.Position; } set { this.transform.Position = value; } }
 
         /// <summary>
         /// Gets oldTransform.Position
         /// </summary>
-        public Vector3 OldPosition { get { return this.oldTransform.Position; } }
+        public Vector3 OldPosition
+        { get { return this.oldTransform.Position; } }
 
         /// <summary>
         /// Gets or Sets transform.Orientation
         /// </summary>
-        public Matrix Orientation { get { return this.transform.Orientation; } set { this.transform.Orientation = value; } }
+        public Matrix Orientation
+        { get { return this.transform.Orientation; } set { this.transform.Orientation = value; } }
 
         /// <summary>
         /// Gets oldTransform.Orientation
         /// </summary>
-        public Matrix OldOrientation { get { return this.oldTransform.Orientation; } }
+        public Matrix OldOrientation
+        { get { return this.oldTransform.Orientation; } }
 
         /// <summary>
         /// Gets or Sets transformRate.Velocity
         /// </summary>
-        public Vector3 Velocity { get { return this.transformRate.Velocity; } set { this.transformRate.Velocity = value; } }
+        public Vector3 Velocity
+        { get { return this.transformRate.Velocity; } set { this.transformRate.Velocity = value; } }
 
         /// <summary>
         /// Gets or Sets transformRateAux.Velocity
         /// </summary>
-        public Vector3 VelocityAux { get { return this.transformRateAux.Velocity; } set { this.transformRateAux.Velocity = value; } }
+        public Vector3 VelocityAux
+        { get { return this.transformRateAux.Velocity; } set { this.transformRateAux.Velocity = value; } }
 
         /// <summary>
         /// Gets oldTransformRate.Velocity
         /// </summary>
-        public Vector3 OldVelocity { get { return this.oldTransformRate.Velocity; } }
+        public Vector3 OldVelocity
+        { get { return this.oldTransformRate.Velocity; } }
 
         /// <summary>
         /// Gets or Sets transformRate.AngularVelocity
         /// </summary>
-        public Vector3 AngularVelocity { get { return this.transformRate.AngularVelocity; } set { this.transformRate.AngularVelocity = value; } }
+        public Vector3 AngularVelocity
+        { get { return this.transformRate.AngularVelocity; } set { this.transformRate.AngularVelocity = value; } }
 
         /// <summary>
         /// Gets or Sets transformAux.AngularVelocity
         /// </summary>
-        public Vector3 AngularVelocityAux { get { return this.transformRateAux.AngularVelocity; } set { this.transformRateAux.AngularVelocity = value; } }
+        public Vector3 AngularVelocityAux
+        { get { return this.transformRateAux.AngularVelocity; } set { this.transformRateAux.AngularVelocity = value; } }
 
         /// <summary>
         /// Gets oldTransformRate.AngularVelocity
         /// </summary>
-        public Vector3 OldAngVel { get { return this.oldTransformRate.AngularVelocity; } }
+        public Vector3 OldAngVel
+        { get { return this.oldTransformRate.AngularVelocity; } }
 
         /// <summary>
         /// Gets or Sets force
         /// </summary>
-        public Vector3 Force { get { return this.force; } set { this.force = value; } }
+        public Vector3 Force
+        { get { return this.force; } set { this.force = value; } }
 
         /// <summary>
         /// Gets or Sets torque
         /// </summary>
-        public Vector3 Torque { get { return torque; } set { this.torque = value; } }
+        public Vector3 Torque
+        { get { return torque; } set { this.torque = value; } }
 
         /// <summary>
         /// Gets or Sets mass
@@ -237,7 +258,7 @@ namespace JigLibX.Physics
             get { return mass; }
             set
             {
-                this.mass = value; this.invMass = 1.0f / mass; 
+                this.mass = value; this.invMass = 1.0f / mass;
                 ClearForces();
                 AddGravityToExternalForce();
             }
@@ -246,12 +267,14 @@ namespace JigLibX.Physics
         /// <summary>
         /// Gets or Set invMass
         /// </summary>
-        public float InverseMass { get { return invMass; } set { this.invMass = value; this.mass = 1.0f / value; } }
+        public float InverseMass
+        { get { return invMass; } set { this.invMass = value; this.mass = 1.0f / value; } }
 
         /// <summary>
         /// Gets or sets applyGravity
         /// </summary>
-        public bool ApplyGravity { get { return applyGravity; } set { this.applyGravity = value; } }
+        public bool ApplyGravity
+        { get { return applyGravity; } set { this.applyGravity = value; } }
 
         /// <summary>
         /// RemoveConstraint
@@ -398,7 +421,6 @@ namespace JigLibX.Physics
                 this.CollisionSkin.SetTransform(ref oldTransform, ref transform);
         }
 
-        
         /// <summary>
         /// Implementation updates the velocity/angular rotation with the
         /// force/torque.
@@ -410,18 +432,22 @@ namespace JigLibX.Physics
                 return;
 
             #region REFERENCE: transformRate.Velocity += (dt * invMass) * force;
+
             Vector3 vel;
-            Vector3.Multiply(ref force,dt * invMass, out vel);
+            Vector3.Multiply(ref force, dt * invMass, out vel);
             Vector3.Add(ref transformRate.Velocity, ref vel, out transformRate.Velocity);
+
             #endregion
 
             #region REFERENCE: transformRate.AngularVelocity += Vector3.Transform(torque * dt, worldInvInertia);
+
             Vector3 angVel;
             Vector3.Multiply(ref torque, dt, out angVel);
             Vector3.TransformNormal(ref angVel, ref worldInvInertia, out angVel);
             Vector3.Add(ref transformRate.AngularVelocity, ref angVel, out transformRate.AngularVelocity);
+
             #endregion
-        
+
             // don't quite get this - calculating angMom from angVel, then applying torque to that, then
             // converting back just results in the simple equation anyway. The extra term just produces
             // weirdness..
@@ -429,16 +455,18 @@ namespace JigLibX.Physics
             // mTransformRate.angVelocity += mWorldInvInertia * dt * (mTorque - Cross(mTransformRate.angVelocity, mWorldInertia * mTransformRate.angVelocity));
 
             // TODO implement rotational friction properly
+
             #region REFERENCE: transformRate.AngularVelocity *= 0.99f;
+
             if (collSkin != null && collSkin.Collisions.Count >= 1)
                 Vector3.Multiply(ref transformRate.AngularVelocity, 0.99f, out transformRate.AngularVelocity);
-            #endregion
 
+            #endregion
         }
 
         /// <summary>
         /// Implementation updates the position/orientation with the
-        /// current velocties. 
+        /// current velocties.
         /// </summary>
         /// <param name="dt"></param>
         public void UpdatePosition(float dt)
@@ -447,30 +475,42 @@ namespace JigLibX.Physics
                 return;
 
             #region REFERENCE: Vector3 angMomBefore = Vector3.Transform(transformRate.AngularVelocity, worldInertia);
+
             Vector3 angMomBefore;
-            Vector3.TransformNormal(ref transformRate.AngularVelocity,ref  worldInertia,out angMomBefore);
+            Vector3.TransformNormal(ref transformRate.AngularVelocity, ref worldInertia, out angMomBefore);
+
             #endregion
 
             transform.ApplyTransformRate(transformRate, dt);
 
             #region REFERENCE: invOrientation = Matrix.Transpose(transform.Orientation);
-            Matrix.Transpose(ref transform.Orientation,out invOrientation);
+
+            Matrix.Transpose(ref transform.Orientation, out invOrientation);
+
             #endregion
 
             // recalculate the world inertia
+
             #region REFERENCE: worldInvInertia = invOrientation * bodyInvInertia * transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInvInertia, out worldInvInertia);
             Matrix.Multiply(ref worldInvInertia, ref transform.Orientation, out worldInvInertia);
+
             #endregion
 
             #region REFERENCE: worldInertia = invOrientation * bodyInertia * transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInertia, out worldInertia);
             Matrix.Multiply(ref worldInertia, ref transform.Orientation, out worldInertia);
+
             #endregion
 
             // conservation of momentum
+
             #region REFERENCE: transformRate.AngularVelocity = Vector3.Transform(angMomBefore, worldInvInertia);
+
             Vector3.TransformNormal(ref angMomBefore, ref worldInvInertia, out transformRate.AngularVelocity);
+
             #endregion
 
             if (this.CollisionSkin != null)
@@ -501,46 +541,63 @@ namespace JigLibX.Physics
             }
 
             #region REFERENCE: Vector3 angMomBefore = Vector3.Transform(transformRate.AngularVelocity,worldInertia;
+
             Vector3 angMomBefore;
             Vector3.TransformNormal(ref transformRate.AngularVelocity, ref worldInertia, out angMomBefore);
+
             #endregion
 
             #region REFERENCE: TransformRate rate = transformRate + tranformRateAux;
+
             TransformRate rate;
             TransformRate.Add(ref transformRate, ref transformRateAux, out rate);
+
             #endregion
 
             transform.ApplyTransformRate(ref rate, dt);
 
             #region INLINE: tranformRateAux = TransformRate.Zero;
+
             transformRateAux.AngularVelocity.X = 0.0f;
             transformRateAux.AngularVelocity.Y = 0.0f;
             transformRateAux.AngularVelocity.Z = 0.0f;
             transformRateAux.Velocity.X = 0.0f;
             transformRateAux.Velocity.Y = 0.0f;
             transformRateAux.Velocity.Z = 0.0f;
+
             #endregion
 
             #region REFERENCE: invOrientation = Matrix.Transpose(transform.Orientation);
+
             Matrix.Transpose(ref transform.Orientation, out invOrientation);
+
             #endregion
 
             // recalculate the world inertia
             //worldInvInertia = transform.Orientation * bodyInvInertia * invOrientation;
+
             #region REFERENCE: worldInvInertia =  invOrientation * bodyInvInertia* transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInvInertia, out worldInvInertia);
             Matrix.Multiply(ref worldInvInertia, ref transform.Orientation, out worldInvInertia);
+
             #endregion
 
             //worldInertia = transform.Orientation * bodyInertia * invOrientation;
+
             #region REFERENCE: worldInertia = invOrientation * bodyInertia* transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInertia, out worldInertia);
             Matrix.Multiply(ref worldInertia, ref transform.Orientation, out worldInertia);
+
             #endregion
 
             // conservation of momentum
+
             #region transformRate.AngularVelocity = Vector3.Transform(angMomBefore, worldInvInertia);
+
             Vector3.TransformNormal(ref angMomBefore, ref worldInvInertia, out transformRate.AngularVelocity);
+
             #endregion
 
             if (this.CollisionSkin != null)
@@ -561,7 +618,8 @@ namespace JigLibX.Physics
         /// Used by physics to temporarily make an object immovable -
         /// needs to restore afterwars!
         /// </summary>
-        internal void InternalRestoreImmovable() {immovable = origImmovable;}
+        internal void InternalRestoreImmovable()
+        { immovable = origImmovable; }
 
         /// <summary>
         /// Gets velChanged
@@ -702,7 +760,6 @@ namespace JigLibX.Physics
                 return true;
         }
 
-
         /// <summary>
         /// Damp movement as the body approaches deactivation
         /// </summary>
@@ -802,55 +859,70 @@ namespace JigLibX.Physics
         /// </summary>
         public void LimitVel()
         {
-			//if at least one velocity component violates the max velocity
-			if ((transformRate.Velocity.X < -VelMax || transformRate.Velocity.X > VelMax) || (transformRate.Velocity.Y < -VelMax || transformRate.Velocity.Y > VelMax) || (transformRate.Velocity.Z < -VelMax || transformRate.Velocity.Z > VelMax))
-			{
-				float v_min, v_max, dMin, dMax, scaleFactor;
+            //if at least one velocity component violates the max velocity
+            if ((transformRate.Velocity.X < -VelMax || transformRate.Velocity.X > VelMax) || (transformRate.Velocity.Y < -VelMax || transformRate.Velocity.Y > VelMax) || (transformRate.Velocity.Z < -VelMax || transformRate.Velocity.Z > VelMax))
+            {
+                float v_min, v_max, dMin, dMax, scaleFactor;
 
-				//determine minimum
-				#region REFERENCE: v_min = System.Math.Min(System.Math.Min(transformRate.Velocity.X, transformRate.Velocity.Y), transformRate.Velocity.Z);
-				if (transformRate.Velocity.X < transformRate.Velocity.Y)
-				{
-					v_min = (transformRate.Velocity.X < transformRate.Velocity.Z) ? transformRate.Velocity.X : transformRate.Velocity.Z;
-				}
-				else
-				{
-					v_min = (transformRate.Velocity.Y < transformRate.Velocity.Z) ? transformRate.Velocity.Y : transformRate.Velocity.Z;
-				}
-				#endregion
+                //determine minimum
 
-				//determine maximum
-				#region REFERENCE: v_max = System.Math.Max(System.Math.Max(transformRate.Velocity.X, transformRate.Velocity.Y), transformRate.Velocity.Z);
-				if (transformRate.Velocity.X > transformRate.Velocity.Y)
-				{
-					v_max = (transformRate.Velocity.X > transformRate.Velocity.Z) ? transformRate.Velocity.X : transformRate.Velocity.Z;
-				}
-				else
-				{
-					v_max = (transformRate.Velocity.Y > transformRate.Velocity.Z) ? transformRate.Velocity.Y : transformRate.Velocity.Z;
-				}
-				#endregion
+                #region REFERENCE: v_min = System.Math.Min(System.Math.Min(transformRate.Velocity.X, transformRate.Velocity.Y), transformRate.Velocity.Z);
 
-				//calculate divergence
-				dMin = (v_min < -VelMax) ? v_min + VelMax : 0f;
-				dMax = (v_max > VelMax) ? v_max - VelMax : 0f;
-				#region REFERENCE: dMin = System.Math.Abs(dMin);
-				dMin = (dMin < 0) ? -dMin : dMin;
-				#endregion
-				#region REFERENCE: dMax = System.Math.Abs(dMax);
-				dMax = (dMax < 0) ? -dMax : dMax;
-				#endregion
+                if (transformRate.Velocity.X < transformRate.Velocity.Y)
+                {
+                    v_min = (transformRate.Velocity.X < transformRate.Velocity.Z) ? transformRate.Velocity.X : transformRate.Velocity.Z;
+                }
+                else
+                {
+                    v_min = (transformRate.Velocity.Y < transformRate.Velocity.Z) ? transformRate.Velocity.Y : transformRate.Velocity.Z;
+                }
 
-				//calculate scaling factor
-				scaleFactor = (dMin > dMax) ? (-VelMax / v_min) : (VelMax / v_max);
+                #endregion
 
-				//rescale velcocity to match max velocity
-				#region REFERENCE: Vector3.Multiply(ref transformRate.Velocity, clampFactor, out transformRate.Velocity);
-				transformRate.Velocity.X *= scaleFactor;
-				transformRate.Velocity.Y *= scaleFactor;
-				transformRate.Velocity.Z *= scaleFactor;
-				#endregion
-			}
+                //determine maximum
+
+                #region REFERENCE: v_max = System.Math.Max(System.Math.Max(transformRate.Velocity.X, transformRate.Velocity.Y), transformRate.Velocity.Z);
+
+                if (transformRate.Velocity.X > transformRate.Velocity.Y)
+                {
+                    v_max = (transformRate.Velocity.X > transformRate.Velocity.Z) ? transformRate.Velocity.X : transformRate.Velocity.Z;
+                }
+                else
+                {
+                    v_max = (transformRate.Velocity.Y > transformRate.Velocity.Z) ? transformRate.Velocity.Y : transformRate.Velocity.Z;
+                }
+
+                #endregion
+
+                //calculate divergence
+                dMin = (v_min < -VelMax) ? v_min + VelMax : 0f;
+                dMax = (v_max > VelMax) ? v_max - VelMax : 0f;
+
+                #region REFERENCE: dMin = System.Math.Abs(dMin);
+
+                dMin = (dMin < 0) ? -dMin : dMin;
+
+                #endregion
+
+                #region REFERENCE: dMax = System.Math.Abs(dMax);
+
+                dMax = (dMax < 0) ? -dMax : dMax;
+
+                #endregion
+
+                //calculate scaling factor
+                scaleFactor = (dMin > dMax) ? (-VelMax / v_min) : (VelMax / v_max);
+
+                //rescale velcocity to match max velocity
+
+                #region REFERENCE: Vector3.Multiply(ref transformRate.Velocity, clampFactor, out transformRate.Velocity);
+
+                transformRate.Velocity.X *= scaleFactor;
+                transformRate.Velocity.Y *= scaleFactor;
+                transformRate.Velocity.Z *= scaleFactor;
+
+                #endregion
+            }
         }
 
         /// <summary>
@@ -858,69 +930,82 @@ namespace JigLibX.Physics
         /// </summary>
         public void LimitAngVel()
         {
-			//float fX = System.Math.Abs(transformRate.AngularVelocity.X) / AngVelMax;
-			//float fY = System.Math.Abs(transformRate.AngularVelocity.Y) / AngVelMax;
-			//float fZ = System.Math.Abs(transformRate.AngularVelocity.Z) / AngVelMax;
+            //float fX = System.Math.Abs(transformRate.AngularVelocity.X) / AngVelMax;
+            //float fY = System.Math.Abs(transformRate.AngularVelocity.Y) / AngVelMax;
+            //float fZ = System.Math.Abs(transformRate.AngularVelocity.Z) / AngVelMax;
 
-			//float f = MathHelper.Max(fX, fY);
-			//f = MathHelper.Max(f, fZ);
+            //float f = MathHelper.Max(fX, fY);
+            //f = MathHelper.Max(f, fZ);
 
-			//if (f > 1.0f)
-			//    #region REFERENCE: transformRate.AngularVelocity /= f;
-			//    Vector3.Divide(ref transformRate.AngularVelocity, f, out transformRate.AngularVelocity);
-			//    #endregion
+            //if (f > 1.0f)
+            //    #region REFERENCE: transformRate.AngularVelocity /= f;
+            //    Vector3.Divide(ref transformRate.AngularVelocity, f, out transformRate.AngularVelocity);
+            //    #endregion
 
+            //if at least one angular velocity component violates the max angular velocity
+            if ((transformRate.AngularVelocity.X < -AngVelMax || transformRate.AngularVelocity.X > AngVelMax) || (transformRate.AngularVelocity.Y < -AngVelMax || transformRate.AngularVelocity.Y > AngVelMax) || (transformRate.AngularVelocity.Z < -AngVelMax || transformRate.AngularVelocity.Z > AngVelMax))
+            {
+                float v_min, v_max, dMin, dMax, scaleFactor;
 
-			//if at least one angular velocity component violates the max angular velocity
-			if ((transformRate.AngularVelocity.X < -AngVelMax || transformRate.AngularVelocity.X > AngVelMax) || (transformRate.AngularVelocity.Y < -AngVelMax || transformRate.AngularVelocity.Y > AngVelMax) || (transformRate.AngularVelocity.Z < -AngVelMax || transformRate.AngularVelocity.Z > AngVelMax))
-			{
-				float v_min, v_max, dMin, dMax, scaleFactor;
+                //determine minimum
 
-				//determine minimum
-				#region REFERENCE: v_min = System.Math.Min(System.Math.Min(transformRate.AngularVelocity.X, transformRate.AngularVelocity.Y), transformRate.AngularVelocity.Z);
-				if (transformRate.AngularVelocity.X < transformRate.AngularVelocity.Y)
-				{
-					v_min = (transformRate.AngularVelocity.X < transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.X : transformRate.AngularVelocity.Z;
-				}
-				else
-				{
-					v_min = (transformRate.AngularVelocity.Y < transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.Y : transformRate.AngularVelocity.Z;
-				}
-				#endregion
+                #region REFERENCE: v_min = System.Math.Min(System.Math.Min(transformRate.AngularVelocity.X, transformRate.AngularVelocity.Y), transformRate.AngularVelocity.Z);
 
-				//determine maximum
-				#region REFERENCE: v_max = System.Math.Max(System.Math.Max(transformRate.AngularVelocity.X, transformRate.AngularVelocity.Y), transformRate.AngularVelocity.Z);
-				if (transformRate.AngularVelocity.X > transformRate.AngularVelocity.Y)
-				{
-					v_max = (transformRate.AngularVelocity.X > transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.X : transformRate.AngularVelocity.Z;
-				}
-				else
-				{
-					v_max = (transformRate.AngularVelocity.Y > transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.Y : transformRate.AngularVelocity.Z;
-				}
-				#endregion
+                if (transformRate.AngularVelocity.X < transformRate.AngularVelocity.Y)
+                {
+                    v_min = (transformRate.AngularVelocity.X < transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.X : transformRate.AngularVelocity.Z;
+                }
+                else
+                {
+                    v_min = (transformRate.AngularVelocity.Y < transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.Y : transformRate.AngularVelocity.Z;
+                }
 
-				//calculate divergence
-				dMin = (v_min < -AngVelMax) ? v_min + AngVelMax : 0f;
-				dMax = (v_max > AngVelMax) ? v_max - AngVelMax : 0f;
-				#region REFERENCE: dMin = System.Math.Abs(dMin);
-				dMin = (dMin < 0) ? -dMin : dMin;
-				#endregion
-				#region REFERENCE: dMax = System.Math.Abs(dMax);
-				dMax = (dMax < 0) ? -dMax : dMax;
-				#endregion
+                #endregion
 
-				//calculate scaling factor
-				scaleFactor = (dMin > dMax) ? (-AngVelMax / v_min) : (AngVelMax / v_max);
+                //determine maximum
 
-				//rescale angular velcocity to match max angular velocity
-				#region REFERENCE: Vector3.Multiply(ref transformRate.AngularVelocity, clampFactor, out transformRate.AngularVelocity);
-				transformRate.AngularVelocity.X *= scaleFactor;
-				transformRate.AngularVelocity.Y *= scaleFactor;
-				transformRate.AngularVelocity.Z *= scaleFactor;
-				#endregion
-			}
+                #region REFERENCE: v_max = System.Math.Max(System.Math.Max(transformRate.AngularVelocity.X, transformRate.AngularVelocity.Y), transformRate.AngularVelocity.Z);
 
+                if (transformRate.AngularVelocity.X > transformRate.AngularVelocity.Y)
+                {
+                    v_max = (transformRate.AngularVelocity.X > transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.X : transformRate.AngularVelocity.Z;
+                }
+                else
+                {
+                    v_max = (transformRate.AngularVelocity.Y > transformRate.AngularVelocity.Z) ? transformRate.AngularVelocity.Y : transformRate.AngularVelocity.Z;
+                }
+
+                #endregion
+
+                //calculate divergence
+                dMin = (v_min < -AngVelMax) ? v_min + AngVelMax : 0f;
+                dMax = (v_max > AngVelMax) ? v_max - AngVelMax : 0f;
+
+                #region REFERENCE: dMin = System.Math.Abs(dMin);
+
+                dMin = (dMin < 0) ? -dMin : dMin;
+
+                #endregion
+
+                #region REFERENCE: dMax = System.Math.Abs(dMax);
+
+                dMax = (dMax < 0) ? -dMax : dMax;
+
+                #endregion
+
+                //calculate scaling factor
+                scaleFactor = (dMin > dMax) ? (-AngVelMax / v_min) : (AngVelMax / v_max);
+
+                //rescale angular velcocity to match max angular velocity
+
+                #region REFERENCE: Vector3.Multiply(ref transformRate.AngularVelocity, clampFactor, out transformRate.AngularVelocity);
+
+                transformRate.AngularVelocity.X *= scaleFactor;
+                transformRate.AngularVelocity.Y *= scaleFactor;
+                transformRate.AngularVelocity.Z *= scaleFactor;
+
+                #endregion
+            }
         }
 
         /// <summary>
@@ -936,7 +1021,6 @@ namespace JigLibX.Physics
                     transformRate.Velocity.Y + transformRate.AngularVelocity.Z * relPos.X - transformRate.AngularVelocity.X * relPos.Z,
                     transformRate.Velocity.Z + transformRate.AngularVelocity.X * relPos.Y - transformRate.AngularVelocity.Y * relPos.X);
         }
-
 
         /// <summary>
         /// Returns the velocity of a point at body-relative position
@@ -976,8 +1060,6 @@ namespace JigLibX.Physics
                 transformRateAux.Velocity.Y + transformRateAux.AngularVelocity.Z * relPos.X - transformRateAux.AngularVelocity.X * relPos.Z,
                 transformRateAux.Velocity.Z + transformRateAux.AngularVelocity.X * relPos.Y - transformRateAux.AngularVelocity.Y * relPos.X);
         }
-        
-
 
         /// <summary>
         /// Adds the other body to the list of bodies to be activated if
@@ -1011,6 +1093,7 @@ namespace JigLibX.Physics
         }
 
         #region Add impulses in the world coordinate frame
+
         /// <summary>
         /// ApplyWorldImpulse
         /// </summary>
@@ -1020,9 +1103,11 @@ namespace JigLibX.Physics
             if (immovable) return;
 
             #region INLINE: transformRate.Velocity += invMass * impulse;
+
             transformRate.Velocity.X += impulse.X * invMass;
             transformRate.Velocity.Y += impulse.Y * invMass;
             transformRate.Velocity.Z += impulse.Z * invMass;
+
             #endregion
 
             velChanged = true;
@@ -1037,9 +1122,11 @@ namespace JigLibX.Physics
             if (immovable) return;
 
             #region INLINE: transformRate.Velocity -= invMass * impulse;
+
             transformRate.Velocity.X -= impulse.X * invMass;
             transformRate.Velocity.Y -= impulse.Y * invMass;
             transformRate.Velocity.Z -= impulse.Z * invMass;
+
             #endregion
 
             velChanged = true;
@@ -1053,7 +1140,7 @@ namespace JigLibX.Physics
         {
             if (immovable) return;
             Vector3.Multiply(ref impulse, invMass, out impulse);
-            Vector3.Add(ref transformRateAux.Velocity, ref impulse,out transformRateAux.Velocity);
+            Vector3.Add(ref transformRateAux.Velocity, ref impulse, out transformRateAux.Velocity);
             velChanged = true;
         }
 
@@ -1074,7 +1161,7 @@ namespace JigLibX.Physics
         /// </summary>
         /// <param name="impulse"></param>
         /// <param name="pos"></param>
-        public void ApplyWorldImpulse(ref Vector3 impulse,ref Vector3 pos)
+        public void ApplyWorldImpulse(ref Vector3 impulse, ref Vector3 pos)
         {
             if (immovable) return;
             Vector3 v0;
@@ -1175,6 +1262,7 @@ namespace JigLibX.Physics
         #endregion
 
         #region Add impulses at a position offset in world space
+
         /// <summary>
         /// ApplyBodyWorldImpulse
         /// </summary>
@@ -1197,17 +1285,20 @@ namespace JigLibX.Physics
         /// </summary>
         /// <param name="impulse"></param>
         /// <param name="delta"></param>
-        public void ApplyBodyWorldImpulse(ref Vector3 impulse,ref Vector3 delta)
+        public void ApplyBodyWorldImpulse(ref Vector3 impulse, ref Vector3 delta)
         {
             if (immovable) return;
 
             #region INLINE: transformRate.Velocity = transformRate.Velocity + invMass * impulse;
+
             transformRate.Velocity.X = transformRate.Velocity.X + (impulse.X * invMass);
             transformRate.Velocity.Y = transformRate.Velocity.Y + (impulse.Y * invMass);
             transformRate.Velocity.Z = transformRate.Velocity.Z + (impulse.Z * invMass);
+
             #endregion
 
             #region INLINE: transformRate.AngularVelocity += Vector3.TransformNormal(Vector3.Cross(delta, impulse), worldInvInertia);
+
             float num0, num1, num2;
 
             num0 = delta.Y * impulse.Z - delta.Z * impulse.Y;
@@ -1221,6 +1312,7 @@ namespace JigLibX.Physics
             transformRate.AngularVelocity.X += num3;
             transformRate.AngularVelocity.Y += num4;
             transformRate.AngularVelocity.Z += num5;
+
             #endregion
 
             velChanged = true;
@@ -1237,7 +1329,7 @@ namespace JigLibX.Physics
             Vector3 v1;
             Vector3.Multiply(ref impulse, -invMass, out v1);
             Vector3.Add(ref transformRate.Velocity, ref v1, out transformRate.Velocity);
-            Vector3.Cross(ref impulse,ref delta, out v1);
+            Vector3.Cross(ref impulse, ref delta, out v1);
             Vector3.TransformNormal(ref v1, ref worldInvInertia, out v1);
             Vector3.Add(ref transformRate.AngularVelocity, ref v1, out transformRate.AngularVelocity);
             velChanged = true;
@@ -1253,12 +1345,15 @@ namespace JigLibX.Physics
             if (immovable) return;
 
             #region INLINE: transformRate.Velocity = transformRate.Velocity - invMass * impulse;
+
             transformRate.Velocity.X = transformRate.Velocity.X - (impulse.X * invMass);
             transformRate.Velocity.Y = transformRate.Velocity.Y - (impulse.Y * invMass);
             transformRate.Velocity.Z = transformRate.Velocity.Z - (impulse.Z * invMass);
+
             #endregion
 
             #region INLINE: transformRate.AngularVelocity += Vector3.TransformNormal(Vector3.Cross(impulse, delta), worldInvInertia);
+
             float num0, num1, num2;
 
             num0 = delta.Z * impulse.Y - delta.Y * impulse.Z;
@@ -1272,6 +1367,7 @@ namespace JigLibX.Physics
             transformRate.AngularVelocity.X += num3;
             transformRate.AngularVelocity.Y += num4;
             transformRate.AngularVelocity.Z += num5;
+
             #endregion
 
             velChanged = true;
@@ -1282,7 +1378,7 @@ namespace JigLibX.Physics
         /// </summary>
         /// <param name="impulse"></param>
         /// <param name="delta"></param>
-        public void ApplyBodyWorldImpulseAux(ref Vector3 impulse,ref Vector3 delta)
+        public void ApplyBodyWorldImpulseAux(ref Vector3 impulse, ref Vector3 delta)
         {
             if (immovable) return;
             Vector3 v1;
@@ -1299,7 +1395,7 @@ namespace JigLibX.Physics
         /// </summary>
         /// <param name="impulse"></param>
         /// <param name="delta"></param>
-        public void ApplyNegativeBodyWorldImpulseAux(ref Vector3 impulse,ref Vector3 delta)
+        public void ApplyNegativeBodyWorldImpulseAux(ref Vector3 impulse, ref Vector3 delta)
         {
             if (immovable) return;
             Vector3 v1;
@@ -1314,6 +1410,7 @@ namespace JigLibX.Physics
         #endregion
 
         #region Add impulses in the body coordinate frame
+
         /// <summary>
         /// ApplyBodyImpulse
         /// </summary>
@@ -1322,7 +1419,7 @@ namespace JigLibX.Physics
         {
             if (immovable) return;
             Vector3.TransformNormal(ref impulse, ref transform.Orientation, out impulse);
-            Vector3.Multiply(ref impulse,invMass, out impulse);
+            Vector3.Multiply(ref impulse, invMass, out impulse);
             Vector3.Add(ref transformRate.Velocity, ref impulse, out transformRate.Velocity);
             velChanged = true;
         }
@@ -1399,6 +1496,7 @@ namespace JigLibX.Physics
         #endregion
 
         #region Add forces in the world coordinate frame
+
         /// <summary>
         /// AddWorldForce
         /// </summary>
@@ -1439,6 +1537,7 @@ namespace JigLibX.Physics
         #endregion
 
         #region Add forces in the body coordinate frame
+
         /// <summary>
         /// AddBodyForce
         /// </summary>
@@ -1497,7 +1596,7 @@ namespace JigLibX.Physics
         /// </summary>
         public void AddGravityToExternalForce()
         {
-            if( (PhysicsSystem.CurrentPhysicsSystem != null) &&  applyGravity)
+            if ((PhysicsSystem.CurrentPhysicsSystem != null) && applyGravity)
                 force += Vector3.Multiply(PhysicsSystem.CurrentPhysicsSystem.Gravity, mass);
         }
 
@@ -1530,13 +1629,13 @@ namespace JigLibX.Physics
             int count;
 
             count = constraints.Count;
-            for (int i = 0; i < count; i++) 
+            for (int i = 0; i < count; i++)
                 constraints[i].Satisfied = false;
 
             if (collSkin == null) return;
 
             count = collSkin.Collisions.Count;
-            for (int i = 0; i < count; i++) 
+            for (int i = 0; i < count; i++)
                 collSkin.Collisions[i].Satisfied = false;
         }
 
@@ -1558,19 +1657,27 @@ namespace JigLibX.Physics
             transformRate = storedTransformRate;
 
             #region REFERENCE: invOrientation = Matrix.Transpose(transform.Orientation);
+
             Matrix.Transpose(ref transform.Orientation, out invOrientation);
+
             #endregion
 
             //worldInvInertia = transform.Orientation * bodyInvInertia * invOrientation;
+
             #region REFERENCE: worldInvInertia = invOrientation *bodyInvInertia* transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInvInertia, out worldInvInertia);
             Matrix.Multiply(ref worldInvInertia, ref transform.Orientation, out worldInvInertia);
+
             #endregion
 
             //worldInertia = transform.Orientation * bodyInertia * invOrientation;
+
             #region REFERENCE: worldInertia = invOrientation *bodyInertia * transform.Orientation;
+
             Matrix.Multiply(ref invOrientation, ref bodyInertia, out worldInertia);
             Matrix.Multiply(ref worldInertia, ref transform.Orientation, out worldInertia);
+
             #endregion
         }
     }

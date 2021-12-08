@@ -43,7 +43,7 @@ namespace GDLibrary.Components
         private Vector3 up;
         private BoundingFrustum boundingFrustrum;
         private int drawDepth;
-        private bool isProjectionDirty = true, isFrustumDirty = true;
+        private bool isProjectionDirty = true, isViewDirty = true, isFrustumDirty = true;
 
         #endregion Fields
 
@@ -53,8 +53,14 @@ namespace GDLibrary.Components
         {
             get
             {
-                if (viewMatrix == null)
-                    UpdateViewMatrix();
+                if (isViewDirty)
+                {
+                    var transform = gameObject.Transform;
+                    var target = transform.LocalTranslation + Vector3.Transform(Vector3.Forward, transform.RotationMatrix);
+                    viewMatrix = Matrix.CreateLookAt(transform.LocalTranslation, target, up);
+                    isViewDirty = false;
+                    isFrustumDirty = true;
+                }
 
                 return viewMatrix;
             }
@@ -186,7 +192,8 @@ namespace GDLibrary.Components
             up = Vector3.Up;
             drawDepth = 0;
 
-            //controls update of projection and frustrum on paramater change
+            //controls update of view, projection and frustrum on paramater change
+            isViewDirty = true;
             isProjectionDirty = true;
             isFrustumDirty = true;
         }
