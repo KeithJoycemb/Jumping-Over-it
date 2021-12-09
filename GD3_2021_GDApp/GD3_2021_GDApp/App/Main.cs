@@ -249,7 +249,7 @@ namespace GDApp
                     EventActionType.OnHealthDelta, parameters));
             }
 
-            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.P))
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Kanji))
             {
                 EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
                           EventActionType.OnPause));
@@ -958,7 +958,7 @@ namespace GDApp
             mountainArchetype.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["levelForImport"],
-                new Vector3(1, 1, 1), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
                 new MaterialProperties(0.8f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
