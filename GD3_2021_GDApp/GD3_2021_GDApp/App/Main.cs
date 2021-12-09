@@ -55,6 +55,7 @@ namespace GDApp
         /// </summary>
         private SoundManager soundManager;
 
+        private MyStateManager stateManager;
         private PickingManager pickingManager;
 
         /// <summary>
@@ -125,6 +126,9 @@ namespace GDApp
             //add support for playing sounds
             soundManager = new SoundManager(this);
 
+            //this will check win/lose logic
+            stateManager = new MyStateManager(this);
+
             //picking support using physics engine
             //this predicate lets us say ignore all the other collidable objects except interactables and consumables
             Predicate<GameObject> collisionPredicate =
@@ -146,6 +150,7 @@ namespace GDApp
             Application.GraphicsDeviceManager = _graphics;
             Application.SceneManager = sceneManager;
             Application.PhysicsManager = physicsManager;
+            Application.StateManager = stateManager;
 
             //instanciate render manager to render all drawn game objects using preferred renderer (e.g. forward, backward)
             renderManager = new RenderManager(this, new ForwardRenderer(), false, true);
@@ -192,6 +197,9 @@ namespace GDApp
 
             //add sound
             Components.Add(soundManager);
+
+            //add state
+            Components.Add(stateManager);
         }
 
         /// <summary>
@@ -252,12 +260,21 @@ namespace GDApp
                     EventActionType.OnPlay));
             }
 
-            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.F1))
             {
                 object[] parameters = { "smokealarm" };
                 EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
                     EventActionType.OnPlay2D, parameters));
             }
+            else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.F2))
+            {
+                object[] parameters = { "smokealarm" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                    EventActionType.OnStop, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.C))
+                Application.SceneManager.ActiveScene.CycleCameras();
 
             base.Update(gameTime);
         }
@@ -310,8 +327,7 @@ namespace GDApp
             InitializeDebugUI(true, true);
 
             //to show the menu we must start paused for everything else!
-            EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                        EventActionType.OnPause));
+            EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
 
             base.Initialize();
         }
@@ -419,8 +435,6 @@ namespace GDApp
                 SoundCategoryType.Fall,
                 new Vector3(1, 0, 0),
                 false));
-
-
         }
 
         /// <summary>
@@ -428,6 +442,7 @@ namespace GDApp
         /// </summary>
         private void LoadTextures()
         {
+
             //debug
             textureDictionary.Add("checkerboard", Content.Load<Texture2D>("Assets/Demo/Textures/checkerboard"));
             textureDictionary.Add("mona lisa", Content.Load<Texture2D>("Assets/Demo/Textures/mona lisa"));
@@ -457,6 +472,12 @@ namespace GDApp
 
             //models
             textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
+
+            //reticule
+            textureDictionary.Add("reticuleOpen",
+      Content.Load<Texture2D>("Assets/Textures/UI/Controls/reticuleOpen"));
+            textureDictionary.Add("reticuleDefault",
+          Content.Load<Texture2D>("Assets/Textures/UI/Controls/reticuleDefault"));
         }
 
         /// <summary>
@@ -486,6 +507,8 @@ namespace GDApp
             InitializeCameras(activeScene);
 
             InitializeSkybox(activeScene, worldScale);
+
+            //remove because now we are interested only in collidable things!
             //InitializeCubes(activeScene);
             //InitializeModels(activeScene);
 
@@ -561,7 +584,8 @@ namespace GDApp
                 Vector2.Zero);
 
             //demo button color change
-            playBtn.AddComponent(new UIColorMouseOverBehaviour(Color.Orange, Color.White));
+            var comp = new UIColorMouseOverBehaviour(Color.Orange, Color.White);
+            playBtn.AddComponent(comp);
 
             mainMenuUIScene.Add(playBtn);
 
@@ -630,7 +654,7 @@ namespace GDApp
             #region Add Health Bar
 
             //add a health bar in the centre of the game window
-            var texture = textureDictionary["map"];
+            var texture = textureDictionary["progress_white"];
             var position = new Vector2(_graphics.PreferredBackBufferWidth / 2, 50);
             var origin = new Vector2(texture.Width / 2, texture.Height / 2);
 
@@ -654,25 +678,45 @@ namespace GDApp
 
             #endregion Add Health Bar
 
-            /*            #region Add Text
+            #region Add Text
 
-                        var font = fontDictionary["ui"];
-                        var str = "player name";
+            var font = fontDictionary["ui"];
+            var str = "player name";
 
-                        //create the UI element
-                        nameTextObj = new UITextObject(str, UIObjectType.Text,
-                            new Transform2D(new Vector2(50, 50),
-                            Vector2.One, 0),
-                            0, font, "Brutus Maximus");
+            //create the UI element
+            nameTextObj = new UITextObject(str, UIObjectType.Text,
+                new Transform2D(new Vector2(50, 50),
+                Vector2.One, 0),
+                0, font, "Brutus Maximus");
 
-                        //  nameTextObj.Origin = font.MeasureString(str) / 2;
-                        //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
+            //  nameTextObj.Origin = font.MeasureString(str) / 2;
+            //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
 
-                        //add the ui element to the scene
-                        mainGameUIScene.Add(nameTextObj);
+            //add the ui element to the scene
+            mainGameUIScene.Add(nameTextObj);
 
-                        #endregion Add Text
-            */
+            #endregion Add Text
+
+            var defaultTexture = textureDictionary["reticuleDefault"];
+            var alternateTexture = textureDictionary["reticuleOpen"];
+            origin = defaultTexture.GetOriginAtCenter();
+
+            var reticule = new UITextureObject("reticule",
+                     UIObjectType.Texture,
+                new Transform2D(Vector2.Zero, Vector2.One, 0),
+                0,
+                Color.White,
+                SpriteEffects.None,
+                origin,
+                defaultTexture,
+                alternateTexture,
+                new Microsoft.Xna.Framework.Rectangle(0, 0,
+                defaultTexture.Width, defaultTexture.Height));
+
+            reticule.AddComponent(new UIReticuleBehaviour());
+
+            mainGameUIScene.Add(reticule);
+
             #region Add Scene To Manager & Set Active Scene
 
             //add the ui scene to the manager
@@ -693,7 +737,7 @@ namespace GDApp
             {
                 Components.Add(new GDLibrary.Utilities.GDDebug.PerfUtility(this,
                     _spriteBatch, fontDictionary["debug"],
-                    new Vector2(40, _graphics.PreferredBackBufferHeight - 40),
+                    new Vector2(40, _graphics.PreferredBackBufferHeight - 80),
                     Color.White));
             }
 
@@ -773,16 +817,18 @@ namespace GDApp
         /// <param name="level"></param>
         private void InitializeCameras(Scene level)
         {
-            #region First Person Camera
+            #region First Person Camera - Non Collidable
 
             //add camera game object
-            var camera = new GameObject("main camera", GameObjectType.Camera);
+            var camera = new GameObject(AppData.CAMERA_FIRSTPERSON_NONCOLLIDABLE_NAME, GameObjectType.Camera);
 
             //add components
             //here is where we can set a smaller viewport e.g. for split screen
             //e.g. new Viewport(0, 0, _graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight)
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
-            camera.AddComponent(new FirstPersonController(0.05f, 0.025f, 0.00009f));
+
+            //add controller to actually move the noncollidable camera
+            camera.AddComponent(new FirstPersonController(0.05f, 0.025f, new Vector2(0.006f, 0.004f)));
 
             //set initial position
             camera.Transform.SetTranslation(0, 2, 10);
@@ -790,21 +836,21 @@ namespace GDApp
             //add to level
             level.Add(camera);
 
-            #endregion First Person Camera
+            #endregion First Person Camera - Non Collidable
 
-            #region Curve Camera
+            #region Curve Camera - Non Collidable
 
             //add curve for camera translation
             var translationCurve = new Curve3D(CurveLoopType.Cycle);
-            translationCurve.Add(new Vector3(0, 1, 10), 0);
-            translationCurve.Add(new Vector3(0, 6, 15), 1000);
-            translationCurve.Add(new Vector3(0, 1, 20), 2000);
-            translationCurve.Add(new Vector3(0, -6, 25), 3000);
-            translationCurve.Add(new Vector3(0, 1, 30), 4000);
-            translationCurve.Add(new Vector3(0, 1, 10), 6000);
+            translationCurve.Add(new Vector3(0, 2, 10), 0);
+            translationCurve.Add(new Vector3(0, 8, 15), 1000);
+            translationCurve.Add(new Vector3(0, 8, 20), 2000);
+            translationCurve.Add(new Vector3(0, 6, 25), 3000);
+            translationCurve.Add(new Vector3(0, 4, 25), 4000);
+            translationCurve.Add(new Vector3(0, 2, 10), 6000);
 
             //add camera game object
-            var curveCamera = new GameObject("curve camera", GameObjectType.Camera);
+            var curveCamera = new GameObject(AppData.CAMERA_CURVE_NONCOLLIDABLE_NAME, GameObjectType.Camera);
 
             //add components
             curveCamera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
@@ -814,8 +860,7 @@ namespace GDApp
             //add to level
             level.Add(curveCamera);
 
-            #endregion Curve Camera
-
+            #endregion Curve Camera - Non Collidable
 
             #region First Person Camera - Collidable
 
@@ -839,7 +884,7 @@ namespace GDApp
             collider.Enable(false, 2);
 
             //add controller to actually move the collidable camera
-            camera.AddComponent(new MyCollidableFirstPersonController(12,
+            camera.AddComponent(new MyCollidableFirstPersonController(30,
                         0.5f, 0.3f, new Vector2(0.006f, 0.004f)));
 
             //add to level
@@ -849,9 +894,6 @@ namespace GDApp
 
             //set the main camera, if we dont call this then the first camera added will be the Main
             level.SetMainCamera(AppData.CAMERA_FIRSTPERSON_COLLIDABLE_NAME);
-
-            //set theMain camera, if we dont call this then the first camera added will be the Main
-            level.SetMainCamera("main camera");
 
             //allows us to scale time on all game objects that based movement on Time
             // Time.Instance.TimeScale = 0.1f;
@@ -868,147 +910,10 @@ namespace GDApp
             InitializeCollidableCubes(level);
 
             InitializeCollidableModels(level);
-            InitializeCollidableTriangleMeshes(level);
-
-            InitializeMountain(level);
+            //InitializeCollidableTriangleMeshes(level);
+            InitializeMountain(level) ;
         }
 
-        private void InitializeCollidableTriangleMeshes(Scene level)
-        {
-            ////re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            //var shader = new BasicShader(Application.Content, false, true);
-
-            ////create the teapot
-            //var complexModel = new GameObject("teapot", GameObjectType.Environment, true);
-            //complexModel.Transform.SetTranslation(0, 5, 0);
-            ////        complexModel.Transform.SetScale(0.4f, 0.4f, 0.4f);
-            //complexModel.AddComponent(new ModelRenderer(
-            //    modelDictionary["monkey1"],
-            //    new BasicMaterial("teapot_material", shader,
-            //    Color.White, 1, textureDictionary["mona lisa"])));
-
-            ////add Collision Surface(s)
-            //collider = new Collider();
-            //complexModel.AddComponent(collider);
-            //collider.AddPrimitive(
-            //    CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
-            //    new Vector3(0, 5, 0), new Vector3(90, 0, 0), new Vector3(0.5f, 0.5f, 0.5f)),
-            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
-            //collider.Enable(true, 1);
-
-            ////add To Scene Manager
-            //level.Add(complexModel);
-        }
-
-        private void InitializeCollidableModels(Scene level)
-        {
-            #region Reusable - You can copy and re-use this code elsewhere, if required
-
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
-
-            //create the sphere
-            var sphereArchetype = new GameObject("sphere",
-                GameObjectType.Interactable, true);
-
-            #endregion Reusable - You can copy and re-use this code elsewhere, if required
-
-            GameObject clone = null;
-
-            for (int i = 0; i < 5; i++)
-            {
-                clone = sphereArchetype.Clone() as GameObject;
-                clone.Name = $"sphere - {i}";
-                clone.Transform.SetTranslation(5 + i / 10f, 5 + 4 * i, 0);
-                clone.AddComponent(new ModelRenderer(modelDictionary["sphere"],
-                    new BasicMaterial("sphere_material",
-                    shader, Color.White, 1, textureDictionary["checkerboard"])));
-
-                //add Collision Surface(s)
-                collider = new Collider();
-                clone.AddComponent(collider);
-                collider.AddPrimitive(new JigLibX.Geometry.Sphere(
-                   sphereArchetype.Transform.LocalTranslation, 1),
-                    new MaterialProperties(0.8f, 0.8f, 0.7f));
-                collider.Enable(false, 1);
-
-                //add To Scene Manager
-                level.Add(clone);
-            }
-        }
-
-        private void InitializeCollidableGround(Scene level, float worldScale)
-        {
-            #region Reusable - You can copy and re-use this code elsewhere, if required
-
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
-            //re-use the vertices and indices of the model
-            var mesh = new QuadMesh();
-
-            #endregion Reusable - You can copy and re-use this code elsewhere, if required
-
-            //create the ground
-            var ground = new GameObject("ground", GameObjectType.Environment, true);
-            ground.Transform.SetRotation(-90, 0, 0);
-            ground.Transform.SetScale(worldScale, worldScale, 1);
-            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass"])));
-            //level.Add(ground);
-
-            //add Collision Surface(s)
-            collider = new Collider();
-            ground.AddComponent(collider);
-            collider.AddPrimitive(new JigLibX.Geometry.Plane(
-                ground.Transform.Up, ground.Transform.LocalTranslation),
-                new MaterialProperties(0.8f, 0.8f, 0.7f));
-            collider.Enable(true, 1);
-
-            //add To Scene Manager
-            level.Add(ground);
-        }
-
-        private void InitializeCollidableCubes(Scene level)
-        {
-            #region Reusable - You can copy and re-use this code elsewhere, if required
-
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
-            //re-use the mesh
-            var mesh = new CubeMesh();
-            //clone the cube
-            var cube = new GameObject("cube", GameObjectType.Consumable, false);
-
-            #endregion Reusable - You can copy and re-use this code elsewhere, if required
-
-            GameObject clone = null;
-
-            for (int i = 5; i < 40; i += 5)
-            {
-                //clone the archetypal cube
-                clone = cube.Clone() as GameObject;
-                clone.Name = $"cube - {i}";
-                clone.Transform.Translate(0, 5 + i, 0);
-                clone.AddComponent(new MeshRenderer(mesh,
-                    new BasicMaterial("cube_material", shader,
-                    Color.White, 1, textureDictionary["crate1"])));
-
-                //add desc and value to a pickup
-                clone.AddComponent(new PickupBehaviour("ammo pack", 15));
-
-                //add Collision Surface(s)
-                collider = new Collider();
-                clone.AddComponent(collider);
-                collider.AddPrimitive(new Box(
-                    cube.Transform.LocalTranslation,
-                    cube.Transform.LocalRotation,
-                    cube.Transform.LocalScale),
-                    new MaterialProperties(0.8f, 0.8f, 0.7f));
-                collider.Enable(false, 10);
-
-                //add To Scene Manager
-                level.Add(clone);
-            }
-        }
 
         private void InitializeMountain(Scene level)
         {
@@ -1051,6 +956,143 @@ namespace GDApp
             //add To Scene Manager
             level.Add(mountainArchetype);
 
+        }
+
+        private void InitializeCollidableTriangleMeshes(Scene level)
+        {
+            ////re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            //var shader = new BasicShader(Application.Content, false, true);
+
+            ////create the teapot
+            //var complexModel = new GameObject("teapot", GameObjectType.Environment, true);
+            //complexModel.Transform.SetTranslation(0, 5, 0);
+            ////        complexModel.Transform.SetScale(0.4f, 0.4f, 0.4f);
+            //complexModel.AddComponent(new ModelRenderer(
+            //    modelDictionary["monkey1"],
+            //    new BasicMaterial("teapot_material", shader,
+            //    Color.White, 1, textureDictionary["mona lisa"])));
+
+            ////add Collision Surface(s)
+            //collider = new Collider();
+            //complexModel.AddComponent(collider);
+            //collider.AddPrimitive(
+            //    CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
+            //    new Vector3(0, 5, 0), new Vector3(90, 0, 0), new Vector3(0.5f, 0.5f, 0.5f)),
+            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
+            //collider.Enable(true, 1);
+
+            ////add To Scene Manager
+            //level.Add(complexModel);
+        }
+
+        private void InitializeCollidableModels(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+
+            //create the sphere
+            var sphereArchetype = new GameObject("sphere", GameObjectType.Interactable, true);
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+            GameObject clone = null;
+
+            for (int i = 0; i < 5; i++)
+            {
+                clone = sphereArchetype.Clone() as GameObject;
+                clone.Name = $"sphere - {i}";
+
+                clone.Transform.SetTranslation(5 + i / 10f, 5 + 4 * i, 0);
+                clone.AddComponent(new ModelRenderer(
+                    modelDictionary["sphere"],
+                    new BasicMaterial("sphere_material",
+                    shader, Color.White, 1, textureDictionary["checkerboard"])));
+
+                //add Collision Surface(s)
+                collider = new Collider(false, false);
+                clone.AddComponent(collider);
+                collider.AddPrimitive(new JigLibX.Geometry.Sphere(
+                   sphereArchetype.Transform.LocalTranslation, 1),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(false, 1);
+
+                //add To Scene Manager
+                level.Add(clone);
+            }
+        }
+
+        private void InitializeCollidableGround(Scene level, float worldScale)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            //re-use the vertices and indices of the model
+            var mesh = new QuadMesh();
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+            //create the ground
+            var ground = new GameObject("ground", GameObjectType.Ground, true);
+            ground.Transform.SetRotation(-90, 0, 0);
+            ground.Transform.SetScale(worldScale, worldScale, 1);
+            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            ground.AddComponent(collider);
+            collider.AddPrimitive(new JigLibX.Geometry.Plane(
+                ground.Transform.Up, ground.Transform.LocalTranslation),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(ground);
+        }
+
+        private void InitializeCollidableCubes(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            //re-use the mesh
+            var mesh = new CubeMesh();
+            //clone the cube
+            var cube = new GameObject("cube", GameObjectType.Consumable, false);
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+            GameObject clone = null;
+
+            for (int i = 5; i < 40; i += 5)
+            {
+                //clone the archetypal cube
+                clone = cube.Clone() as GameObject;
+                clone.Name = $"cube - {i}";
+                clone.Transform.Translate(0, 5 + i, 0);
+                clone.AddComponent(new MeshRenderer(mesh,
+                    new BasicMaterial("cube_material", shader,
+                    Color.White, 1, textureDictionary["crate1"])));
+
+                //add desc and value to a pickup used when we collect/remove/collide with it
+                clone.AddComponent(new PickupBehaviour("ammo pack", 15));
+
+                //add Collision Surface(s)
+                collider = new MyPlayerCollider();
+                clone.AddComponent(collider);
+                collider.AddPrimitive(new Box(
+                    cube.Transform.LocalTranslation,
+                    cube.Transform.LocalRotation,
+                    cube.Transform.LocalScale),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(false, 10);
+
+                //add To Scene Manager
+                level.Add(clone);
+            }
         }
 
         #endregion Student/Group Specific Code
