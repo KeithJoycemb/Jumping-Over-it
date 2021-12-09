@@ -260,9 +260,9 @@ namespace GDApp
                     EventActionType.OnPlay));
             }
 
-            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.F1))
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
             {
-                object[] parameters = { "smokealarm" };
+                object[] parameters = { "jump1" };
                 EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
                     EventActionType.OnPlay2D, parameters));
             }
@@ -868,7 +868,7 @@ namespace GDApp
             camera = new GameObject(AppData.CAMERA_FIRSTPERSON_COLLIDABLE_NAME, GameObjectType.Camera);
 
             //set initial position - important to set before the collider as collider capsule feeds off this position
-            camera.Transform.SetTranslation(0, 10, 40);
+            camera.Transform.SetTranslation(-120, 10, 80);
 
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
@@ -884,7 +884,7 @@ namespace GDApp
             collider.Enable(false, 2);
 
             //add controller to actually move the collidable camera
-            camera.AddComponent(new MyCollidableFirstPersonController(30,
+            camera.AddComponent(new MyCollidableFirstPersonController(25,
                         0.5f, 0.3f, new Vector2(0.006f, 0.004f)));
 
             //add to level
@@ -935,11 +935,11 @@ namespace GDApp
 
             //clone the archetypal cube
             mountainArchetype.Name = "Mountain";
-            mountainArchetype.Transform.Translate(1, 1, 1);
+            mountainArchetype.Transform.Translate(1, 12, 1);
             mountainArchetype.Transform.SetScale(2, 2, 2);
             mountainArchetype.AddComponent(new ModelRenderer(modelDictionary["levelForImport"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["gray"])));
+                shader, Color.White, 1, textureDictionary["checkerboard"])));
 
 
 
@@ -952,6 +952,15 @@ namespace GDApp
                 cube.Transform.LocalScale),
                 new MaterialProperties(0.8f, 0.8f, 0.7f));
             collider.Enable(false, 10);*/
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            mountainArchetype.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["levelForImport"],
+                new Vector3(1, 1, 1), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
 
             //add To Scene Manager
             level.Add(mountainArchetype);
@@ -976,7 +985,7 @@ namespace GDApp
             //collider = new Collider();
             //complexModel.AddComponent(collider);
             //collider.AddPrimitive(
-            //    CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
+            //   CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
             //    new Vector3(0, 5, 0), new Vector3(90, 0, 0), new Vector3(0.5f, 0.5f, 0.5f)),
             //    new MaterialProperties(0.8f, 0.8f, 0.7f));
             //collider.Enable(true, 1);
