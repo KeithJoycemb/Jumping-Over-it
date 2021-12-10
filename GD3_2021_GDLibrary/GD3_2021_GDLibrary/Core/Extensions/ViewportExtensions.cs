@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 /// <summary>
@@ -36,5 +37,22 @@ public static class ViewportExtensions
             target.Width -= 2 * half;
             target.Height -= 2 * half;
         }
+    }
+
+    /// <summary>
+    /// Gets the scale factor necessary to apply to a texture2D object to fit the current viewport resolution
+    /// </summary>
+    /// <param name="viewport">Viewport</param>
+    /// <param name="texture">Texture2D</param>
+    /// <param name="additionalScaleFactor">Vector2</param>
+    /// <returns>Vector2</returns>
+    public static Vector2 GetScaleForTexture(this Viewport target, Texture2D texture, Vector2 additionalScaleFactor)
+    {
+        //prevents passing Vector2.Zero
+        if (additionalScaleFactor == null || additionalScaleFactor.Length() == 0)
+            additionalScaleFactor = Vector2.One;
+
+        return additionalScaleFactor * new Vector2((float)Math.Ceiling((float)target.Width / texture.Width),
+            (float)Math.Ceiling((float)target.Height / texture.Height));
     }
 }

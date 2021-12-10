@@ -64,10 +64,6 @@ public static class Vector3Extensions
 
     #endregion Add/Remove a value from target
 
-    public static void DoSomething(this ref Vector3 target, int x, bool y, string z)
-    {
-    }
-
     /// <summary>
     /// Adds round functionality to Vector3 from user-defined integer precision
     /// </summary>
@@ -82,12 +78,37 @@ public static class Vector3Extensions
         target.Z = (float)Math.Round(target.Z, precision);
     }
 
-    //public static Vector3 Round(this ref Vector3 target, int precision)
+    ///// <summary>
+    ///// Adds round functionality to Vector3 from user-defined integer precision
+    ///// </summary>
+    ///// <param name="target">Vector3</param>
+    ///// <param name="precision">Integer</param>
+    //public static Vector3 Round(this Vector3 target, int precision)
     //{
-    //    Vector3 rounded = Vector3.Zero;
-    //    rounded.X = (float)Math.Round(target.X, precision);
-    //    rounded.Y = (float)Math.Round(target.Y, precision);
-    //    rounded.Z = (float)Math.Round(target.Z, precision);
-    //    return rounded;
+    //    //TODO - throw an exception on negative precision
+
+    //    return new Vector3((float)Math.Round(target.X, precision),
+    //    (float)Math.Round(target.Y, precision),
+    //    (float)Math.Round(target.Z, precision));
     //}
+
+    /// <summary>
+    /// Converts a Vector3 to a Quaternion
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static Quaternion ToQuaternion(this Vector3 target)
+    {
+        return Quaternion.CreateFromYawPitchRoll(target.Y, target.X, target.Z);
+    }
+
+    /// <summary>
+    /// Converts a Vector3 to a Quaternion
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static void ToQuaternion(this Vector3 target, ref Quaternion quaternion)
+    {
+        quaternion = Quaternion.CreateFromYawPitchRoll(target.Y, target.X, target.Z);
+    }
 }

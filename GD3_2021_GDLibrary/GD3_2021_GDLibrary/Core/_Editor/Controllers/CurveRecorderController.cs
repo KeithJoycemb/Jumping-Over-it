@@ -18,6 +18,7 @@ namespace GDLibrary.Editor
 
         [DataMember]
         public Vector3 Translation { get => translation; set => translation = value; }
+
         [DataMember]
         public Vector3 Rotation { get => rotation; set => rotation = value; }
 
@@ -50,7 +51,7 @@ namespace GDLibrary.Editor
             keyTransforms = new List<CurveHelper>(DEFAULT_MIN_SIZE);
         }
 
-        public override void Awake()
+        public override void Awake(GameObject gameObject)
         {
             camera = Camera.Main;
             if (camera is null)
@@ -61,11 +62,13 @@ namespace GDLibrary.Editor
         {
             HandleInputs();
         }
+
         protected override void HandleInputs()
         {
             HandleMouseInput();
             HandleKeyboardInput();
         }
+
         protected override void HandleMouseInput()
         {
             //if we right clicked then add to list

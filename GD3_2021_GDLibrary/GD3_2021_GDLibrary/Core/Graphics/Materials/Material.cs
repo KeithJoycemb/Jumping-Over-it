@@ -7,8 +7,7 @@ namespace GDLibrary.Graphics
         #region Fields
 
         protected string name;
-        protected bool isOpaque = true;
-        protected float alpha = 1;
+        protected float alpha;
         protected Shader shader;
 
         #endregion Fields
@@ -16,7 +15,6 @@ namespace GDLibrary.Graphics
         #region Properties
 
         public string Name { get => name; set => name = value.Trim(); }
-        public bool IsOpaque { get => isOpaque; }
 
         public float Alpha
         {
@@ -24,9 +22,6 @@ namespace GDLibrary.Graphics
             set
             {
                 alpha = value >= 0 && value <= 1 ? value : 1;
-                //if < 1 then we have a semi-transparent object
-                if (alpha < 1)
-                    isOpaque = false;
             }
         }
 
@@ -36,10 +31,11 @@ namespace GDLibrary.Graphics
 
         #region Constructors
 
-        public Material(string name)
+        public Material(string name, Shader shader, float alpha)
         {
             Name = name;
-            Alpha = 1;
+            Alpha = alpha;
+            this.shader = shader;
         }
 
         #endregion Constructors

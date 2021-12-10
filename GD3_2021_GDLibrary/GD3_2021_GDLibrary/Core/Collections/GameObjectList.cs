@@ -17,7 +17,7 @@ namespace GDLibrary.Collections
     /// Provides list storage for a gameobject in either a static or dynamic list
     /// The list itself is not static or dynamic, rather the game object may be static (e.g. a wall) or dynamic (e.g. a pickup spawned in game)
     /// </summary>
-    public class GameObjectList
+    public class GameObjectList : IDisposable
     {
         #region Fields
 
@@ -31,13 +31,14 @@ namespace GDLibrary.Collections
         /// </summary>
         private static readonly int DYNAMIC_LIST_DEFAULT_SIZE = 10;
 
-        protected List<GameObject> staticList;
+        protected List<GameObject> presistentList;
         protected List<GameObject> dynamicList;
         protected List<Renderer> renderers;
         protected List<Controller> controllers;
         protected List<Behaviour> behaviours;
         protected List<Material> materials;
         protected List<Camera> cameras;
+        protected List<Collider> colliders;
 
         #endregion Fields
 
@@ -58,17 +59,23 @@ namespace GDLibrary.Collections
         /// </summary>
         public List<Camera> Cameras => cameras;
 
+        /// <summary>
+        /// Gets a list of all colliders in this scene
+        /// </summary>
+        public List<Collider> Colliders => colliders;
+
         #endregion Properties
 
         #region Constructors
 
         public GameObjectList()
         {
-            staticList = new List<GameObject>(STATIC_LIST_DEFAULT_SIZE);
+            presistentList = new List<GameObject>(STATIC_LIST_DEFAULT_SIZE);
             dynamicList = new List<GameObject>(DYNAMIC_LIST_DEFAULT_SIZE);
             renderers = new List<Renderer>(STATIC_LIST_DEFAULT_SIZE);
             controllers = new List<Controller>(STATIC_LIST_DEFAULT_SIZE);
             behaviours = new List<Behaviour>(STATIC_LIST_DEFAULT_SIZE);
+            colliders = new List<Collider>(STATIC_LIST_DEFAULT_SIZE);
 
             //TODO - replace hardcoded with some reasonable constants
             materials = new List<Material>(5);
@@ -81,10 +88,10 @@ namespace GDLibrary.Collections
 
         public virtual void Update()
         {
-            for (int i = 0; i < staticList.Count; i++)
+            for (int i = 0; i < presistentList.Count; i++)
             {
-                if (staticList[i].IsEnabled)
-                    staticList[i].Update();
+                if (presistentList[i].IsEnabled)
+                    presistentList[i].Update();
             }
 
             for (int i = 0; i < dynamicList.Count; i++)
@@ -96,7 +103,7 @@ namespace GDLibrary.Collections
 
         public virtual void Unload()
         {
-            foreach (GameObject gameObject in staticList)
+            foreach (GameObject gameObject in presistentList)
                 gameObject.Dispose();
 
             foreach (GameObject gameObject in dynamicList)
@@ -109,10 +116,11 @@ namespace GDLibrary.Collections
 
         protected void Clear()
         {
-            staticList.Clear();
+            presistentList.Clear();
             dynamicList.Clear();
             controllers.Clear();
             behaviours.Clear();
+            colliders.Clear();
             renderers.Clear();
             materials.Clear();
             cameras.Clear();
@@ -125,8 +133,8 @@ namespace GDLibrary.Collections
         public void Add(Scene scene, GameObject gameObject)
         {
             //add to the appropriate list of objects in the scene
-            if (gameObject.IsStatic)
-                staticList.Add(gameObject);
+            if (gameObject.IsPersistent)
+                presistentList.Add(gameObject);
             else
                 dynamicList.Add(gameObject);
 
@@ -147,15 +155,19 @@ namespace GDLibrary.Collections
 
         public void Remove(GameObject obj)
         {
-            if (obj.IsStatic)
-                staticList.Add(obj);
+            //remove the game object
+            if (obj.IsPersistent)
+                presistentList.Remove(obj);
             else
-                dynamicList.Add(obj);
+                dynamicList.Remove(obj);
+
+            //remove the objects components e.g. Renderer etc
+            CheckComponents(obj, ComponentChangeType.Remove);
         }
 
         public GameObject Find(Predicate<GameObject> predicate)
         {
-            GameObject found = staticList.Find(predicate);
+            GameObject found = presistentList.Find(predicate);
             if (found == null)
                 found = dynamicList.Find(predicate);
 
@@ -164,7 +176,7 @@ namespace GDLibrary.Collections
 
         public List<GameObject> FindAll(Predicate<GameObject> predicate)
         {
-            List<GameObject> found = staticList.FindAll(predicate);
+            List<GameObject> found = presistentList.FindAll(predicate);
             if (found == null)
                 found = dynamicList.FindAll(predicate);
 
@@ -184,26 +196,33 @@ namespace GDLibrary.Collections
                     else if (type == ComponentChangeType.Remove)
                         RemoveRenderer(renderer);
                 }
-                else if (component is Camera camera)
+                else if (component is Collider collider)
                 {
-                    if (type == ComponentChangeType.Add && !cameras.Contains(camera))
-                        AddCamera(camera);
+                    if (type == ComponentChangeType.Add)
+                        AddCollider(collider);
                     else if (type == ComponentChangeType.Remove)
-                        RemoveCamera(camera);
+                        RemoveCollider(collider);
                 }
                 else if (component is Behaviour behaviour)
                 {
-                    if (type == ComponentChangeType.Add && !behaviours.Contains(behaviour))
+                    if (type == ComponentChangeType.Add)
                         AddBehaviour(behaviour);
                     else if (type == ComponentChangeType.Remove)
                         RemoveBehaviour(behaviour);
                 }
                 else if (component is Controller controller)
                 {
-                    if (type == ComponentChangeType.Add && !controllers.Contains(controller))
+                    if (type == ComponentChangeType.Add)
                         AddController(controller);
                     else if (type == ComponentChangeType.Remove)
                         RemoveController(controller);
+                }
+                else if (component is Camera camera)
+                {
+                    if (type == ComponentChangeType.Add)
+                        AddCamera(camera);
+                    else if (type == ComponentChangeType.Remove)
+                        RemoveCamera(camera);
                 }
             }
         }
@@ -225,6 +244,25 @@ namespace GDLibrary.Collections
             return index;
         }
 
+        protected void Add<E>(List<E> list, E obj, bool sortEnabled)
+        {
+            if (list.Contains(obj))
+                return;
+
+            list.Add(obj);
+
+            if (sortEnabled)
+                list.Sort();
+        }
+
+        protected bool Remove<E>(List<E> list, E obj)
+        {
+            if (list.Contains(obj))
+                return list.Remove(obj);
+
+            return false;
+        }
+
         protected void RemoveCamera(Camera camera)
         {
             if (cameras.Contains(camera))
@@ -244,6 +282,21 @@ namespace GDLibrary.Collections
         {
             if (renderers.Contains(renderer))
                 renderers.Remove(renderer);
+        }
+
+        protected void AddCollider(Collider collider)
+        {
+            if (colliders.Contains(collider))
+                return;
+
+            colliders.Add(collider);
+            colliders.Sort();
+        }
+
+        protected void RemoveCollider(Collider collider)
+        {
+            if (colliders.Contains(collider))
+                colliders.Remove(collider);
         }
 
         protected void AddController(Controller controller)
@@ -274,6 +327,11 @@ namespace GDLibrary.Collections
         {
             if (behaviours.Contains(behaviour))
                 behaviours.Remove(behaviour);
+        }
+
+        public void Dispose()
+        {
+            Clear();
         }
 
         #endregion Actions - Add, Remove, Find, CheckComponents

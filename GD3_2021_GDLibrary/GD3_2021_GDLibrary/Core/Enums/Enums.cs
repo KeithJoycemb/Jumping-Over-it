@@ -20,17 +20,61 @@
     /// </summary>
     public enum EventCategoryType
     {
+        /// <summary>
+        /// Used when we want to toggle, cycle, change cameras
+        /// </summary>
         Camera,
+
+        /// <summary>
+        /// Used when something happens to a PC e.g. win,lose,respawn
+        /// </summary>
         Player,
+
+        /// <summary>
+        /// Used when something happens to a NPC e.g. win,lose,respawn
+        /// </summary>
         NonPlayer,
+
+        /// <summary>
+        /// Used when player picks up a game object
+        /// </summary>
         Pickup,
+
+        /// <summary>
+        /// Used when we want to play/pause/mute etc a sound
+        /// </summary>
         Sound,
+
+        /// <summary>
+        /// Used when player makes a menu choice or to show/hide menu
+        /// </summary>
         Menu,
+
+        /// <summary>
+        /// Used when we want to modify an on-screen ui element (e.g. UIProgressController with OnHealthDelta
+        /// </summary>
         UI,
+
+        /// <summary>
+        /// Used to add/remove objects to the scene
+        /// </summary>
         GameObject,
+
+        /// <summary>
+        /// Used to add/remove objects to the ui
+        /// </summary>
         UiObject,
+
+        /// <summary>
+        /// Used when a transparent game object becomes opaque and vice verse
+        /// </summary>
         Opacity,
-        Picking
+
+        /// <summary>
+        /// Used when we pick something with the physics system e.g. a ray pick
+        /// </summary>
+        Picking,
+        Inventory
 
         //add more here...
     }
@@ -73,8 +117,11 @@
         OnSpawnObject,
         OnObjectPicked,
         OnNoObjectPicked,
-
-        OnJump,
+        OnHealthDelta,
+        OnVolumeSetMaster,
+        OnVolumeChange,
+        OnRemoveInventory,
+        OnAddInventory,
 
         //add more here...
     }
@@ -88,6 +135,7 @@
         Explosion,
         BackgroundMusic,
         Alarm,
-        Jump
+        Jump,
+        Fall
     }
 }
