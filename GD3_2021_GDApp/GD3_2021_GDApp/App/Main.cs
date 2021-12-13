@@ -942,24 +942,13 @@ namespace GDApp
                 shader, Color.White, 1, textureDictionary["checkerboard"])));
 
 
-
-            /*//add Collision Surface(s)
-            collider = new Collider();
-            clone.AddComponent(collider);
-            collider.AddPrimitive(new Box(
-                cube.Transform.LocalTranslation,
-                cube.Transform.LocalRotation,
-                cube.Transform.LocalScale),
-                new MaterialProperties(0.8f, 0.8f, 0.7f));
-            collider.Enable(false, 10);*/
-
             //add Collision Surface(s)
             collider = new Collider();
             mountainArchetype.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["levelForImport"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
-                new MaterialProperties(0.8f, 0.8f, 0.7f));
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
             //add To Scene Manager
@@ -1054,7 +1043,7 @@ namespace GDApp
             ground.AddComponent(collider);
             collider.AddPrimitive(new JigLibX.Geometry.Plane(
                 ground.Transform.Up, ground.Transform.LocalTranslation),
-                new MaterialProperties(0.8f, 0.8f, 0.7f));
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
             //add To Scene Manager
