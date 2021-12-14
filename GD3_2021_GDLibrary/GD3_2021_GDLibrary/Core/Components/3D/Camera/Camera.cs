@@ -53,14 +53,8 @@ namespace GDLibrary.Components
         {
             get
             {
-                if (isViewDirty)
-                {
-                    var transform = gameObject.Transform;
-                    var target = transform.LocalTranslation + Vector3.Transform(Vector3.Forward, transform.RotationMatrix);
-                    viewMatrix = Matrix.CreateLookAt(transform.LocalTranslation, target, up);
-                    isViewDirty = false;
-                    isFrustumDirty = true;
-                }
+                if (viewMatrix == null)
+                    UpdateViewMatrix();
 
                 return viewMatrix;
             }
