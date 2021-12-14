@@ -781,7 +781,7 @@ namespace GDApp
         /// <summary>
         /// Adds component to draw debug info to the screen
         /// </summary>
-        private void InitializeDebugUI(bool showDebugInfo, bool showCollisionSkins = true)
+        private void InitializeDebugUI(bool showDebugInfo, bool showCollisionSkins = false)
         {
             if (showDebugInfo)
             {
