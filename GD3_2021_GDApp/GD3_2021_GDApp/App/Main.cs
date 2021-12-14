@@ -262,6 +262,7 @@ namespace GDApp
 
             if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
             {
+
                 Random rnd = new Random();
                 int rand = rnd.Next(1, 3);   // creates a number between 1 and 6
 
@@ -284,11 +285,21 @@ namespace GDApp
                         EventActionType.OnPlay2D, parameters));
                 }
                 rand = rnd.Next(1, 100);
-                if(rand<=8)
+                if (rand <= 8)
                 {
-                    object[] parameters = { "croak1" };
-                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
-                        EventActionType.OnPlay2D, parameters));
+                    if (rand <= 4)
+                    {
+                        object[] parameters = { "croak1" };
+                        EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                            EventActionType.OnPlay2D, parameters));
+                    }
+                    else
+                    {
+                        object[] parameters = { "croak2" };
+                        EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                            EventActionType.OnPlay2D, parameters));
+                    }
+
                 }
 
             }
@@ -473,6 +484,14 @@ namespace GDApp
                 SoundCategoryType.Jump,
                 new Vector3(1, 0, 0),
                 false));
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/Frog-sound-ribbit");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "croak2",
+                soundEffect,
+                SoundCategoryType.Jump,
+                new Vector3(1, 0, 0),
+                false));
         }
 
         /// <summary>
@@ -584,12 +603,12 @@ namespace GDApp
             //main background
             var texture = textureDictionary["mainmenu"];
             //get how much we need to scale background to fit screen, then downsizes a little so we can see game behind background
-            //var scale = _graphics.GetScaleForTexture(texture,
-            //    new Vector2(0.8f, 0.8f));
+            var scale = _graphics.GetScaleForTexture(texture,
+                new Vector2(0.55f, 0.55f));
 
             menuObject = new UITextureObject("main background",
                 UIObjectType.Texture,
-                new Transform2D(Screen.Instance.ScreenCentre, Vector2.One, 0), //sets position as center of screen
+                new Transform2D(Screen.Instance.ScreenCentre, scale, 0), //sets position as center of screen
                 0,
                 new Color(255, 255, 255),
                 texture.GetOriginAtCenter(), //if we want to position image on screen center then we need to set origin as texture center

@@ -272,6 +272,12 @@
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/fall1.wav
 
+#begin Assets/Sounds/Effects/Frog-sound-ribbit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/Frog-sound-ribbit.wav
+
 #begin Assets/Sounds/Effects/impact1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

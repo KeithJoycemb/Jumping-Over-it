@@ -19,6 +19,9 @@ namespace GDApp
             {
                 case AppData.MENU_PLAY_BTN_NAME:
                     EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPlay));
+                    object[] parameters = { "ambience" };
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                        EventActionType.OnPlay2D, parameters));
                     break;
 
                 case AppData.MENU_CONTROLS_BTN_NAME:
