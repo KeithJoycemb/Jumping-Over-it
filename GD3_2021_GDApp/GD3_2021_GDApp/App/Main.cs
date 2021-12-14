@@ -529,6 +529,8 @@ namespace GDApp
 
             //models
             textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
+            textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
+            
 
             //reticule
             textureDictionary.Add("reticuleOpen",
@@ -969,7 +971,7 @@ namespace GDApp
             InitializeCollidableModels(level);
             //InitializeCollidableTriangleMeshes(level);
             InitializeMountain(level);
-            InitializeWorldAssests(level);
+            //InitializeWorldAssests(level);
 
         }
 
@@ -998,7 +1000,7 @@ namespace GDApp
             mountainArchetype.Transform.SetScale(2, 2, 2);
             mountainArchetype.AddComponent(new ModelRenderer(modelDictionary["levelForImport"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["checkerboard"])));
+                shader, Color.White, 1, textureDictionary["mountain"])));
 
 
             //add Collision Surface(s)
