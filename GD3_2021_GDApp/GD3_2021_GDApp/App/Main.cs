@@ -494,11 +494,25 @@ namespace GDApp
             textureDictionary.Add("controlsmenu", Content.Load<Texture2D>("Assets/Textures/UI/Backgrounds/controlsmenu"));
             textureDictionary.Add("exitmenuwithtrans", Content.Load<Texture2D>("Assets/Textures/UI/Backgrounds/exitmenuwithtrans"));
             textureDictionary.Add("genericbtn", Content.Load<Texture2D>("Assets/Textures/UI/Controls/genericbtn"));
+            textureDictionary.Add("exit", Content.Load<Texture2D>("Assets/Textures/UI/Progress/exit"));
 
             //models
             textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
             textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
-            
+
+            //map
+            textureDictionary.Add("0", Content.Load<Texture2D>("Assets/Textures/UI/map/0"));
+            textureDictionary.Add("1", Content.Load<Texture2D>("Assets/Textures/UI/map/1"));
+            textureDictionary.Add("2", Content.Load<Texture2D>("Assets/Textures/UI/map/2"));
+            textureDictionary.Add("3", Content.Load<Texture2D>("Assets/Textures/UI/map/3"));
+            textureDictionary.Add("4", Content.Load<Texture2D>("Assets/Textures/UI/map/4"));
+            textureDictionary.Add("5", Content.Load<Texture2D>("Assets/Textures/UI/map/5"));
+            textureDictionary.Add("6", Content.Load<Texture2D>("Assets/Textures/UI/map/6"));
+            textureDictionary.Add("7", Content.Load<Texture2D>("Assets/Textures/UI/map/7"));
+            textureDictionary.Add("8", Content.Load<Texture2D>("Assets/Textures/UI/map/8"));
+            textureDictionary.Add("9", Content.Load<Texture2D>("Assets/Textures/UI/map/9"));
+            textureDictionary.Add("10", Content.Load<Texture2D>("Assets/Textures/UI/map/10"));
+
 
             //reticule
             textureDictionary.Add("reticuleOpen",
@@ -679,26 +693,36 @@ namespace GDApp
             var mainGameUIScene = new UIScene(AppData.UI_SCENE_MAIN_NAME);
 
             #region Add Health Bar
+            var mapTextureObj = new UITextureObject("0",
+               UIObjectType.Texture,
+               new Transform2D(new Vector2(1700, 880),
+               Vector2.One, 0),
+               0, textureDictionary["0"]);
+
+            //add a progress controller
+            //healthTextureObj.AddComponent(new UIProgressBarController(4, 8));
+
+            //add the ui element to the scene
+            mainGameUIScene.Add(mapTextureObj);
 
             //add a health bar in the centre of the game window
-            var texture = textureDictionary["progress_white"];
-            var position = new Vector2(_graphics.PreferredBackBufferWidth / 2, 50);
+
+            var texture = textureDictionary["0"];
+            var position = new Vector2(1750, 880);
             var origin = new Vector2(texture.Width / 2, texture.Height / 2);
 
             //create the UI element
             var healthTextureObj = new UITextureObject("health",
                 UIObjectType.Texture,
-                new Transform2D(position, new Vector2(2, 0.5f), 0),
+                new Transform2D(position, new Vector2(.15f, .15f), 0),
                 0,
                 Color.White,
                 origin,
                 texture);
 
-            //add a demo time based behaviour - because we can!
-            healthTextureObj.AddComponent(new UITimeColorFlipBehaviour(Color.White, Color.Red, 1000));
-
+          
             //add a progress controller
-            healthTextureObj.AddComponent(new UIProgressBarController(5, 10));
+            healthTextureObj.AddComponent(new UIProgressBarController(10, 10));
 
             //add the ui element to the scene
             mainGameUIScene.Add(healthTextureObj);
@@ -714,7 +738,7 @@ namespace GDApp
             nameTextObj = new UITextObject(str, UIObjectType.Text,
                 new Transform2D(new Vector2(50, 50),
                 Vector2.One, 0),
-                0, font, "Brutus Maximus");
+                0, font, "Jumping Over it");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
             //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
@@ -846,6 +870,7 @@ namespace GDApp
         {
             #region First Person Camera - Non Collidable
 
+
             //add camera game object
             var camera = new GameObject(AppData.CAMERA_FIRSTPERSON_NONCOLLIDABLE_NAME, GameObjectType.Camera);
 
@@ -853,13 +878,11 @@ namespace GDApp
             //here is where we can set a smaller viewport e.g. for split screen
             //e.g. new Viewport(0, 0, _graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight)
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
-
-            //add controller to actually move the noncollidable camera
             camera.AddComponent(new FirstPersonController(0.05f, 0.025f, new Vector2(0.006f, 0.004f)));
-
+            IsMouseVisible = false;
             //set initial position
-            camera.Transform.SetTranslation(0, 2, 10);
-
+            camera.Transform.SetTranslation(-200, 20, 240);
+            //if(camera.GetTranslation(0,0,0)=(0,0,0));
             //add to level
             level.Add(camera);
 
