@@ -969,6 +969,8 @@ namespace GDApp
             InitializeCollidableModels(level);
             //InitializeCollidableTriangleMeshes(level);
             InitializeMountain(level);
+            InitializeWorldAssests(level);
+
         }
 
 
@@ -1148,6 +1150,78 @@ namespace GDApp
                 //add To Scene Manager
                 level.Add(clone);
             }
+        }
+
+        private void InitializeWorldAssests(Scene level)
+        {
+            #region Trees
+
+            var texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            var shader = new BasicShader(Application.Content, false, true);
+            var basicMaterial = new BasicMaterial("gray", shader, texture);
+
+            var Tree = new GameObject("Tree", GameObjectType.Interactable, true);
+            var treeModel = Content.Load<Model>("Assets/Models/Tree");
+            var treeRenderer = new ModelRenderer(treeModel, basicMaterial);
+
+            Tree.AddComponent(treeRenderer);
+            Tree.Transform.SetScale(0.1f, 0.1f, 0.1f);
+            Tree.Transform.SetTranslation(-360, -30, 385);
+            level.Add(Tree);
+
+            //collider = new Collider();
+            //Tree.AddComponent(collider);
+            //collider.AddPrimitive(
+            //CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),new MaterialProperties(0.1f, 0.8f, 0.7f));
+            //collider.Enable(true, 1);
+
+
+            var count = 0;
+            for (var i = 0; i <= 5; i++)
+            {
+                var clone = Tree.Clone() as GameObject;
+                clone.Name = $"{clone.Name} - {count++}";
+
+                if (i == 0)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-360, -30, 385);
+                }
+                else if (i == 1)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-260, -30, 185);
+                }
+
+                else if (i == 2)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-160, -30, 385);
+                }
+                else if (i == 3)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-460, -30, 385);
+                }
+                else if (i == 4)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-260, -30, 385);
+                }
+
+                level.Add(clone);
+            }
+            #endregion
+
+            #region Rocks
+
+            #endregion
+
+            #region signs
+
+            #endregion
+
+
         }
 
         #endregion Student/Group Specific Code
