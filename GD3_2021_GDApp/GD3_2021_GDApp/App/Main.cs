@@ -457,7 +457,7 @@ namespace GDApp
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "backgroundMusic",
                 soundEffect,
-                SoundCategoryType.BackgroundMusic,
+                SoundCategoryType.Ambience,
                 new Vector3(1, 0, 0),
                 false));
         }
