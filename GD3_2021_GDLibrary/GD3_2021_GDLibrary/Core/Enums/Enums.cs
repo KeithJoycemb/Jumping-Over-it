@@ -136,6 +136,7 @@
         BackgroundMusic,
         Alarm,
         Jump,
-        Fall
+        Fall,
+        Ambience
     }
 }
