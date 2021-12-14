@@ -209,57 +209,8 @@ namespace GDApp
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            //if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.P))
-            //{
-            //    //DEMO - raise event
-            //    //EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-            //    //    EventActionType.OnPause));
 
-            //    object[] parameters = { nameTextObj };
-
-            //    EventDispatcher.Raise(new EventData(EventCategoryType.UiObject,
-            //        EventActionType.OnRemoveObject, parameters));
-
-            //    ////renderManager.StatusType = StatusType.Off;
-            //}
-            //else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.U))
-            //{
-            //    //DEMO - raise event
-
-            //    object[] parameters = { "main game ui", nameTextObj };
-
-            //    EventDispatcher.Raise(new EventData(EventCategoryType.UiObject,
-            //        EventActionType.OnAddObject, parameters));
-
-            //    //renderManager.StatusType = StatusType.Drawn;
-            //    //EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-            //    //  EventActionType.OnPlay));
-            //}
-
-            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Up))
-            {
-                object[] parameters = { "health", 1 };
-                EventDispatcher.Raise(new EventData(EventCategoryType.UI,
-                    EventActionType.OnHealthDelta, parameters));
-            }
-            else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Down))
-            {
-                object[] parameters = { "health", -1 };
-                EventDispatcher.Raise(new EventData(EventCategoryType.UI,
-                    EventActionType.OnHealthDelta, parameters));
-            }
-
-            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Kanji))
-            {
-                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                          EventActionType.OnPause));
-            }
-            else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.O))
-            {
-                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                    EventActionType.OnPlay));
-            }
-
+            #region jumping sounds
             if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
             {
 
@@ -308,6 +259,11 @@ namespace GDApp
                 Application.SceneManager.ActiveScene.CycleCameras();
 
             base.Update(gameTime);
+            #endregion
+
+            //song = Content.Load<Song>("backgroundMusic");
+            //MediaPlayer.Play(song);
+            
         }
 
         /// <summary>
@@ -396,6 +352,8 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/Tree");
             modelDictionary.Add("Assets/Models/TreeEverGreen");
             modelDictionary.Add("Assets/Models/levelForImport");
+            modelDictionary.Add("Assets/Models/rock1");
+            modelDictionary.Add("Assets/Models/rock2");
         }
 
         /// <summary>
@@ -484,12 +442,22 @@ namespace GDApp
                 SoundCategoryType.Jump,
                 new Vector3(1, 0, 0),
                 false));
+
             soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/Frog-sound-ribbit");
             //add the new sound effect
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "croak2",
                 soundEffect,
                 SoundCategoryType.Jump,
+                new Vector3(1, 0, 0),
+                false));
+
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/MainMenuMusic");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "backgroundMusic",
+                soundEffect,
+                SoundCategoryType.BackgroundMusic,
                 new Vector3(1, 0, 0),
                 false));
         }
@@ -966,12 +934,14 @@ namespace GDApp
         private void InitializeCollidables(Scene level, float worldScale = 500)
         {
             InitializeCollidableGround(level, worldScale);
-            InitializeCollidableCubes(level);
+           //InitializeCollidableCubes(level);
 
-            InitializeCollidableModels(level);
+            //InitializeCollidableModels(level);
             //InitializeCollidableTriangleMeshes(level);
             InitializeMountain(level);
             //InitializeWorldAssests(level);
+            InitializeTrees(level);
+            InitializeRocks(level);
 
         }
 
@@ -991,9 +961,6 @@ namespace GDApp
 
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
-
-
-
             //clone the archetypal cube
             mountainArchetype.Name = "Mountain";
             mountainArchetype.Transform.Translate(1, 12, 1);
@@ -1001,7 +968,6 @@ namespace GDApp
             mountainArchetype.AddComponent(new ModelRenderer(modelDictionary["levelForImport"],
                 new BasicMaterial("sphere_material",
                 shader, Color.White, 1, textureDictionary["mountain"])));
-
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1044,43 +1010,43 @@ namespace GDApp
             //level.Add(complexModel);
         }
 
-        private void InitializeCollidableModels(Scene level)
-        {
-            #region Reusable - You can copy and re-use this code elsewhere, if required
+        //private void InitializeCollidableModels(Scene level)
+        //{
+        //    #region Reusable - You can copy and re-use this code elsewhere, if required
 
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
+        //    //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+        //    var shader = new BasicShader(Application.Content, false, true);
 
-            //create the sphere
-            var sphereArchetype = new GameObject("sphere", GameObjectType.Interactable, true);
+        //    //create the sphere
+        //    var sphereArchetype = new GameObject("sphere", GameObjectType.Interactable, true);
 
-            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
-            GameObject clone = null;
+        //    GameObject clone = null;
 
-            for (int i = 0; i < 5; i++)
-            {
-                clone = sphereArchetype.Clone() as GameObject;
-                clone.Name = $"sphere - {i}";
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        clone = sphereArchetype.Clone() as GameObject;
+        //        clone.Name = $"sphere - {i}";
 
-                clone.Transform.SetTranslation(5 + i / 10f, 5 + 4 * i, 0);
-                clone.AddComponent(new ModelRenderer(
-                    modelDictionary["sphere"],
-                    new BasicMaterial("sphere_material",
-                    shader, Color.White, 1, textureDictionary["checkerboard"])));
+        //        clone.Transform.SetTranslation(5 + i / 10f, 5 + 4 * i, 0);
+        //        clone.AddComponent(new ModelRenderer(
+        //            modelDictionary["sphere"],
+        //            new BasicMaterial("sphere_material",
+        //            shader, Color.White, 1, textureDictionary["checkerboard"])));
 
-                //add Collision Surface(s)
-                collider = new Collider(false, false);
-                clone.AddComponent(collider);
-                collider.AddPrimitive(new JigLibX.Geometry.Sphere(
-                   sphereArchetype.Transform.LocalTranslation, 1),
-                    new MaterialProperties(0.8f, 0.8f, 0.7f));
-                collider.Enable(false, 1);
+        //        //add Collision Surface(s)
+        //        collider = new Collider(false, false);
+        //        clone.AddComponent(collider);
+        //        collider.AddPrimitive(new JigLibX.Geometry.Sphere(
+        //           sphereArchetype.Transform.LocalTranslation, 1),
+        //            new MaterialProperties(0.8f, 0.8f, 0.7f));
+        //        collider.Enable(false, 1);
 
-                //add To Scene Manager
-                level.Add(clone);
-            }
-        }
+        //        //add To Scene Manager
+        //        level.Add(clone);
+        //    }
+        //}
 
         private void InitializeCollidableGround(Scene level, float worldScale)
         {
@@ -1111,50 +1077,50 @@ namespace GDApp
             level.Add(ground);
         }
 
-        private void InitializeCollidableCubes(Scene level)
-        {
-            #region Reusable - You can copy and re-use this code elsewhere, if required
+        //private void InitializeCollidableCubes(Scene level)
+        //{
+        //    #region Reusable - You can copy and re-use this code elsewhere, if required
 
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
-            //re-use the mesh
-            var mesh = new CubeMesh();
-            //clone the cube
-            var cube = new GameObject("cube", GameObjectType.Consumable, false);
+        //    //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+        //    var shader = new BasicShader(Application.Content, false, true);
+        //    //re-use the mesh
+        //    var mesh = new CubeMesh();
+        //    //clone the cube
+        //    var cube = new GameObject("cube", GameObjectType.Consumable, false);
 
-            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
-            GameObject clone = null;
+        //    GameObject clone = null;
 
-            for (int i = 5; i < 40; i += 5)
-            {
-                //clone the archetypal cube
-                clone = cube.Clone() as GameObject;
-                clone.Name = $"cube - {i}";
-                clone.Transform.Translate(0, 5 + i, 0);
-                clone.AddComponent(new MeshRenderer(mesh,
-                    new BasicMaterial("cube_material", shader,
-                    Color.White, 1, textureDictionary["crate1"])));
+        //    for (int i = 5; i < 40; i += 5)
+        //    {
+        //        //clone the archetypal cube
+        //        clone = cube.Clone() as GameObject;
+        //        clone.Name = $"cube - {i}";
+        //        clone.Transform.Translate(0, 5 + i, 0);
+        //        clone.AddComponent(new MeshRenderer(mesh,
+        //            new BasicMaterial("cube_material", shader,
+        //            Color.White, 1, textureDictionary["crate1"])));
 
-                //add desc and value to a pickup used when we collect/remove/collide with it
-                clone.AddComponent(new PickupBehaviour("ammo pack", 15));
+        //        //add desc and value to a pickup used when we collect/remove/collide with it
+        //        clone.AddComponent(new PickupBehaviour("ammo pack", 15));
 
-                //add Collision Surface(s)
-                collider = new MyPlayerCollider();
-                clone.AddComponent(collider);
-                collider.AddPrimitive(new Box(
-                    cube.Transform.LocalTranslation,
-                    cube.Transform.LocalRotation,
-                    cube.Transform.LocalScale),
-                    new MaterialProperties(0.8f, 0.8f, 0.7f));
-                collider.Enable(false, 10);
+        //        //add Collision Surface(s)
+        //        collider = new MyPlayerCollider();
+        //        clone.AddComponent(collider);
+        //        collider.AddPrimitive(new Box(
+        //            cube.Transform.LocalTranslation,
+        //            cube.Transform.LocalRotation,
+        //            cube.Transform.LocalScale),
+        //            new MaterialProperties(0.8f, 0.8f, 0.7f));
+        //        collider.Enable(false, 10);
 
-                //add To Scene Manager
-                level.Add(clone);
-            }
-        }
+        //        //add To Scene Manager
+        //        level.Add(clone);
+        //    }
+        //}
 
-        private void InitializeWorldAssests(Scene level)
+        private void InitializeTrees(Scene level)
         {
             #region Trees
 
@@ -1215,14 +1181,68 @@ namespace GDApp
             }
             #endregion
 
-            #region Rocks
+        }
 
+        private void InitializeRocks(Scene level)
+        {
+            #region Trees
+
+            var texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            var shader = new BasicShader(Application.Content, false, true);
+            var basicMaterial = new BasicMaterial("gray", shader, texture);
+
+            var rock1 = new GameObject("rock1", GameObjectType.Interactable, true);
+            var rock1Model = Content.Load<Model>("Assets/Models/rock1");
+            var rock1Renderer = new ModelRenderer(rock1Model, basicMaterial);
+
+            rock1.AddComponent(rock1Renderer);
+            rock1.Transform.SetScale(0.1f, 0.1f, 0.1f);
+            rock1.Transform.SetTranslation(-360, -30, 385);
+            level.Add(rock1);
+
+            //collider = new Collider();
+            //Tree.AddComponent(collider);
+            //collider.AddPrimitive(
+            //CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),new MaterialProperties(0.1f, 0.8f, 0.7f));
+            //collider.Enable(true, 1);
+
+
+            var count = 0;
+            for (var i = 0; i <= 5; i++)
+            {
+                var clone = rock1.Clone() as GameObject;
+                clone.Name = $"{clone.Name} - {count++}";
+
+                if (i == 0)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-360, -30, 385);
+                }
+                else if (i == 1)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-260, -30, 185);
+                }
+
+                else if (i == 2)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-160, -30, 385);
+                }
+                else if (i == 3)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-460, -30, 385);
+                }
+                else if (i == 4)
+                {
+                    clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+                    clone.Transform.SetTranslation(-260, -30, 385);
+                }
+
+                level.Add(clone);
+            }
             #endregion
-
-            #region signs
-
-            #endregion
-
 
         }
 
