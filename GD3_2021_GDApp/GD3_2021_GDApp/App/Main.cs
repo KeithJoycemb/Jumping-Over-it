@@ -262,15 +262,35 @@ namespace GDApp
 
             if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
             {
-                object[] parameters = { "jump1" };
-                EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
-                    EventActionType.OnPlay2D, parameters));
-            }
-            else if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.F2))
-            {
-                object[] parameters = { "smokealarm" };
-                EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
-                    EventActionType.OnStop, parameters));
+                Random rnd = new Random();
+                int rand = rnd.Next(1, 3);   // creates a number between 1 and 6
+
+                if (rand == 1)
+                {
+                    object[] parameters = { "jump1" };
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                        EventActionType.OnPlay2D, parameters));
+                }
+                else if (rand == 2)
+                {
+                    object[] parameters = { "jump2" };
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                        EventActionType.OnPlay2D, parameters));
+                }
+                else if (rand == 3)
+                {
+                    object[] parameters = { "jump3" };
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                        EventActionType.OnPlay2D, parameters));
+                }
+                rand = rnd.Next(1, 100);
+                if(rand<=8)
+                {
+                    object[] parameters = { "croak1" };
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                        EventActionType.OnPlay2D, parameters));
+                }
+
             }
 
             if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.C))
@@ -433,6 +453,24 @@ namespace GDApp
                 "fall1",
                 soundEffect,
                 SoundCategoryType.Fall,
+                new Vector3(1, 0, 0),
+                false));
+
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/ambience");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "ambience",
+                soundEffect,
+                SoundCategoryType.Ambience,
+                new Vector3(1, 0, 0),
+                false));
+
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/croak1");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "croak1",
+                soundEffect,
+                SoundCategoryType.Jump,
                 new Vector3(1, 0, 0),
                 false));
         }
@@ -911,7 +949,7 @@ namespace GDApp
 
             InitializeCollidableModels(level);
             //InitializeCollidableTriangleMeshes(level);
-            InitializeMountain(level) ;
+            InitializeMountain(level);
         }
 
 
@@ -1106,81 +1144,5 @@ namespace GDApp
 
         #endregion Student/Group Specific Code
 
-        /******************************* Demo (Remove For Release) *******************************/
-
-        #region Demo Code
-
-#if DEMO
-
-        public delegate void MyDelegate(string s, bool b);
-
-        public List<MyDelegate> delList = new List<MyDelegate>();
-
-        public void DoSomething(string msg, bool enableIt)
-        {
-        }
-
-        private void InitializeEditorHelpers()
-        {
-            //a game object to record camera positions to an XML file for use in a curve later
-            var curveRecorder = new GameObject("curve recorder", GameObjectType.Editor);
-            curveRecorder.AddComponent(new GDLibrary.Editor.CurveRecorderController());
-            activeScene.Add(curveRecorder);
-        }
-
-        private void RunDemos()
-        {
-            // CurveDemo();
-            // SaveLoadDemo();
-
-            EventSenderDemo();
-        }
-
-        private void EventSenderDemo()
-        {
-            var myDel = new MyDelegate(DoSomething);
-            myDel("sdfsdfdf", true);
-            delList.Add(DoSomething);
-        }
-
-        private void CurveDemo()
-        {
-            //var curve1D = new GDLibrary.Parameters.Curve1D(CurveLoopType.Cycle);
-            //curve1D.Add(0, 0);
-            //curve1D.Add(10, 1000);
-            //curve1D.Add(20, 2000);
-            //curve1D.Add(40, 4000);
-            //curve1D.Add(60, 6000);
-            //var value = curve1D.Evaluate(500, 2);
-        }
-
-        private void SaveLoadDemo()
-        {
-        #region Serialization Single Object Demo
-
-            var demoSaveLoad = new DemoSaveLoad(new Vector3(1, 2, 3), new Vector3(45, 90, -180), new Vector3(1.5f, 0.1f, 20.25f));
-            GDLibrary.Utilities.SerializationUtility.Save("DemoSingle.xml", demoSaveLoad);
-            var readSingle = GDLibrary.Utilities.SerializationUtility.Load("DemoSingle.xml",
-                typeof(DemoSaveLoad)) as DemoSaveLoad;
-
-        #endregion Serialization Single Object Demo
-
-        #region Serialization List Objects Demo
-
-            List<DemoSaveLoad> listDemos = new List<DemoSaveLoad>();
-            listDemos.Add(new DemoSaveLoad(new Vector3(1, 2, 3), new Vector3(45, 90, -180), new Vector3(1.5f, 0.1f, 20.25f)));
-            listDemos.Add(new DemoSaveLoad(new Vector3(10, 20, 30), new Vector3(4, 9, -18), new Vector3(15f, 1f, 202.5f)));
-            listDemos.Add(new DemoSaveLoad(new Vector3(100, 200, 300), new Vector3(145, 290, -80), new Vector3(6.5f, 1.1f, 8.05f)));
-
-            GDLibrary.Utilities.SerializationUtility.Save("ListDemo.xml", listDemos);
-            var readList = GDLibrary.Utilities.SerializationUtility.Load("ListDemo.xml",
-                typeof(List<DemoSaveLoad>)) as List<DemoSaveLoad>;
-
-        #endregion Serialization List Objects Demo
-        }
-
-#endif
-
-        #endregion Demo Code
     }
 }
