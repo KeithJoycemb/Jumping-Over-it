@@ -354,6 +354,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/levelForImport");
             modelDictionary.Add("Assets/Models/rock1");
             modelDictionary.Add("Assets/Models/rock2");
+            modelDictionary.Add("Assets/Models/platform");
         }
 
         /// <summary>
@@ -499,6 +500,7 @@ namespace GDApp
             //models
             textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
             textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
+            textureDictionary.Add("platform", Content.Load<Texture2D>("Assets/Textures/Models/platform"));
 
             //map
             textureDictionary.Add("0", Content.Load<Texture2D>("Assets/Textures/UI/map/0"));
@@ -964,10 +966,46 @@ namespace GDApp
             //InitializeWorldAssests(level);
             //InitializeTrees(level);
             InitializeRocks(level);
+            InitializePlatform(level);
 
         }
 
+        private void InitializePlatform(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
 
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+
+            //create the platform
+            var platformArchetype = new GameObject("platform",
+                GameObjectType.Interactable, true);
+
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+            //clone the archetypal cube
+            platformArchetype.Name = "platform";
+            platformArchetype.Transform.Translate(0, 10, 40);
+            platformArchetype.Transform.SetScale(1, 1, 1);
+            platformArchetype.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            platformArchetype.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(platformArchetype);
+
+        }
         private void InitializeMountain(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
