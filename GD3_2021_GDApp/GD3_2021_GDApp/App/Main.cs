@@ -458,7 +458,7 @@ namespace GDApp
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "backgroundMusic",
                 soundEffect,
-                SoundCategoryType.BackgroundMusic,
+                SoundCategoryType.Ambience,
                 new Vector3(1, 0, 0),
                 false));
         }
@@ -516,11 +516,7 @@ namespace GDApp
             textureDictionary.Add("10", Content.Load<Texture2D>("Assets/Textures/UI/map/10"));
 
 
-            //reticule
-            textureDictionary.Add("reticuleOpen",
-      Content.Load<Texture2D>("Assets/Textures/UI/Controls/reticuleOpen"));
-            textureDictionary.Add("reticuleDefault",
-          Content.Load<Texture2D>("Assets/Textures/UI/Controls/reticuleDefault"));
+         
         }
 
         /// <summary>
@@ -733,7 +729,7 @@ namespace GDApp
             nameTextObj = new UITextObject(str, UIObjectType.Text,
                 new Transform2D(new Vector2(50, 50),
                 Vector2.One, 0),
-                0, font, "Brutus Maximus");
+                0, font, "");
 
             //  nameTextObj.Origin = font.MeasureString(str) / 2;
             //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
@@ -742,32 +738,6 @@ namespace GDApp
             mainGameUIScene.Add(nameTextObj);
 
             #endregion Add Text
-
-            #region Add Reticule
-
-            var defaultTexture = textureDictionary["reticuleDefault"];
-            var alternateTexture = textureDictionary["reticuleOpen"];
-            origin = defaultTexture.GetOriginAtCenter();
-
-            var reticule = new UITextureObject("reticule",
-                     UIObjectType.Texture,
-                new Transform2D(Vector2.Zero, Vector2.One, 0),
-                0,
-                Color.White,
-                SpriteEffects.None,
-                origin,
-                defaultTexture,
-                alternateTexture,
-                new Microsoft.Xna.Framework.Rectangle(0, 0,
-                defaultTexture.Width, defaultTexture.Height));
-
-            reticule.AddComponent(new UIReticuleBehaviour());
-
-            mainGameUIScene.Add(reticule);
-
-            #endregion Add Reticule
-
-            
 
             #region Add Scene To Manager & Set Active Scene
 
