@@ -377,6 +377,12 @@
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/smokealarm1.ogg
 
+#begin Assets/Sounds/Effects/walking.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/walking.wav
+
 #begin Assets/Textures/Architecture/Walls/backwall.jpg
 /importer:TextureImporter
 /processor:TextureProcessor

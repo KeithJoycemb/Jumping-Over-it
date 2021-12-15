@@ -261,9 +261,34 @@ namespace GDApp
             base.Update(gameTime);
             #endregion
 
-            //song = Content.Load<Song>("backgroundMusic");
-            //MediaPlayer.Play(song);
-            
+            #region Walking Sounds
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.W))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.A))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.S))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.D))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            #endregion Walking sounds
+
         }
 
         /// <summary>
@@ -461,6 +486,17 @@ namespace GDApp
                 SoundCategoryType.Ambience,
                 new Vector3(1, 0, 0),
                 false));
+
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/walking");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "walking",
+                soundEffect,
+                SoundCategoryType.Ambience,
+                new Vector3(1, 0, 0),
+                false));
+
+
         }
 
         /// <summary>
