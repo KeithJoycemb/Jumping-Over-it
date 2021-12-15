@@ -453,7 +453,7 @@ namespace GDApp
                 new Vector3(1, 0, 0),
                 false));
 
-            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/MainMenuMusic");
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/BackGroundMusic");
             //add the new sound effect
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "backgroundMusic",
@@ -483,6 +483,7 @@ namespace GDApp
             //environment
             textureDictionary.Add("grass", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1"));
             textureDictionary.Add("crate1", Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1"));
+            textureDictionary.Add("grass2", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass2"));
 
             //ui
             textureDictionary.Add("ui_progress_32_8", Content.Load<Texture2D>("Assets/Textures/UI/Controls/ui_progress_32_8"));
@@ -1093,7 +1094,7 @@ namespace GDApp
             var ground = new GameObject("ground", GameObjectType.Ground, true);
             ground.Transform.SetRotation(-90, 0, 0);
             ground.Transform.SetScale(worldScale, worldScale, 1);
-            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass"])));
+            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass2"])));
 
             //add Collision Surface(s)
             collider = new Collider();

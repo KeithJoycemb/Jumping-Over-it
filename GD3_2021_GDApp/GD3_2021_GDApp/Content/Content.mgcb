@@ -311,6 +311,12 @@
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/ambience.wav
 
+#begin Assets/Sounds/Effects/BackGroundMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/BackGroundMusic.wav
+
 #begin Assets/Sounds/Effects/croak1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -364,12 +370,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/jumping4.wav
-
-#begin Assets/Sounds/Effects/MainMenuMusic.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Assets/Sounds/Effects/MainMenuMusic.wav
 
 #begin Assets/Sounds/Effects/smokealarm1.ogg
 /importer:OggImporter
@@ -436,6 +436,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Foliage/Ground/grass1.jpg
+
+#begin Assets/Textures/Foliage/Ground/grass2.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Foliage/Ground/grass2.jpg
 
 #begin Assets/Textures/Foliage/Trees/tree1.png
 /importer:TextureImporter
