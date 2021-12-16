@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(false,false);
+            InitializeDebugUI(true,true);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -541,6 +541,8 @@ namespace GDApp
             textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
             textureDictionary.Add("platform", Content.Load<Texture2D>("Assets/Textures/Models/platform"));
             textureDictionary.Add("crown", Content.Load<Texture2D>("Assets/Textures/Models/crown"));
+            textureDictionary.Add("sign", Content.Load<Texture2D>("Assets/Textures/Models/Wood_01_07_low6SG-color"));
+            textureDictionary.Add("tree", Content.Load<Texture2D>("Assets/Textures/Models/tree"));
 
 
             //map
@@ -975,7 +977,7 @@ namespace GDApp
             //InitializeCollidableTriangleMeshes(level);
             InitializeMountain(level);
             //InitializeWorldAssests(level);
-            //InitializeTrees(level);
+            InitializeTrees(level);
             InitializeRocks(level);
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
@@ -1176,7 +1178,7 @@ namespace GDApp
             clone.Name = "sign1";
             clone.Transform.Translate(-70, 12, 56);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1185,6 +1187,7 @@ namespace GDApp
                CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
+            clone.Transform.SetRotation(0, 180, 0);
             collider.Enable(true, 1);
 
            
@@ -1357,9 +1360,9 @@ namespace GDApp
         {
             #region Trees
 
-            var texture = Content.Load<Texture2D>("Assets/Textures/Models/gray");
+            var texture = Content.Load<Texture2D>("Assets/Textures/Models/tree");
             var shader = new BasicShader(Application.Content, false, true);
-            var basicMaterial = new BasicMaterial("gray", shader, texture);
+            var basicMaterial = new BasicMaterial("tree", shader, texture);
 
             var Tree = new GameObject("Tree", GameObjectType.Interactable, true);
             var treeModel = Content.Load<Model>("Assets/Models/Tree");
@@ -1386,28 +1389,28 @@ namespace GDApp
                 if (i == 0)
                 {
                     clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
-                    clone.Transform.SetTranslation(-360, -30, 385);
+                    clone.Transform.SetTranslation(-360, -10, 385);
                 }
                 else if (i == 1)
                 {
                     clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
-                    clone.Transform.SetTranslation(-260, -30, 185);
+                    clone.Transform.SetTranslation(-260, -10, 185);
                 }
 
                 else if (i == 2)
                 {
                     clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
-                    clone.Transform.SetTranslation(-160, -30, 385);
+                    clone.Transform.SetTranslation(-160, -10, 385);
                 }
                 else if (i == 3)
                 {
                     clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
-                    clone.Transform.SetTranslation(-460, -30, 385);
+                    clone.Transform.SetTranslation(-460, -10, 385);
                 }
                 else if (i == 4)
                 {
                     clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
-                    clone.Transform.SetTranslation(-260, -30, 385);
+                    clone.Transform.SetTranslation(-98, -10, 40);
                 }
 
                 level.Add(clone);

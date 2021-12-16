@@ -601,6 +601,30 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Models/platform.png
 
+#begin Assets/Textures/Models/tree.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Models/tree.png
+
+#begin Assets/Textures/Models/Wood_01_07_low6SG-color.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Models/Wood_01_07_low6SG-color.png
+
 #begin Assets/Textures/Props/Crates/crate1.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
