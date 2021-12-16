@@ -957,7 +957,7 @@ namespace GDApp
 
             //clone the archetypal cube
             platformArchetype.Name = "platform";
-            platformArchetype.Transform.Translate(0, 10, 40);
+            platformArchetype.Transform.Translate(-32, 12, 25);
             platformArchetype.Transform.SetScale(1, 1, 1);
             platformArchetype.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
@@ -968,7 +968,7 @@ namespace GDApp
             platformArchetype.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
+                new Vector3(0, 0, 0), new Vector3(0, 0,0), new Vector3(1f, 1f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
