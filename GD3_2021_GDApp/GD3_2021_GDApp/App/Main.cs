@@ -1007,7 +1007,7 @@ namespace GDApp
 
             //clone the archetypal cube
             clone.Name = "platform1";
-            clone.Transform.Translate(-25, 38, -80);
+            clone.Transform.Translate(-60, 13, 54);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
@@ -1026,7 +1026,6 @@ namespace GDApp
             level.Add(clone);
             #endregion
 
-
             #region Second Platform
             clone = null;
 
@@ -1035,7 +1034,115 @@ namespace GDApp
 
             //clone the archetypal cube
             clone.Name = "platform2";
-            clone.Transform.Translate(-70, 40, -20);
+            clone.Transform.Translate(-52, 13, 54);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #region 3rd platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform3";
+            clone.Transform.Translate(-44, 13, 54);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #region 4th platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform4";
+            clone.Transform.Translate(1, 25, 8);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #region 5th platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform5";
+            clone.Transform.Translate(0.5f, 25, 8);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #region 6th platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform3";
+            clone.Transform.Translate(-44, 13, 54);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
@@ -1094,45 +1201,6 @@ namespace GDApp
 
         }
 
-       
-
-        //private void InitializeCollidableModels(Scene level)
-        //{
-        //    #region Reusable - You can copy and re-use this code elsewhere, if required
-
-        //    //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-        //    var shader = new BasicShader(Application.Content, false, true);
-
-        //    //create the sphere
-        //    var sphereArchetype = new GameObject("sphere", GameObjectType.Interactable, true);
-
-        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
-
-        //    GameObject clone = null;
-
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        clone = sphereArchetype.Clone() as GameObject;
-        //        clone.Name = $"sphere - {i}";
-
-        //        clone.Transform.SetTranslation(5 + i / 10f, 5 + 4 * i, 0);
-        //        clone.AddComponent(new ModelRenderer(
-        //            modelDictionary["sphere"],
-        //            new BasicMaterial("sphere_material",
-        //            shader, Color.White, 1, textureDictionary["checkerboard"])));
-
-        //        //add Collision Surface(s)
-        //        collider = new Collider(false, false);
-        //        clone.AddComponent(collider);
-        //        collider.AddPrimitive(new JigLibX.Geometry.Sphere(
-        //           sphereArchetype.Transform.LocalTranslation, 1),
-        //            new MaterialProperties(0.8f, 0.8f, 0.7f));
-        //        collider.Enable(false, 1);
-
-        //        //add To Scene Manager
-        //        level.Add(clone);
-        //    }
-        //}
 
         private void InitializeCollidableGround(Scene level, float worldScale)
         {
@@ -1387,21 +1455,21 @@ namespace GDApp
              #region Rocks
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
             var shader = new BasicShader(Application.Content, false, true);
-            var rock = new GameObject("rock", GameObjectType.Platform, true);
+            var rock = new GameObject("rock1", GameObjectType.Platform, true);
 
             GameObject clone = null;
 
             clone = rock.Clone() as GameObject;
-            clone.Name = "rock";
+            clone.Name = "rock1";
             clone.Transform.Translate(-70, 12, 56);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["rock"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["rock1"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
             collider = new Collider();
             clone.AddComponent(collider);
             collider.AddPrimitive(
-               CollisionUtility.GetTriangleMesh(modelDictionary["rock"],
+               CollisionUtility.GetTriangleMesh(modelDictionary["rock1"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
