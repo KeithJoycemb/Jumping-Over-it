@@ -973,11 +973,11 @@ namespace GDApp
             //InitializeWorldAssests(level);
             //InitializeTrees(level);
             InitializeRocks(level);
-            InitializePlatform(level);
+            InitializeStaticPlatforms(level);
 
         }
 
-        private void InitializePlatform(Scene level)
+        private void InitializeStaticPlatforms(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
 
@@ -992,13 +992,15 @@ namespace GDApp
 
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
+
+            #region First platform
             GameObject clone = null;
 
 
             clone = platformArchetype.Clone() as GameObject;
 
             //clone the archetypal cube
-            clone.Name = "platform";
+            clone.Name = "platform1";
             clone.Transform.Translate(-25, 38, -80);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
@@ -1016,6 +1018,35 @@ namespace GDApp
 
             //add To Scene Manager
             level.Add(clone);
+            #endregion
+
+
+            #region Second Platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform2";
+            clone.Transform.Translate(-25, 68, -80);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
 
         }
         private void InitializeMountain(Scene level)
