@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -381,6 +381,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/rock2");
             modelDictionary.Add("Assets/Models/platform");
             modelDictionary.Add("Assets/Models/SIGNFINISHED");
+            modelDictionary.Add("Assets/Models/crown");
         }
 
         /// <summary>
@@ -539,6 +540,8 @@ namespace GDApp
             textureDictionary.Add("gray", Content.Load<Texture2D>("Assets/Textures/Models/gray"));
             textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
             textureDictionary.Add("platform", Content.Load<Texture2D>("Assets/Textures/Models/platform"));
+            textureDictionary.Add("crown", Content.Load<Texture2D>("Assets/Textures/Models/crown"));
+
 
             //map
             textureDictionary.Add("0", Content.Load<Texture2D>("Assets/Textures/UI/map/0"));
@@ -976,6 +979,7 @@ namespace GDApp
             InitializeRocks(level);
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
+            InitializeCrown(level);
 
         }
 
@@ -1189,6 +1193,37 @@ namespace GDApp
             level.Add(clone);
             #endregion
         }
+        private void InitializeCrown(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("crown", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = crown.Clone() as GameObject;
+            clone.Name = "crown";
+            clone.Transform.Translate(-55, 123, -27);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["crown"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["crown"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["crown"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
+
 
         private void InitializeTrees(Scene level)
         {
