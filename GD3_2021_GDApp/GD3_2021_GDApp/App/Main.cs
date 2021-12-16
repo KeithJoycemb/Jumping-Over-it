@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -1162,8 +1162,6 @@ namespace GDApp
         private void InitializeSigns(Scene level)
         {
             #region Signs
-
-
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
             var shader = new BasicShader(Application.Content, false, true);
             var sign = new GameObject("SIGNFINISHED", GameObjectType.Platform, true);
@@ -1171,7 +1169,7 @@ namespace GDApp
             GameObject clone = null;
 
             clone = sign.Clone() as GameObject;
-            clone.Name = "platform1";
+            clone.Name = "sign1";
             clone.Transform.Translate(-70, 12, 56);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
@@ -1185,9 +1183,139 @@ namespace GDApp
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
+           
+            level.Add(clone);
+            
+
+            #region 2nd Sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            
+            clone.Name = "sign2";
+            clone.Transform.Translate(4, 24, 20);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"],new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+           
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+     
+            level.Add(clone);
+            #endregion
+
+            #region 3rd Sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            clone.Name = "sign3";
+            clone.Transform.Translate(-33, 35, -54);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+           
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+        
+            level.Add(clone);
+            #endregion
+
+            #region 4th sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            clone.Name = "sign4";
+            clone.Transform.Translate(-107, 47, -18);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            level.Add(clone);
+            #endregion
+
+            #region 5th sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            clone.Name = "sign5";
+            clone.Transform.Translate(-81.4f, 58.5f, 38);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
             //add To Scene Manager
             level.Add(clone);
             #endregion
+
+            #region 6th sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            clone.Name = "sign6";
+            clone.Transform.Translate(-38.6f, 81.5f, -46.9f);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #region 7th sign
+            clone = null;
+            clone = sign.Clone() as GameObject;
+
+            clone.Name = "sign7";
+            clone.Transform.Translate(-102.8f, 92.7f, -13.6f);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+
+            #endregion signs
         }
 
         private void InitializeTrees(Scene level)
