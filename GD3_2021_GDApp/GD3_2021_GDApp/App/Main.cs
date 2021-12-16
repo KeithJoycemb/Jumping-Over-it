@@ -261,9 +261,34 @@ namespace GDApp
             base.Update(gameTime);
             #endregion
 
-            //song = Content.Load<Song>("backgroundMusic");
-            //MediaPlayer.Play(song);
-            
+            #region Walking Sounds
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.W))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.A))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.S))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.D))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            #endregion Walking sounds
+
         }
 
         /// <summary>
@@ -311,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(false,false);
+            InitializeDebugUI(true,true);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -355,6 +380,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/rock1");
             modelDictionary.Add("Assets/Models/rock2");
             modelDictionary.Add("Assets/Models/platform");
+            modelDictionary.Add("Assets/Models/SIGNFINISHED");
         }
 
         /// <summary>
@@ -453,7 +479,7 @@ namespace GDApp
                 new Vector3(1, 0, 0),
                 false));
 
-            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/MainMenuMusic");
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/BackGroundMusic");
             //add the new sound effect
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "backgroundMusic",
@@ -461,6 +487,17 @@ namespace GDApp
                 SoundCategoryType.Ambience,
                 new Vector3(1, 0, 0),
                 false));
+
+            soundEffect = Content.Load<SoundEffect>("Assets/Sounds/Effects/walking");
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "walking",
+                soundEffect,
+                SoundCategoryType.Ambience,
+                new Vector3(1, 0, 0),
+                false));
+
+
         }
 
         /// <summary>
@@ -483,6 +520,7 @@ namespace GDApp
             //environment
             textureDictionary.Add("grass", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1"));
             textureDictionary.Add("crate1", Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1"));
+            textureDictionary.Add("grass2", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass2"));
 
             //ui
             textureDictionary.Add("ui_progress_32_8", Content.Load<Texture2D>("Assets/Textures/UI/Controls/ui_progress_32_8"));
@@ -936,11 +974,12 @@ namespace GDApp
             //InitializeWorldAssests(level);
             //InitializeTrees(level);
             InitializeRocks(level);
-            InitializePlatform(level);
+            InitializeStaticPlatforms(level);
+            InitializeSigns(level);
 
         }
 
-        private void InitializePlatform(Scene level)
+        private void InitializeStaticPlatforms(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
 
@@ -950,30 +989,66 @@ namespace GDApp
 
             //create the platform
             var platformArchetype = new GameObject("platform",
-                GameObjectType.Interactable, true);
+                GameObjectType.Platform, true);
 
 
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
+
+            #region First platform
+            GameObject clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
             //clone the archetypal cube
-            platformArchetype.Name = "platform";
-            platformArchetype.Transform.Translate(-32, 12, 25);
-            platformArchetype.Transform.SetScale(1, 1, 1);
-            platformArchetype.AddComponent(new ModelRenderer(modelDictionary["platform"],
+            clone.Name = "platform1";
+            clone.Transform.Translate(-25, 38, -80);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
                 shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
-            platformArchetype.AddComponent(collider);
+            clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
-                new Vector3(0, 0, 0), new Vector3(0, 0,0), new Vector3(1f, 1f, 1f)),
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
             //add To Scene Manager
-            level.Add(platformArchetype);
+            level.Add(clone);
+            #endregion
+
+
+            #region Second Platform
+            clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform2";
+            clone.Transform.Translate(-70, 40, -20);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
 
         }
         private void InitializeMountain(Scene level)
@@ -992,6 +1067,8 @@ namespace GDApp
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
             //clone the archetypal cube
+            
+
             mountainArchetype.Name = "Mountain";
             mountainArchetype.Transform.Translate(1, 12, 1);
             mountainArchetype.Transform.SetScale(2, 2, 2);
@@ -1013,32 +1090,7 @@ namespace GDApp
 
         }
 
-        private void InitializeCollidableTriangleMeshes(Scene level)
-        {
-            ////re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            //var shader = new BasicShader(Application.Content, false, true);
-
-            ////create the teapot
-            //var complexModel = new GameObject("teapot", GameObjectType.Environment, true);
-            //complexModel.Transform.SetTranslation(0, 5, 0);
-            ////        complexModel.Transform.SetScale(0.4f, 0.4f, 0.4f);
-            //complexModel.AddComponent(new ModelRenderer(
-            //    modelDictionary["monkey1"],
-            //    new BasicMaterial("teapot_material", shader,
-            //    Color.White, 1, textureDictionary["mona lisa"])));
-
-            ////add Collision Surface(s)
-            //collider = new Collider();
-            //complexModel.AddComponent(collider);
-            //collider.AddPrimitive(
-            //   CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
-            //    new Vector3(0, 5, 0), new Vector3(90, 0, 0), new Vector3(0.5f, 0.5f, 0.5f)),
-            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
-            //collider.Enable(true, 1);
-
-            ////add To Scene Manager
-            //level.Add(complexModel);
-        }
+       
 
         //private void InitializeCollidableModels(Scene level)
         //{
@@ -1093,7 +1145,7 @@ namespace GDApp
             var ground = new GameObject("ground", GameObjectType.Ground, true);
             ground.Transform.SetRotation(-90, 0, 0);
             ground.Transform.SetScale(worldScale, worldScale, 1);
-            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass"])));
+            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass2"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1107,48 +1159,36 @@ namespace GDApp
             level.Add(ground);
         }
 
-        //private void InitializeCollidableCubes(Scene level)
-        //{
-        //    #region Reusable - You can copy and re-use this code elsewhere, if required
+        private void InitializeSigns(Scene level)
+        {
+            #region Signs
 
-        //    //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-        //    var shader = new BasicShader(Application.Content, false, true);
-        //    //re-use the mesh
-        //    var mesh = new CubeMesh();
-        //    //clone the cube
-        //    var cube = new GameObject("cube", GameObjectType.Consumable, false);
 
-        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var sign = new GameObject("SIGNFINISHED", GameObjectType.Platform, true);
 
-        //    GameObject clone = null;
+            GameObject clone = null;
 
-        //    for (int i = 5; i < 40; i += 5)
-        //    {
-        //        //clone the archetypal cube
-        //        clone = cube.Clone() as GameObject;
-        //        clone.Name = $"cube - {i}";
-        //        clone.Transform.Translate(0, 5 + i, 0);
-        //        clone.AddComponent(new MeshRenderer(mesh,
-        //            new BasicMaterial("cube_material", shader,
-        //            Color.White, 1, textureDictionary["crate1"])));
+            clone = sign.Clone() as GameObject;
+            clone.Name = "platform1";
+            clone.Transform.Translate(-70, 12, 56);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
 
-        //        //add desc and value to a pickup used when we collect/remove/collide with it
-        //        clone.AddComponent(new PickupBehaviour("ammo pack", 15));
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
 
-        //        //add Collision Surface(s)
-        //        collider = new MyPlayerCollider();
-        //        clone.AddComponent(collider);
-        //        collider.AddPrimitive(new Box(
-        //            cube.Transform.LocalTranslation,
-        //            cube.Transform.LocalRotation,
-        //            cube.Transform.LocalScale),
-        //            new MaterialProperties(0.8f, 0.8f, 0.7f));
-        //        collider.Enable(false, 10);
-
-        //        //add To Scene Manager
-        //        level.Add(clone);
-        //    }
-        //}
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
 
         private void InitializeTrees(Scene level)
         {

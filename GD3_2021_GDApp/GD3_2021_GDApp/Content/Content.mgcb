@@ -191,6 +191,25 @@
 /processorParam:TextureFormat=Compressed
 /build:Assets/Models/rock2.FBX
 
+#begin Assets/Models/SIGNFINISHED.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Assets/Models/SIGNFINISHED.fbx
+
 #begin Assets/Models/sphere.FBX
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -311,6 +330,12 @@
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/ambience.wav
 
+#begin Assets/Sounds/Effects/BackGroundMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/BackGroundMusic.wav
+
 #begin Assets/Sounds/Effects/croak1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -365,17 +390,17 @@
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/jumping4.wav
 
-#begin Assets/Sounds/Effects/MainMenuMusic.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Assets/Sounds/Effects/MainMenuMusic.wav
-
 #begin Assets/Sounds/Effects/smokealarm1.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Assets/Sounds/Effects/smokealarm1.ogg
+
+#begin Assets/Sounds/Effects/walking.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Sounds/Effects/walking.wav
 
 #begin Assets/Textures/Architecture/Walls/backwall.jpg
 /importer:TextureImporter
@@ -436,6 +461,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Foliage/Ground/grass1.jpg
+
+#begin Assets/Textures/Foliage/Ground/grass2.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Foliage/Ground/grass2.jpg
 
 #begin Assets/Textures/Foliage/Trees/tree1.png
 /importer:TextureImporter
