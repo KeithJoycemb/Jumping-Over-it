@@ -541,6 +541,8 @@ namespace GDApp
             textureDictionary.Add("mountain", Content.Load<Texture2D>("Assets/Textures/Models/mountain"));
             textureDictionary.Add("platform", Content.Load<Texture2D>("Assets/Textures/Models/platform"));
             textureDictionary.Add("crown", Content.Load<Texture2D>("Assets/Textures/Models/crown"));
+            textureDictionary.Add("sign", Content.Load<Texture2D>("Assets/Textures/Models/Wood_01_07_low6SG-color"));
+            textureDictionary.Add("tree", Content.Load<Texture2D>("Assets/Textures/Models/tree"));
 
 
             //map
@@ -975,7 +977,7 @@ namespace GDApp
             //InitializeCollidableTriangleMeshes(level);
             InitializeMountain(level);
             //InitializeWorldAssests(level);
-            //InitializeTrees(level);
+            InitializeTrees(level);
             InitializeRocks(level);
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
@@ -1244,7 +1246,7 @@ namespace GDApp
             clone.Name = "sign1";
             clone.Transform.Translate(-70, 12, 56);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1253,6 +1255,7 @@ namespace GDApp
                CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
+            clone.Transform.SetRotation(0, 180, 0);
             collider.Enable(true, 1);
 
            
