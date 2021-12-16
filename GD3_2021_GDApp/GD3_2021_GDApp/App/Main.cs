@@ -992,17 +992,22 @@ namespace GDApp
 
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
+            GameObject clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
             //clone the archetypal cube
-            platformArchetype.Name = "platform";
-            platformArchetype.Transform.Translate(0, 10, 40);
-            platformArchetype.Transform.SetScale(1, 1, 1);
-            platformArchetype.AddComponent(new ModelRenderer(modelDictionary["platform"],
+            clone.Name = "platform";
+            clone.Transform.Translate(-25, 38, -80);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
                 shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
-            platformArchetype.AddComponent(collider);
+            clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
@@ -1010,7 +1015,7 @@ namespace GDApp
             collider.Enable(true, 1);
 
             //add To Scene Manager
-            level.Add(platformArchetype);
+            level.Add(clone);
 
         }
         private void InitializeMountain(Scene level)
@@ -1029,6 +1034,8 @@ namespace GDApp
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
             //clone the archetypal cube
+            
+
             mountainArchetype.Name = "Mountain";
             mountainArchetype.Transform.Translate(1, 12, 1);
             mountainArchetype.Transform.SetScale(2, 2, 2);
