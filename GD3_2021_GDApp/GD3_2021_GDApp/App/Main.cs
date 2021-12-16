@@ -1031,7 +1031,7 @@ namespace GDApp
 
             //clone the archetypal cube
             clone.Name = "platform2";
-            clone.Transform.Translate(-25, 68, -80);
+            clone.Transform.Translate(-70, 40, -20);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
