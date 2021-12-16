@@ -380,6 +380,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/rock1");
             modelDictionary.Add("Assets/Models/rock2");
             modelDictionary.Add("Assets/Models/platform");
+            modelDictionary.Add("Assets/Models/SIGNFINISHED");
         }
 
         /// <summary>
@@ -974,6 +975,7 @@ namespace GDApp
             //InitializeTrees(level);
             InitializeRocks(level);
             InitializeStaticPlatforms(level);
+            InitializeSigns(level);
 
         }
 
@@ -1088,32 +1090,7 @@ namespace GDApp
 
         }
 
-        private void InitializeCollidableTriangleMeshes(Scene level)
-        {
-            ////re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            //var shader = new BasicShader(Application.Content, false, true);
-
-            ////create the teapot
-            //var complexModel = new GameObject("teapot", GameObjectType.Environment, true);
-            //complexModel.Transform.SetTranslation(0, 5, 0);
-            ////        complexModel.Transform.SetScale(0.4f, 0.4f, 0.4f);
-            //complexModel.AddComponent(new ModelRenderer(
-            //    modelDictionary["monkey1"],
-            //    new BasicMaterial("teapot_material", shader,
-            //    Color.White, 1, textureDictionary["mona lisa"])));
-
-            ////add Collision Surface(s)
-            //collider = new Collider();
-            //complexModel.AddComponent(collider);
-            //collider.AddPrimitive(
-            //   CollisionUtility.GetTriangleMesh(modelDictionary["monkey1"],
-            //    new Vector3(0, 5, 0), new Vector3(90, 0, 0), new Vector3(0.5f, 0.5f, 0.5f)),
-            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
-            //collider.Enable(true, 1);
-
-            ////add To Scene Manager
-            //level.Add(complexModel);
-        }
+       
 
         //private void InitializeCollidableModels(Scene level)
         //{
@@ -1182,48 +1159,36 @@ namespace GDApp
             level.Add(ground);
         }
 
-        //private void InitializeCollidableCubes(Scene level)
-        //{
-        //    #region Reusable - You can copy and re-use this code elsewhere, if required
+        private void InitializeSigns(Scene level)
+        {
+            #region Signs
 
-        //    //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-        //    var shader = new BasicShader(Application.Content, false, true);
-        //    //re-use the mesh
-        //    var mesh = new CubeMesh();
-        //    //clone the cube
-        //    var cube = new GameObject("cube", GameObjectType.Consumable, false);
 
-        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var sign = new GameObject("SIGNFINISHED", GameObjectType.Platform, true);
 
-        //    GameObject clone = null;
+            GameObject clone = null;
 
-        //    for (int i = 5; i < 40; i += 5)
-        //    {
-        //        //clone the archetypal cube
-        //        clone = cube.Clone() as GameObject;
-        //        clone.Name = $"cube - {i}";
-        //        clone.Transform.Translate(0, 5 + i, 0);
-        //        clone.AddComponent(new MeshRenderer(mesh,
-        //            new BasicMaterial("cube_material", shader,
-        //            Color.White, 1, textureDictionary["crate1"])));
+            clone = sign.Clone() as GameObject;
+            clone.Name = "platform1";
+            clone.Transform.Translate(-70, 12, 56);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
 
-        //        //add desc and value to a pickup used when we collect/remove/collide with it
-        //        clone.AddComponent(new PickupBehaviour("ammo pack", 15));
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
 
-        //        //add Collision Surface(s)
-        //        collider = new MyPlayerCollider();
-        //        clone.AddComponent(collider);
-        //        collider.AddPrimitive(new Box(
-        //            cube.Transform.LocalTranslation,
-        //            cube.Transform.LocalRotation,
-        //            cube.Transform.LocalScale),
-        //            new MaterialProperties(0.8f, 0.8f, 0.7f));
-        //        collider.Enable(false, 10);
-
-        //        //add To Scene Manager
-        //        level.Add(clone);
-        //    }
-        //}
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
 
         private void InitializeTrees(Scene level)
         {
