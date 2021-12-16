@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(false,false);
+            InitializeDebugUI(true,true);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -987,7 +987,7 @@ namespace GDApp
 
             //create the platform
             var platformArchetype = new GameObject("platform",
-                GameObjectType.Interactable, true);
+                GameObjectType.Platform, true);
 
 
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
@@ -1005,7 +1005,7 @@ namespace GDApp
             platformArchetype.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(2f, 2f, 2f)),
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
