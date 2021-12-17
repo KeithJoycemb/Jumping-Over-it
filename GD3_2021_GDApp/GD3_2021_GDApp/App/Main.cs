@@ -1016,7 +1016,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["gray"])));
+                shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
