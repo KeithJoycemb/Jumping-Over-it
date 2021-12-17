@@ -545,6 +545,9 @@ namespace GDApp
             textureDictionary.Add("sign", Content.Load<Texture2D>("Assets/Textures/Models/Wood_01_07_low6SG-color"));
             textureDictionary.Add("tree", Content.Load<Texture2D>("Assets/Textures/Models/tree"));
             textureDictionary.Add("frog", Content.Load<Texture2D>("Assets/Textures/Models/frog"));
+            textureDictionary.Add("frog1", Content.Load<Texture2D>("Assets/Textures/Models/frog1"));
+            textureDictionary.Add("frog2", Content.Load<Texture2D>("Assets/Textures/Models/frog2"));
+            textureDictionary.Add("frog3", Content.Load<Texture2D>("Assets/Textures/Models/frog3"));
 
 
 
@@ -2096,7 +2099,7 @@ namespace GDApp
             clone = frog.Clone() as GameObject;
             clone.Name = "frog";
             clone.Transform.Translate(-50, 123, -27);
-            clone.Transform.SetScale(6, 6,6);
+            clone.Transform.SetScale(200, 200,200);
             clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
 
             //add Collision Surface(s)
