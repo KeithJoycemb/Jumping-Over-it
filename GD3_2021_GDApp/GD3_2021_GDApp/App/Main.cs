@@ -1016,7 +1016,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["gray"])));
+                shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1151,7 +1151,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["gray"])));
+                shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1439,7 +1439,7 @@ namespace GDApp
             clone = Tree.Clone() as GameObject;
             clone.Name = "Tree";
             clone.Transform.Translate(-100, 0, 56);
-            clone.Transform.SetScale(0.1f, 0.1f,0.1f);
+            clone.Transform.SetScale(.5f, .5f,.5f);
             clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
 
             //add Collision Surface(s)
@@ -1447,8 +1447,8 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-                new MaterialProperties(0.1f, 0.8f, 0.7f));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(1f, 1f, 1f));
             collider.Enable(true, 1);
 
            
