@@ -1605,8 +1605,8 @@ namespace GDApp
 
             clone = rock.Clone() as GameObject;
             clone.Name = "rock1";
-            clone.Transform.Translate(-70, 12, 56);
-            clone.Transform.SetScale(1, 1, 1);
+            clone.Transform.Translate(-102,3, 36);
+            clone.Transform.SetScale(4, 4, 4);
             clone.AddComponent(new ModelRenderer(modelDictionary["rock1"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
@@ -1614,11 +1614,57 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["rock1"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-                new MaterialProperties(0.1f, 0.8f, 0.7f));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(4f,4f, 4f)),
+                new MaterialProperties(1f, 1f, 1f));
             collider.Enable(true, 1);
 
            
+            level.Add(clone);
+
+
+//rock2
+            clone = null;
+            clone = rock.Clone() as GameObject;
+
+
+            clone.Name = "rock2";
+            clone.Transform.Translate(-106,3,33);
+            clone.Transform.SetScale(4, 4, 4);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["rock1"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["rock1"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(4f, 4f, 4f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+//rock3
+            clone = null;
+            clone = rock.Clone() as GameObject;
+
+
+            clone.Name = "rock2";
+            clone.Transform.Translate(-109, 3, 24);
+            clone.Transform.SetScale(4, 4, 4);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["rock1"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["rock1"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(4f, 4f, 4f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
             level.Add(clone);
             #endregion rocks
         }
