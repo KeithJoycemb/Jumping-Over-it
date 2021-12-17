@@ -18,7 +18,8 @@ namespace GDLibrary
         Editor,
         Prop,
         Ground,
-        Platform
+        Platform,
+        Tree
         //STU - add more for your game here...
     }
 

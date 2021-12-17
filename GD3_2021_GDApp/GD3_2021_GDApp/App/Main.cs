@@ -978,7 +978,7 @@ namespace GDApp
             InitializeMountain(level);
             //InitializeWorldAssests(level);
             InitializeTrees(level);
-            //InitializeRocks(level);
+            InitializeRocks(level);
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
             InitializeCrown(level);
@@ -1016,7 +1016,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["platform"])));
+                shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1151,7 +1151,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["platform"])));
+                shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1258,7 +1258,7 @@ namespace GDApp
                CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
-            clone.Transform.SetRotation(0, 180, 0);
+            
             collider.Enable(true, 1);
 
            
@@ -1273,7 +1273,8 @@ namespace GDApp
             clone.Name = "sign2";
             clone.Transform.Translate(4, 24, 20);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"],new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.Transform.SetRotation(0, 270, 0);
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"],new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
            
             collider = new Collider();
@@ -1282,6 +1283,7 @@ namespace GDApp
                CollisionUtility.GetTriangleMesh(modelDictionary["SIGNFINISHED"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
+            clone.Transform.SetRotation(0, 180, 0);
             collider.Enable(true, 1);
 
      
@@ -1295,7 +1297,7 @@ namespace GDApp
             clone.Name = "sign3";
             clone.Transform.Translate(-33, 35, -54);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
            
             collider = new Collider();
@@ -1317,7 +1319,7 @@ namespace GDApp
             clone.Name = "sign4";
             clone.Transform.Translate(-107, 47, -18);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             collider = new Collider();
             clone.AddComponent(collider);
@@ -1337,7 +1339,7 @@ namespace GDApp
             clone.Name = "sign5";
             clone.Transform.Translate(-81.4f, 58.5f, 38);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             collider = new Collider();
             clone.AddComponent(collider);
@@ -1358,7 +1360,7 @@ namespace GDApp
             clone.Name = "sign6";
             clone.Transform.Translate(-38.6f, 81.5f, -46.9f);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             collider = new Collider();
             clone.AddComponent(collider);
@@ -1379,7 +1381,7 @@ namespace GDApp
             clone.Name = "sign7";
             clone.Transform.Translate(-102.8f, 92.7f, -13.6f);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             collider = new Collider();
             clone.AddComponent(collider);
@@ -1438,8 +1440,8 @@ namespace GDApp
 
             clone = Tree.Clone() as GameObject;
             clone.Name = "Tree";
-            clone.Transform.Translate(-100, 0, 56);
-            clone.Transform.SetScale(.5f, .5f,.5f);
+            clone.Transform.Translate(-98, -5, 40);
+            clone.Transform.SetScale(0.1f, 0.1f,0.1f);
             clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
 
             //add Collision Surface(s)
@@ -1447,13 +1449,149 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
-                new MaterialProperties(1f, 1f, 1f));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
-           
+
             level.Add(clone);
+//tree2
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree2";
+            clone.Transform.Translate(-15,7, 54);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+            
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+            //tree3
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree3";
+            clone.Transform.Translate(4, 18, -33);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+
+            //tree4
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree4";
+            clone.Transform.Translate(-78, 30, -54);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+
             #endregion trees
+
+            //tree5
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree5";
+            clone.Transform.Translate(-14, 53, 34);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+            //tree6
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree6";
+            clone.Transform.Translate(-39, 114, -40);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
+
+            //tree7
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree7";
+            clone.Transform.Translate(-68, 114, -40);
+            clone.Transform.SetScale(0.1f, 0.1f, 0.1f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+
+            level.Add(clone);
         }
 
         private void InitializeRocks(Scene level)
