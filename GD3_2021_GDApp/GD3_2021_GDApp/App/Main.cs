@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -1030,7 +1030,7 @@ namespace GDApp
             //add To Scene Manager
             level.Add(clone);
             #endregion
-
+            #region copy platforms
             #region Second Platform
             clone = null;
 
@@ -1177,7 +1177,7 @@ namespace GDApp
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["gray"])));
+                shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1816,6 +1816,7 @@ namespace GDApp
             level.Add(clone);
             #endregion
         }
+        #endregion
         private void InitializeMountain(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
