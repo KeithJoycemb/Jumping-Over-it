@@ -469,7 +469,7 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Foliage/Ground/grass_midlevel.jpg
 
-#begin Assets/Textures/Foliage/Ground/grass1.jpg
+#begin Assets/Textures/Foliage/Ground/grass1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -479,9 +479,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Foliage/Ground/grass1.jpg
+/build:Assets/Textures/Foliage/Ground/grass1.png
 
-#begin Assets/Textures/Foliage/Ground/grass2.jpg
+#begin Assets/Textures/Foliage/Ground/grass2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -491,7 +491,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Foliage/Ground/grass2.jpg
+/build:Assets/Textures/Foliage/Ground/grass2.png
 
 #begin Assets/Textures/Foliage/Trees/tree1.png
 /importer:TextureImporter
@@ -577,7 +577,7 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Models/gray.jpg
 
-#begin Assets/Textures/Models/pCube53SG-color.png
+#begin Assets/Textures/Models/mountain.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -587,7 +587,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/Textures/Models/pCube53SG-color.png;Assets/Textures/Models/mountain.png
+/build:Assets/Textures/Models/mountain.png
 
 #begin Assets/Textures/Models/platform.png
 /importer:TextureImporter
