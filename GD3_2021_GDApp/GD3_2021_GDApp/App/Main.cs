@@ -978,7 +978,7 @@ namespace GDApp
             InitializeMountain(level);
             //InitializeWorldAssests(level);
             InitializeTrees(level);
-            InitializeRocks(level);
+            //InitializeRocks(level);
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
             InitializeCrown(level);
@@ -1006,22 +1006,25 @@ namespace GDApp
 
 
             clone = platformArchetype.Clone() as GameObject;
-
-            //clone the archetypal cube
-            clone.Name = "platform1";
-            clone.Transform.Translate(-25, 38, -80);
+            int move = -80;
+            for (int i = 0; i < 10000; i++)
+            { move =move- 1;
+                
+            }
+                clone.Name = "platform1";
+            clone.Transform.Translate(-55, 14, 48);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["platform"])));
+                shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
             collider = new Collider();
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-                new MaterialProperties(0.1f, 0.8f, 0.7f));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(1f, 1f, 1f));
             collider.Enable(true, 1);
 
             //add To Scene Manager
@@ -1037,19 +1040,19 @@ namespace GDApp
 
             //clone the archetypal cube
             clone.Name = "platform2";
-            clone.Transform.Translate(-70, 40, -20);
+            clone.Transform.Translate(-55, 38, -46);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
                 new BasicMaterial("sphere_material",
-                shader, Color.White, 1, textureDictionary["platform"])));
+                shader, Color.White, 1, textureDictionary["gray"])));
 
             //add Collision Surface(s)
             collider = new Collider();
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-                new MaterialProperties(0.1f, 0.8f, 0.7f));
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(1f, 1f, 1f));
             collider.Enable(true, 1);
 
             //add To Scene Manager
@@ -1361,15 +1364,15 @@ namespace GDApp
              #region trees
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
             var shader = new BasicShader(Application.Content, false, true);
-            var Tree = new GameObject("SIGNFINISHED", GameObjectType.Platform, true);
+            var Tree = new GameObject("Tree", GameObjectType.Platform, true);
 
             GameObject clone = null;
 
             clone = Tree.Clone() as GameObject;
             clone.Name = "Tree";
-            clone.Transform.Translate(-70, 12, 56);
-            clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["gray"])));
+            clone.Transform.Translate(-100, 0, 56);
+            clone.Transform.SetScale(0.1f, 0.1f,0.1f);
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
 
             //add Collision Surface(s)
             collider = new Collider();
