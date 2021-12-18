@@ -382,6 +382,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/platform");
             modelDictionary.Add("Assets/Models/SIGNFINISHED");
             modelDictionary.Add("Assets/Models/crown");
+            modelDictionary.Add("Assets/Models/frog");
         }
 
         /// <summary>
@@ -543,6 +544,11 @@ namespace GDApp
             textureDictionary.Add("crown", Content.Load<Texture2D>("Assets/Textures/Models/crown"));
             textureDictionary.Add("sign", Content.Load<Texture2D>("Assets/Textures/Models/Wood_01_07_low6SG-color"));
             textureDictionary.Add("tree", Content.Load<Texture2D>("Assets/Textures/Models/tree"));
+            textureDictionary.Add("frog", Content.Load<Texture2D>("Assets/Textures/Models/frog"));
+            textureDictionary.Add("frog1", Content.Load<Texture2D>("Assets/Textures/Models/frog1"));
+            textureDictionary.Add("frog2", Content.Load<Texture2D>("Assets/Textures/Models/frog2"));
+            textureDictionary.Add("frog3", Content.Load<Texture2D>("Assets/Textures/Models/frog3"));
+
 
 
             //map
@@ -982,6 +988,7 @@ namespace GDApp
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
             InitializeCrown(level);
+            InitializeFrog(level);
 
         }
 
@@ -2078,6 +2085,36 @@ namespace GDApp
             #endregion
         }
 
+        private void InitializeFrog(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var frog = new GameObject("frog", GameObjectType.Tree, true);
+
+            GameObject clone = null;
+
+            clone = frog.Clone() as GameObject;
+            clone.Name = "frog";
+            clone.Transform.Translate(-50, 123, -27);
+            clone.Transform.SetScale(200, 200,200);
+            clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["frog"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(6f, 6f, 6f)),
+                new MaterialProperties(6f, 6f, 6f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
 
         private void InitializeTrees(Scene level)
         {
