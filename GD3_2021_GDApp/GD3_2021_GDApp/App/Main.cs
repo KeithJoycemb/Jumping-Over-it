@@ -730,7 +730,7 @@ namespace GDApp
         { //create the scene
             var mainGameUIScene = new UIScene(AppData.UI_SCENE_MAIN_NAME);
 
-            #region Add Health Bar
+            #region Add World map
             var mapTextureObj = new UITextureObject("0",
                UIObjectType.Texture,
                new Transform2D(new Vector2(1700, 880),
@@ -739,7 +739,8 @@ namespace GDApp
 
             //add a progress controller
             //healthTextureObj.AddComponent(new UIProgressBarController(4, 8));
-
+            
+            
             //add the ui element to the scene
             mainGameUIScene.Add(mapTextureObj);
 
@@ -886,14 +887,19 @@ namespace GDApp
         /// Initialize the camera(s) in our scene
         /// </summary>
         /// <param name="level"></param>
-        private void InitializeCameras(Scene level)
+        public void InitializeCameras(Scene level)
         {
             #region First Person Camera - Non Collidable
 
 
             //add camera game object
             var camera = new GameObject(AppData.CAMERA_FIRSTPERSON_NONCOLLIDABLE_NAME, GameObjectType.Camera);
+            // trying to get the height of the camera so we can change the minimap 
+            var height = new Vector3(0,10,0);
+            if (camera.Transform.LocalTranslation.Y>=height.Y)
+            {
 
+            }
             //add components
             //here is where we can set a smaller viewport e.g. for split screen
             //e.g. new Viewport(0, 0, _graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight)
@@ -902,8 +908,7 @@ namespace GDApp
             IsMouseVisible = false;
             //set initial position
             camera.Transform.SetTranslation(-200, 20, 240);
-            //if(camera.GetTranslation(0,0,0)=(0,0,0));
-            //add to level
+            
             level.Add(camera);
 
             #endregion First Person Camera - Non Collidable
@@ -2095,24 +2100,31 @@ namespace GDApp
             var frog = new GameObject("frog", GameObjectType.Tree, true);
 
             GameObject clone = null;
+            //creates 3 rows of frogs in an incline for the crowd
+            for (int j = 0; j < 6; j += 2){
+                for (int i = 5; i < 40; i += 5)
+                {
+                    clone = frog.Clone() as GameObject;
+                    clone.Name = "frog";
+                    clone.Transform.Translate(-100+i, j, 80+j);
+                    clone.Transform.SetScale(1, 1, 1);
+                    clone.Transform.SetRotation(0, 180, 0);
+                    clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
 
-            clone = frog.Clone() as GameObject;
-            clone.Name = "frog";
-            clone.Transform.Translate(-50, 123, -27);
-            clone.Transform.SetScale(200, 200,200);
-            clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
+                    //add Collision Surface(s)
+                    collider = new Collider();
+                    clone.AddComponent(collider);
+                    collider.AddPrimitive(
+                       CollisionUtility.GetTriangleMesh(modelDictionary["frog"],
+                        new Vector3(0, 0, 0), new Vector3(0, 180, 0), new Vector3(1f, 1f, 1f)),
+                        new MaterialProperties(1f, 1f, 1f));
+                    collider.Enable(true, 1);
 
-            //add Collision Surface(s)
-            collider = new Collider();
-            clone.AddComponent(collider);
-            collider.AddPrimitive(
-               CollisionUtility.GetTriangleMesh(modelDictionary["frog"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(6f, 6f, 6f)),
-                new MaterialProperties(6f, 6f, 6f));
-            collider.Enable(true, 1);
 
-            //add To Scene Manager
-            level.Add(clone);
+                    //add To Scene Manager
+                    level.Add(clone);
+                }
+            }
             #endregion
         }
 
