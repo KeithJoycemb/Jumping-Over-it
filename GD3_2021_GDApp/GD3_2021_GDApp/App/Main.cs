@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -954,7 +954,7 @@ namespace GDApp
             var collider = new MyHeroCollider(2, 2, true, false);
             camera.AddComponent(collider);
             collider.AddPrimitive(new Capsule(camera.Transform.LocalTranslation,
-                Matrix.CreateRotationX(MathHelper.PiOver2), 1, 3.6f),
+                Matrix.CreateRotationX(MathHelper.PiOver2), 2.5f, 3.6f),
                 new MaterialProperties(0.2f, 0.8f, 0.7f));
             collider.Enable(false, 2);
 
