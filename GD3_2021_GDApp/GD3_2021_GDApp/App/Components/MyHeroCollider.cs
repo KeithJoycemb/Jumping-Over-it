@@ -27,6 +27,10 @@ namespace GDApp
                 EventDispatcher.Raise(new EventData(EventCategoryType.UI,
                     EventActionType.OnHealthDelta, parameters1));
 
+                object[] parameters2 = { "crown", 1 };
+                EventDispatcher.Raise(new EventData(EventCategoryType.UI,
+                    EventActionType.OnWin, parameters2));
+
                 // EventDispatcher.Raise(new EventData(EventCategoryType.Inventory,
                 //  EventActionType.OnAddInventory, parameters1));
             }
