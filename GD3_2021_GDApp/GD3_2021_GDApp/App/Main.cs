@@ -1911,6 +1911,7 @@ namespace GDApp
             clone.Name = "sign1";
             clone.Transform.Translate(-70, 12, 56);
             clone.Transform.SetScale(1, 1, 1);
+            clone.Transform.SetRotation(0,130,0);
             clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             //add Collision Surface(s)
@@ -1935,7 +1936,7 @@ namespace GDApp
             clone.Name = "sign2";
             clone.Transform.Translate(4, 24, 20);
             clone.Transform.SetScale(1, 1, 1);
-            clone.Transform.SetRotation(0, 270, 0);
+            clone.Transform.SetRotation(0, 300, 0);
             clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"],new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
            
@@ -2001,6 +2002,7 @@ namespace GDApp
             clone.Name = "sign5";
             clone.Transform.Translate(-81.4f, 58.5f, 38);
             clone.Transform.SetScale(1, 1, 1);
+            clone.Transform.SetRotation(0, 180, 0);
             clone.AddComponent(new ModelRenderer(modelDictionary["SIGNFINISHED"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["sign"])));
 
             collider = new Collider();
