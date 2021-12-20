@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(false,false);
+            InitializeDebugUI(true,true);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -993,7 +993,7 @@ namespace GDApp
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
             InitializeCrown(level);
-            InitializeFrog(level);
+            //InitializeFrog(level);
 
         }
 
@@ -2092,7 +2092,7 @@ namespace GDApp
 
         private void InitializeFrog(Scene level)
         {
-            #region Signs
+            #region frog spectators
 
 
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
@@ -2243,7 +2243,7 @@ namespace GDApp
 
             level.Add(clone);
 
-            #endregion trees
+            
 
             //tree5
             clone = null;
@@ -2312,6 +2312,107 @@ namespace GDApp
 
 
             level.Add(clone);
+            #endregion trees
+
+            #region Level Trees
+
+            #region LDTree1
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree8";
+            clone.Transform.Translate(-160, -18, 163);
+            clone.Transform.SetScale(0.2f, 0.2f, 0.2f);
+            clone.Transform.SetRotation(0,90,0);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            level.Add(clone);
+            #endregion
+
+            #region LDTree2
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree9";
+            clone.Transform.Translate(-72, -18, 197);
+            clone.Transform.SetScale(0.2f, 0.2f, 0.2f);
+            clone.Transform.SetRotation(0,-35,0);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            level.Add(clone);
+            #endregion
+
+            #region LDTree3
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree10";
+            clone.Transform.Translate(2, -18, 190);
+            clone.Transform.SetScale(0.2f, 0.2f, 0.2f);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            level.Add(clone);
+            #endregion
+
+            #region LDTree4
+            clone = null;
+            clone = Tree.Clone() as GameObject;
+
+
+            clone.Name = "tree11";
+            clone.Transform.Translate(84, -18, 143);
+            clone.Transform.SetScale(0.2f, 0.2f, 0.2f);
+            clone.Transform.SetRotation(0,20,0);
+            
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["Tree"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["tree"])));
+
+
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["Tree"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(17f, 17f, 17f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            level.Add(clone);
+            #endregion
+
+            #endregion
         }
 
         private void InitializeRocks(Scene level)
