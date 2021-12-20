@@ -336,7 +336,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -2109,8 +2109,29 @@ namespace GDApp
                     clone.Transform.Translate(-100+i, j, 80+j);
                     clone.Transform.SetScale(1, 1, 1);
                     clone.Transform.SetRotation(0, 180, 0);
-                    clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
+                    Random rnd = new Random();
+                    int rand = rnd.Next(1, 4);   // creates a number between 1 and 6
 
+                   // if (rand == 1)
+                   // {
+                        clone.AddComponent(new ModelRenderer(modelDictionary["frog"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog"])));
+
+                   // }
+                   // else if (rand == 2)
+                   // {
+                   //     clone.AddComponent(new ModelRenderer(modelDictionary["frog1"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog1"])));
+
+                   // }
+                   // else if (rand == 3)
+                   // {
+                   //     clone.AddComponent(new ModelRenderer(modelDictionary["frog2"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog2"])));
+
+                   // }
+                   // else if (rand == 4)
+                    //{
+                   //     clone.AddComponent(new ModelRenderer(modelDictionary["frog3"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["frog3"])));
+
+                   // }
                     //add Collision Surface(s)
                     collider = new Collider();
                     clone.AddComponent(collider);
