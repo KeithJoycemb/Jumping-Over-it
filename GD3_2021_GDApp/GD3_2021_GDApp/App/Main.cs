@@ -337,7 +337,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true,true);
+            InitializeDebugUI(false,false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -978,7 +978,7 @@ namespace GDApp
             InitializeStaticPlatforms(level);
             InitializeSigns(level);
             InitializeCrown(level);
-            //InitializeFrog(level);
+            InitializeFrog(level);
             //InitializemovingPlatforms(level);
 
         }
@@ -2138,7 +2138,8 @@ namespace GDApp
 
             GameObject clone = null;
             //creates 3 rows of frogs in an incline for the crowd
-            for (int j = 0; j < 6; j += 2){
+            for (int j = 0; j < 6; j += 2)
+            {
                 for (int i = 5; i < 40; i += 5)
                 {
                     clone = frog.Clone() as GameObject;
