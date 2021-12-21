@@ -30,5 +30,17 @@
         }
 
         #endregion Constructors
+
+        #region pick up spin
+        public override void Update()
+        {
+            //value = 360;
+            var crownSpin = gameObject.Transform.LocalRotation.Y + value;
+
+            gameObject.Transform.SetRotation(0, crownSpin, 0);
+
+            base.Update();
+        }
+        #endregion pick up spin 
     }
 }
