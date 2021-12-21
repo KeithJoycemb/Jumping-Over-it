@@ -908,6 +908,7 @@ namespace GDApp
             IsMouseVisible = false;
             //set initial position
             camera.Transform.SetTranslation(-200, 20, 240);
+            camera.Transform.SetRotation(-270,0 ,270);
             
             level.Add(camera);
 
@@ -994,6 +995,7 @@ namespace GDApp
             InitializeSigns(level);
             InitializeCrown(level);
             //InitializeFrog(level);
+            InitializemovingPlatforms(level);
 
         }
 
@@ -1829,6 +1831,55 @@ namespace GDApp
             #endregion
         }
         #endregion
+
+        private void InitializemovingPlatforms(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+
+            //create the platform
+            var platformArchetype = new GameObject("platform",
+                GameObjectType.Platform, true);
+
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+
+
+            #region First platform
+            GameObject clone = null;
+
+
+            clone = platformArchetype.Clone() as GameObject;
+
+            clone.Name = "platform1";
+            var translationCurve = new Curve3D(CurveLoopType.Cycle);
+            translationCurve.Add(new Vector3(-60, 12, 49), 0);
+            translationCurve.Add(new Vector3(-60, 12, 20), 10000);
+            translationCurve.Add(new Vector3(-60, 12, 49),10000);
+            translationCurve.Add(new Vector3(-60, 12, 20), 10000);
+            translationCurve.Add(new Vector3(-60, 12, 49), 10000);
+
+            clone.AddComponent(new CurveBehaviour(translationCurve));
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"],
+                new BasicMaterial("sphere_material",
+                shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            
+            clone.AddComponent(new CurveBehaviour(translationCurve));
+           
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
+
+            
+           
+
         private void InitializeMountain(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
